@@ -1,0 +1,154 @@
+configuration {
+    font: "FiraCode 12";
+    spacing: 5;
+    padding: 30px;
+    show-icons: true;
+
+}
+
+window {
+    anchor:                       center;
+    background-color: #000000;
+    border: 2px;
+    border-color: #AEBAF8;
+    border-radius: 10px;
+    width: 30%;
+    height: 55%;
+     padding: 10;
+    text-color: #ffffff;
+}
+
+inputbar {
+    enabled:                      true;
+    text-color:                   #ffffff;
+    spacing:                      10px;
+    padding:                      15px;
+    border-radius:                10px;
+    border-color:                 #9600FF;
+    background-color:             transparent;
+    children:  [ "textbox-prompt-colon", "entry" ];
+    
+}
+
+textbox-prompt-colon {
+    enabled:                      true;
+    expand:                       false;
+    str:                          "";
+    padding:                      0px 5px 0px 0px;
+    background-color:             transparent;
+    text-color:                   #ffffff;
+}
+
+
+entry {
+    enabled:                      true;
+    background-color:             transparent;
+    text-color:                   #eaeaea;
+    cursor:                       text;
+    placeholder:                  "Search";
+    placeholder-color:            inherit;
+}
+
+listview {
+  enabled: true;
+  columns:2;
+   spacing:0px;
+    padding:10px;
+    margin: 0px;
+        background-color: transparent;
+}
+
+element {
+    enabled:true;
+    padding:                      10px;
+    margin:                       10px;
+    cursor:                       pointer;
+    background-color:             #9600FF;
+    border-radius:                10px;
+    border:                       2px;
+    border-color: #AEBAF8;
+    children: [element-icon, element-text];
+}
+
+element-text {
+    vertical-align: 0.5;
+}
+
+
+element normal.normal {
+    background-color:            transparent;
+    text-color:                  #ffffff;
+}
+
+element normal.urgent {
+   background-color:            #AEBAF8;
+    text-color:                  #000000;
+}
+
+element normal.active {
+   background-color:            #AEBAF8;
+    text-color:                  #000000;
+}
+
+element selected.normal {
+background-color:            #AEBAF8;
+    text-color:                  #000000;
+}
+
+element selected.urgent {
+    background-color:            #000000;
+    text-color:                  #ffffff;
+}
+
+element selected.active {
+    background-color:            #AEBAF8;
+    text-color:                  #000000;
+}
+
+element alternate.normal {
+     background-color:            transparent;
+    text-color:                   #ffffff;
+}
+
+element alternate.urgent {
+    background-color:            #AEBAF8;
+    text-color:                  #000000;
+}
+
+element alternate.active {
+    background-color:            #AEBAF8;
+    text-color:                  #000000;
+}
+
+element-icon {
+  text-color: #9600FF;
+  size: 2.5em;
+  margin: 5px;
+}
+
+
+message {
+    background-color:            transparent;
+    border:0px;
+    margin:20px 0px 0px 0px;
+    padding:0px;
+    spacing:0px;
+    border-radius: 10px;
+}
+
+textbox {
+    padding:                     15px;
+    margin:                      0px;
+    border-radius:               0px;
+    background-color:            transparent;
+    text-color:                  #ffffff;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+}
+
+error-message {
+    padding:                     15px;
+    border-radius:               20px;
+    background-color:            transparent;
+    text-color:                  #ffffff;
+}
