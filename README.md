@@ -6,12 +6,14 @@ This repository contains the configuration files (dotfiles) I use for my develop
 
 Here’s how the dotfiles are organized:
 
+```bash
 dotfiles/
 ├── hyprland/ # Configurations for Hyprland
 │ └── .config/hypr/ # Hyprland-specific settings
 ├── zsh/ # Configurations for Zsh shell
 │ └── .zshrc # Zsh settings
 └── README.md # Documentation (this file)
+```
 
 ## 🚀 Getting Started
 
