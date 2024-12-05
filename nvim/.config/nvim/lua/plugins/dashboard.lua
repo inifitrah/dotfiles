@@ -7,12 +7,14 @@ return {
   opts = function()
     local git_dashboard = require('git-dashboard-nvim').setup {
       show_only_weeks_with_commits = true,
+      days = { 's', 'm', 't', 'w', 't', 'f', 's' },
       colors = {
-        days_and_months_labels = '#87CEEB',
-        empty_square_highlight = '#87CEEB',
-        filled_square_highlights = { '#87CEEB', '#87CEEB', '#87CEEB', '#87CEEB', '#87CEEB', '#87CEEB' },
-        branch_highlight = '#87CEEB',
-        dashboard_title = '#87CEEB',
+        --catpuccin theme
+        days_and_months_labels = '#8FBCBB',
+        empty_square_highlight = '#88C0D0',
+        filled_square_highlights = { '#88C0D0', '#88C0D0', '#88C0D0', '#88C0D0', '#88C0D0', '#88C0D0', '#88C0D0' },
+        branch_highlight = '#88C0D0',
+        dashboard_title = '#88C0D0',
       },
     }
 
