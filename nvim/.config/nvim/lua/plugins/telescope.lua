@@ -16,5 +16,7 @@ return {
             { noremap = true, silent = true })
         vim.api.nvim_set_keymap('n', '<leader>fh', '<cmd>lua require("telescope.builtin").help_tags()<cr>',
             { noremap = true, silent = true })
-    end,
+         vim.api.nvim_set_keymap('n', '<leader>fz', '<cmd>Telescope current_buffer_fuzzy_find <CR>',
+            { noremap = true, silent = true })
+  end,
 }
