@@ -29,32 +29,9 @@ vim.g.maplocalleader = "\\"
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
-    -- -- plugin threesitter
-    -- {
-    --   "nvim-treesitter/nvim-treesitter",
-    --   opts = {
-    --     ensure_installed = {
-    --       "bash",
-    --       "html",
-    --       "javascript",
-    --       "json",
-    --       "lua",
-    --       "markdown",
-    --       "markdown_inline",
-    --       "python",
-    --       "query",
-    --       "regex",
-    --       "tsx",
-    --       "typescript",
-    --       "vim",
-    --       "yaml",
-    --     },
-    --   },
-    -- },
-    -- import your plugins
     { import = "plugins" },
   },
-  install = { colorscheme = { "habamax" } },
+  -- install = { colorscheme = { "github_dark" } },
   checker = { enabled = true },
   change_detection = {
     enabled = true,
@@ -69,3 +46,4 @@ vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 vim.g.mapleader = ' '
+vim.opt.clipboard = "unnamedplus"
