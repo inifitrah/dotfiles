@@ -1,0 +1,127 @@
+@import "colors.css";
+
+* {
+  font-family: "Hack Nerd Font";
+  font-size: 14px;
+}
+
+/* === Tooltip === */
+
+tooltip {
+  color: @sky-blue;
+  background: @background-col;
+}
+
+/* right to left */
+
+window#waybar {
+  background: rgba(0, 0, 0, 0.5);
+  color: @text;
+}
+
+window#waybar > box {
+  padding: 0px 0px;
+  color: @text;
+}
+
+#custom-music,
+#backlight,
+#battery,
+#pulseaudio,
+#custom-lock,
+#network,
+#clock,
+#custom-power {
+  font-size: 0.9rem;
+  margin: 0px 0px;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+  background-color: transparent;
+}
+
+#custom-linux {
+  color: @sky-blue;
+  font-size: 2.5rem;
+
+  margin-left: 1rem;
+  margin-right: 1.5rem;
+}
+
+#custom-linux:hover {
+  color: #ffffff;
+}
+
+#workspaces {
+  color: @text;
+  margin-right: 1.5rem;
+}
+
+#workspaces button {
+  color: @text;
+  padding: 0rem 0.5rem;
+}
+
+#workspaces button.active {
+  color: @sky-blue;
+}
+
+#workspaces button:hover {
+  color: @sky-blue;
+  border-color: transparent;
+  background-color: transparent;
+}
+
+#window {
+  background-color: transparent;
+  font-size: 0.1rem;
+}
+
+#mpris {
+  font-size: 0.9rem;
+  color: @text;
+  /* background-color: @crust; */
+  padding: 0px 0.6rem;
+  margin: 0px 0.8rem;
+  /* border-radius: 15px; */
+}
+
+#clock {
+  color: @text;
+  margin-right: 1rem;
+}
+
+#network {
+  margin-right: 1rem;
+}
+
+#battery {
+  color: @text;
+  margin-right: 1rem;
+}
+
+#battery.charging {
+  color: @text;
+}
+
+#battery.warning:not(.charging) {
+  color: @red;
+}
+
+#pulseaudio {
+  color: @text;
+  margin-right: 1rem;
+}
+
+#backlight {
+  color: @text;
+  margin-right: 1rem;
+}
+
+#custom-lock {
+  margin-right: 1rem;
+  color: @text;
+}
+
+#custom-power {
+  margin-right: 1.5rem;
+  color: @text;
+}
