@@ -57,10 +57,18 @@ button:hover {
   padding: 0 5px;
   background-color: transparent;
   color: #ffffff;
+  border: none;
+  border-radius: 3px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 #workspaces button:hover {
+  color: #1793d1;
   background: rgba(0, 0, 0, 0.2);
+}
+
+#workspaces button.active {
+  color: #1793d1;
 }
 
 #workspaces button.focused {
@@ -69,7 +77,8 @@ button:hover {
 }
 
 #workspaces button.urgent {
-  background-color: #eb4d4b;
+  background-color: #9600ff;
+  color: #ffffff;
 }
 
 #mode {
