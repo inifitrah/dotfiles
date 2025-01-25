@@ -6,29 +6,13 @@
   // "width": 1280, // Waybar width
   "spacing": 10, // Gaps between modules (4px)
   // Choose the order of the modules
-  "modules-left": [
-    "hyprland/workspaces",
-    "hyprland/submap",
-    "sway/scratchpad",
-    "custom/media"
-  ],
-  "modules-center": ["sway/window"],
+  "modules-left": ["hyprland/workspaces"],
   "modules-right": [
-    "mpd",
     "idle_inhibitor",
     "pulseaudio",
     "network",
-    "power-profiles-daemon",
-    "cpu",
-    "memory",
-    "temperature",
-    "backlight",
-    "keyboard-state",
-    "sway/language",
     "battery",
-    "battery#bat2",
     "clock",
-    "tray",
     "custom/power"
   ],
   // Modules configuration
