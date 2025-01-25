@@ -1,15 +1,22 @@
 // -*- mode: jsonc -*-
 {
-  // "layer": "top", // Waybar at top layer
-  // "position": "bottom", // Waybar position (top|bottom|left|right)
-  "height": 30, // Waybar height (to be removed for auto height)
+  "layer": "top", // Waybar at top layer
+  "position": "bottom", // Waybar position (top|bottom|left|right)
+  "height": 20, // Waybar height (to be removed for auto height)
   // "width": 1280, // Waybar width
+  "mode": "dock",
+  "reload_style_on_change": true,
+  "margin-bottom": 5,
+  "margin-left": 7,
+  "margin-right": 7,
+
   "spacing": 10, // Gaps between modules (4px)
   // Choose the order of the modules
   "modules-left": ["hyprland/workspaces"],
   "modules-right": [
     "idle_inhibitor",
     "pulseaudio",
+    "backlight",
     "network",
     "battery",
     "clock",
@@ -21,10 +28,7 @@
     "on-scroll-down": "hyprctl dispatch workspace r+1",
     "disable-scroll": true,
     "all-outputs": true,
-    "warp-on-scroll": false,
-    "persistent-workspaces": {
-      "*": 5
-    }
+    "warp-on-scroll": false
   },
   "hyprland/submap": {
     "format": "✌️ {}",
@@ -152,7 +156,7 @@
   },
   "pulseaudio": {
     // "scroll-step": 1, // %, can be a float
-    "format": "{volume}% {icon} {format_source}",
+    "format": "{volume}% {icon}",
     "format-bluetooth": "{volume}% {icon} {format_source}",
     "format-bluetooth-muted": " {icon} {format_source}",
     "format-muted": " {format_source}",
