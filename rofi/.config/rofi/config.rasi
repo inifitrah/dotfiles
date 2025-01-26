@@ -32,7 +32,8 @@ window {
   background-color: @bg;
   location: center;
   anchor: center;
-  y-offset: -333px;
+  x-offset: 620px;
+  y-offset: 300px;
   border-radius: 15px;
   opacity: 1;
 }
