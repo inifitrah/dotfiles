@@ -1,0 +1,6 @@
+#button-bar,
+#workspaces-container,
+#notch-content,
+#date-time {
+  box-shadow: 0 0 4px alpha(black, 0.5);
+}
