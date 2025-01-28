@@ -12,14 +12,13 @@
 
   "spacing": 10, // Gaps between modules (4px)
   // Choose the order of the modules
-  "modules-left": ["hyprland/workspaces"],
+  // "modules-left": ["hyprland/workspaces"],
   "modules-right": [
     "idle_inhibitor",
     "pulseaudio",
     "backlight",
     "network",
     "battery",
-    "clock",
     "custom/power"
   ],
   // Modules configuration

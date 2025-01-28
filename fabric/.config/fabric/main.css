@@ -70,7 +70,7 @@
 
 #date-time {
   background-color: var(--shadow);
-  padding: 8px;
+  padding: 10px 15px;
   border-radius: 16px;
   margin-top: 4px;
 }
