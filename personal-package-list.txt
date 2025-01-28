@@ -67,6 +67,7 @@ pipewire-alsa
 pipewire-jack
 pipewire-pulse
 polkit-kde-agent
+ttf-tabler-icons
 python-fabric-git
 fabric-cli-git
 python-loguru

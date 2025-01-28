@@ -5,7 +5,7 @@ font_weight: str = 'normal'
 span: str = f"<span font-family='{font_family}' font-weight='{font_weight}'>"
 
 #Panels
-apps: str = "&#xf1fd;"
+apps: str = "&#xecff;"
 dashboard: str = "&#xea87;"
 chat: str = "&#xf59f;"
 wallpapers: str = "&#xeb01;"
@@ -32,10 +32,10 @@ sort: str = "&#xeb5a;"
 circle: str = "&#xf671;"
 
 # Chevrons
-chevron_up: str = ""
-chevron_down: str = ""
-chevron_left: str = ""
-chevron_right: str = ""
+chevron_up: str = "&#xea62;"
+chevron_down: str = "&#xea5f;"
+chevron_left: str = "&#xea60;"
+chevron_right: str = "&#xea61;"
 
 # Power
 lock: str = "&#xeae2;"
@@ -46,7 +46,7 @@ shutdown: str = "&#xeb0d;"
 
 # Applets
 wifi: str = "&#xeb52;"
-bluetooth: str = "󰂯"
+bluetooth: str = "&#xea37;"
 night: str = "&#xeaf8;"
 coffee: str = "&#xef0e;"
 dnd: str = "&#xea35;"
