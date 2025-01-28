@@ -28,13 +28,21 @@
   border-radius: 0 0 36px 36px;
 }
 
-#dashboard {
+#notch-content.power {
+  min-height: 80px;
+  min-width: 320px;
+  border-radius: 0 0 36px 36px;
+}
+
+#dashboard,
+#power-menu {
   opacity: 1;
   margin: -800px;
   transition: all 0.25s cubic-bezier(0.5, 0.25, 0, 1);
 }
 
-#dashboard.open {
+#dashboard.open,
+#power-menu.open {
   opacity: 1;
   margin: 0px;
 }

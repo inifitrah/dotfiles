@@ -9,6 +9,7 @@ from fabric.hyprland.widgets import ActiveWindow
 from fabric.utils.helpers import FormattedString, truncate, get_relative_path
 from gi.repository import GLib, Gdk
 from modules.dashboard import Dashboard
+from modules.power import PowerMenu
 
 from modules.corners import MyCorner
 import modules.icons as icons
@@ -27,6 +28,7 @@ class Notch(Window):
             all_visible=True,
         )
 
+        self.power = PowerMenu()
         self.dashboard = Dashboard()
 
         self.active_window = ActiveWindow(
@@ -54,6 +56,7 @@ class Notch(Window):
             children=[
                 self.compact,
                 self.dashboard,
+                self.power
             ]
         )
 
@@ -137,9 +140,9 @@ class Notch(Window):
             self.notch_box.remove_style_class("hideshow")
             self.notch_box.add_style_class("hidden")
 
-        for widget in [self.dashboard]:
+        for widget in [self.dashboard, self.power]:
             widget.remove_style_class("open")
-        for style in ["dashboard"]:
+        for style in ["dashboard", "power"]:
             self.stack.remove_style_class(style)
         self.stack.set_visible_child(self.compact)
 
@@ -152,9 +155,10 @@ class Notch(Window):
 
         widgets = {
             "dashboard": self.dashboard,
+            "power": self.power
         }
 
-        # Limpiar clases y estados previos
+        # Clear previous classes and states
         for style in widgets.keys():
             self.stack.remove_style_class(style)
         for w in widgets.values():
