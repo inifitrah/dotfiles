@@ -13,8 +13,8 @@
   all: unset;
   color: var(--foreground);
   font-size: 11pt;
-  font-family: "Zed Sans";
-  border-radius: 16px;
+  font-family: "Sans Regular";
+  border-radius: 8px;
 }
 
 #bar-inner {
@@ -71,7 +71,7 @@
 #date-time {
   background-color: var(--shadow);
   padding: 10px 15px;
-  border-radius: 16px;
+  border-radius: 8px;
   margin-top: 4px;
 }
 
