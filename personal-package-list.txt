@@ -68,6 +68,7 @@ pipewire-jack
 pipewire-pulse
 polkit-kde-agent
 python-fabric-git
+fabric-cli-git
 python-loguru
 python-pip
 python-setproctitle
