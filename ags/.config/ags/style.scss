@@ -1,20 +1,123 @@
-// https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss
-$fg-color: #{"@theme_fg_color"};
-$bg-color: #{"@theme_bg_color"};
+@use "sass:color";
+
+$bg: #212223;
+$fg: #f1f1f1;
+$accent: #378df7;
+$radius: 7px;
 
 window.Bar {
-    background: transparent;
-    color: $fg-color;
-    font-weight: bold;
+  border: none;
+  box-shadow: none;
+  background-color: $bg;
+  color: $fg;
+  font-size: 0.9em;
+  font-weight: bold;
 
-    >centerbox {
-        background: $bg-color;
-        border-radius: 10px;
-        margin: 8px;
+  label {
+    margin: 0 8px;
+  }
+
+  .Workspaces {
+    button {
+      all: unset;
+      background-color: transparent;
+
+      &:hover label {
+        background-color: color.adjust($fg, $alpha: -0.84);
+        border-color: color.adjust($accent, $alpha: -0.8);
+      }
+
+      &:active label {
+        background-color: color.adjust($fg, $alpha: -0.8);
+      }
     }
+
+    label {
+      transition: 200ms;
+      padding: 0 8px;
+      margin: 2px;
+      border-radius: $radius;
+      border: 1pt solid transparent;
+    }
+
+    .focused label {
+      color: $accent;
+      border-color: $accent;
+    }
+  }
+
+  .SysTray {
+    margin-right: 8px;
 
     button {
-        border-radius: 8px;
-        margin: 2px;
+      padding: 0 4px;
     }
+  }
+
+  .FocusedClient {
+    color: $accent;
+  }
+
+  .Media .Cover {
+    min-height: 1.2em;
+    min-width: 1.2em;
+    border-radius: $radius;
+    background-position: center;
+    background-size: contain;
+  }
+
+  .Battery {
+    icon {
+      color: #2bf739;
+      font-size: medium;
+    }
+    label {
+      padding-left: 0;
+      margin-left: 0;
+    }
+  }
+
+  .AudioSlider {
+    * {
+      all: unset;
+    }
+
+    icon {
+      margin-right: 0.6em;
+    }
+
+    & {
+      margin: 0 1em;
+    }
+
+    trough {
+      background-color: color.adjust($fg, $alpha: -0.8);
+      border-radius: $radius;
+    }
+
+    highlight {
+      background-color: $accent;
+      min-height: 0.8em;
+      border-radius: $radius;
+    }
+
+    slider {
+      background-color: $fg;
+      border-radius: $radius;
+      min-height: 1em;
+      min-width: 1em;
+      margin: -0.2em;
+    }
+  }
+
+  .Clock {
+    background-color: $bg;
+  }
+}
+
+window .calendar {
+  background: #222222;
+  font-weight: bold;
+  border-radius: $radius;
+  min-width: 320px;
 }
