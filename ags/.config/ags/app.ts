@@ -1,12 +1,10 @@
 import { App } from "astal/gtk3";
 import style from "./style.scss";
-import Bar from "./widget/Bar";
-import Calendar from "./widget/Calendar";
+import Bar from "./src/components/Bar";
 
 App.start({
   css: style,
   main() {
     App.get_monitors().map(Bar);
-    Calendar();
   },
 });

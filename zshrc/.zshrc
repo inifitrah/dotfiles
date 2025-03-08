@@ -24,6 +24,9 @@ alias hy="hyprland"
 # NPM
 alias dev="npm run dev"
 
+# Distrobox
+alias box="distrobox"
+
 eval "$(zoxide init zsh --cmd cd --hook prompt)"
 eval "$(fzf --zsh)"
 
