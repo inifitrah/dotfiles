@@ -1,10 +1,10 @@
 @use "sass:color";
 
-$bg: #212223;
+$bg: #191919;
 $fg: #f1f1f1;
 $accent: #378df7;
 $color_green: #2bf739;
-$radius: 7px;
+$radius: 4px;
 
 window.Bar {
   border: none;
@@ -19,17 +19,13 @@ window.Bar {
   }
 
   .Workspaces {
+    margin-right: 3px;
     button {
       all: unset;
       background-color: transparent;
 
       &:hover label {
         background-color: color.adjust($fg, $alpha: -0.84);
-        border-color: color.adjust($accent, $alpha: -0.8);
-      }
-
-      &:active label {
-        background-color: color.adjust($fg, $alpha: -0.8);
       }
     }
 
@@ -42,14 +38,15 @@ window.Bar {
     }
 
     .focused label {
+      background-color: color.adjust($fg, $alpha: -0.84);
       color: $accent;
-      border-color: $accent;
     }
   }
 
   .Focused {
     label {
-      color: $accent;
+      color: $fg;
+      padding: 8px 8px;
     }
   }
 
