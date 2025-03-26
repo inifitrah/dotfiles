@@ -38,11 +38,14 @@ function Wifi() {
       {wifi.as(
         (wifi) =>
           wifi && (
-            <icon
-              tooltipText={bind(wifi, "ssid").as(String)}
-              className="Wifi"
-              icon={bind(wifi, "iconName")}
-            />
+            <box>
+              <icon
+                tooltipText={bind(wifi, "strength").as(String)}
+                className="Wifi"
+                icon={bind(wifi, "iconName")}
+              />
+              <label>{bind(wifi, "ssid").as(String)}</label>
+            </box>
           )
       )}
     </box>
@@ -137,7 +140,7 @@ function FocusedClient() {
   return (
     <box className="Focused" visible={focused.as(Boolean)}>
       {focused.as(
-        (client) => client && <label label={bind(client, "title").as(String)} />
+        (client) => client && <label label={bind(client, "class").as(String)} />
       )}
     </box>
   );
@@ -175,7 +178,9 @@ export default function Bar(monitor: Gdk.Monitor) {
           <Workspaces />
           <FocusedClient />
         </box>
-        <box>{/* <Media /> */}</box>
+        <box>
+          <Media />
+        </box>
         <box hexpand halign={Gtk.Align.END}>
           <SysTray />
           <Wifi />
