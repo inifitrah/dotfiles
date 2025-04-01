@@ -13,13 +13,19 @@ class CalendarGtk extends astalify(Gtk.Calendar) {
   }
 }
 
-export default function Calendar() {
+export default function Calendar(monitor: Gdk.Monitor) {
   const anchor = Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT;
 
   return (
-    <window name="calendar" visible={false} application={App} anchor={anchor}>
+    <window
+      name="calendar"
+      visible={false}
+      gdkmonitor={monitor}
+      application={App}
+      anchor={anchor}
+    >
       <box className="calendar">
-        {
+        {[
           new CalendarGtk({
             hexpand: true,
             vexpand: true,
@@ -27,8 +33,8 @@ export default function Calendar() {
             showDetails: false,
             showHeading: true,
             showWeekNumbers: true,
-          })
-        }
+          }),
+        ]}
       </box>
     </window>
   );
