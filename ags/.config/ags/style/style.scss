@@ -1,28 +1,7 @@
 @use "sass:color";
-@use "./components/powermenu.scss";
-@use "./components/osd.scss";
-
-$bg: #191919;
-$fg: #f1f1f1;
-$accent: #378df7;
-$color_green: #2bf739;
-$radius: 4px;
-
-// Variabel tambahan yang belum didefinisikan
-$bar-button-bg-color: #333333;
-$bar-button-opacity: 1;
-$bar-button-border-width: 1px;
-$bar-button-border-color: transparent;
-$bar-button-shadow-offset: 0px;
-$bar-button-shadow-blur: 0px;
-$bar-button-shadow-spread: 0px;
-$bar-button-shadow-color: #000000;
-$bar-button-shadow-opacity: 1;
-$bar-button-fg-color: #ffffff;
-$bar-button-border-radius: 4px;
-$bar-button-padding: 4px;
-$shadow-h: 0px;
-$shadow-v: 0px;
+@import "./components/powermenu.scss";
+@import "./components/osd.scss";
+@import "./variables.scss";
 
 window.Bar {
   border: none;
@@ -137,10 +116,6 @@ window.Bar {
     border-radius: $radius;
     background-position: center;
     background-size: contain;
-  }
-
-  .Media {
-    // background-color: $color_green;
   }
 
   .Battery {
