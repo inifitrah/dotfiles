@@ -53,18 +53,6 @@ function Wifi() {
   );
 }
 
-function Volume() {
-  const speaker = Wp.get_default()?.audio.defaultSpeaker!;
-  return (
-    <button
-      onClicked={() => App.toggle_window("audio-slider")}
-      css="background-color: transparent; border: none;"
-    >
-      <icon icon={bind(speaker, "volumeIcon")} />
-    </button>
-  );
-}
-
 function BatteryLevel() {
   const bat = Battery.get_default();
 
@@ -215,7 +203,6 @@ export default function Bar(monitor: Gdk.Monitor) {
         </box>
         <box hexpand halign={Gtk.Align.END}>
           <SysTray />
-          <Volume />
           <Wifi />
           <BatteryLevel />
           <Time />
