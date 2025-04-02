@@ -1,4 +1,4 @@
-import { App } from "astal/gtk3";
+import { App, Widget } from "astal/gtk3";
 import { Variable, GLib, bind } from "astal";
 import { Astal, Gtk, Gdk } from "astal/gtk3";
 import Hyprland from "gi://AstalHyprland";
@@ -7,6 +7,7 @@ import Battery from "gi://AstalBattery";
 import Wp from "gi://AstalWp";
 import Network from "gi://AstalNetwork";
 import Tray from "gi://AstalTray";
+import WorkspacesPanelButton from "./Workspace";
 
 function SysTray() {
   const tray = Tray.get_default();
@@ -52,18 +53,15 @@ function Wifi() {
   );
 }
 
-function AudioSlider() {
+function Volume() {
   const speaker = Wp.get_default()?.audio.defaultSpeaker!;
-
   return (
-    <box className="AudioSlider" css="min-width: 140px">
+    <button
+      onClicked={() => App.toggle_window("audio-slider")}
+      css="background-color: transparent; border: none;"
+    >
       <icon icon={bind(speaker, "volumeIcon")} />
-      <slider
-        hexpand
-        onDragged={({ value }) => (speaker.volume = value)}
-        value={bind(speaker, "volume")}
-      />
-    </box>
+    </button>
   );
 }
 
@@ -96,10 +94,24 @@ function Media() {
               )}
             />
             <label
+              label={bind(ps[0], "metadata").as(() => {
+                const maxLength = 15;
+                const title =
+                  ps[0].title.length > maxLength
+                    ? ps[0].title.substring(0, maxLength) + "..."
+                    : ps[0].title;
+                const artist =
+                  ps[0].artist.length > maxLength
+                    ? ps[0].artist.substring(0, maxLength) + "..."
+                    : ps[0].artist;
+                return `${title} - ${artist}`;
+              })}
+            />
+            {/* <label
               label={bind(ps[0], "metadata").as(
                 () => `${ps[0].title} - ${ps[0].artist}`
               )}
-            />
+            /> */}
           </box>
         ) : (
           ""
@@ -140,7 +152,17 @@ function FocusedClient() {
   return (
     <box className="Focused" visible={focused.as(Boolean)}>
       {focused.as(
-        (client) => client && <label label={bind(client, "class").as(String)} />
+        (client) =>
+          client && (
+            <label
+              label={bind(client, "title").as((title) => {
+                const maxLength = 30;
+                return title.length <= maxLength
+                  ? title
+                  : title.substring(0, 30) + "...";
+              })}
+            />
+          )
       )}
     </box>
   );
@@ -155,6 +177,25 @@ function Time({ format = "%H:%M" }) {
   return (
     <button className="Clock" onClicked={"ags toggle calendar"}>
       <label onDestroy={() => time.drop()} label={time()} />
+    </button>
+  );
+}
+
+function Notch() {
+  return (
+    <button onClicked={"ags toggle notch"}>
+      <label maxWidthChars={0} label={"123456789"} />
+    </button>
+  );
+}
+
+function PowerMenu() {
+  return (
+    <button
+      css="background-color: transparent; border: none;"
+      onClicked={"ags toggle powermenu"}
+    >
+      <icon icon="system-shutdown-symbolic" />
     </button>
   );
 }
@@ -176,17 +217,20 @@ export default function Bar(monitor: Gdk.Monitor) {
       <centerbox>
         <box hexpand halign={Gtk.Align.START}>
           <Workspaces />
+          {/* <WorkspacesPanelButton /> */}
           <FocusedClient />
         </box>
         <box>
+          {/* <Notch /> */}
           <Media />
         </box>
         <box hexpand halign={Gtk.Align.END}>
           <SysTray />
+          <Volume />
           <Wifi />
-          <AudioSlider />
           <BatteryLevel />
           <Time />
+          <PowerMenu />
         </box>
       </centerbox>
     </window>
