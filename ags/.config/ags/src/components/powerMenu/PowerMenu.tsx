@@ -39,6 +39,8 @@ export default function PowerMenu(monitor: Gdk.Monitor) {
       className={"power-menu-container"}
       exclusivity={Astal.Exclusivity.IGNORE}
       animation="popin 80%"
+      anchor={TOP}
+      marginTop={50}
       gdkmonitor={monitor}
       application={App}
       visible={false}
