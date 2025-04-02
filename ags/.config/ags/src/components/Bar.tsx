@@ -1,13 +1,10 @@
-import { App, Widget } from "astal/gtk3";
 import { Variable, GLib, bind } from "astal";
 import { Astal, Gtk, Gdk } from "astal/gtk3";
 import Hyprland from "gi://AstalHyprland";
 import Mpris from "gi://AstalMpris";
 import Battery from "gi://AstalBattery";
-import Wp from "gi://AstalWp";
 import Network from "gi://AstalNetwork";
 import Tray from "gi://AstalTray";
-import WorkspacesPanelButton from "./Workspace";
 
 function SysTray() {
   const tray = Tray.get_default();
@@ -169,14 +166,6 @@ function Time({ format = "%H:%M" }) {
   );
 }
 
-function Notch() {
-  return (
-    <button onClicked={"ags toggle notch"}>
-      <label maxWidthChars={0} label={"123456789"} />
-    </button>
-  );
-}
-
 export default function Bar(monitor: Gdk.Monitor) {
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor;
 
@@ -194,11 +183,9 @@ export default function Bar(monitor: Gdk.Monitor) {
       <centerbox>
         <box hexpand halign={Gtk.Align.START}>
           <Workspaces />
-          {/* <WorkspacesPanelButton /> */}
           <FocusedClient />
         </box>
         <box>
-          {/* <Notch /> */}
           <Media />
         </box>
         <box hexpand halign={Gtk.Align.END}>
