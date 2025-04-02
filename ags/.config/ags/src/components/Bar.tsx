@@ -189,17 +189,6 @@ function Notch() {
   );
 }
 
-function PowerMenu() {
-  return (
-    <button
-      css="background-color: transparent; border: none;"
-      onClicked={"ags toggle powermenu"}
-    >
-      <icon icon="system-shutdown-symbolic" />
-    </button>
-  );
-}
-
 export default function Bar(monitor: Gdk.Monitor) {
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor;
 
@@ -230,7 +219,6 @@ export default function Bar(monitor: Gdk.Monitor) {
           <Wifi />
           <BatteryLevel />
           <Time />
-          <PowerMenu />
         </box>
       </centerbox>
     </window>
