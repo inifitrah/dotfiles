@@ -36,3 +36,6 @@ eval "$(fzf --zsh)"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/fitrah/.lmstudio/bin"
