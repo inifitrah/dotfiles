@@ -12,7 +12,8 @@ window.Bar {
   font-weight: bold;
 
   label {
-    margin: 0 8px;
+    margin: 2px 8px;
+    font-size: 0.9em;
   }
 
   .Workspaces {
@@ -29,7 +30,7 @@ window.Bar {
     label {
       transition: 200ms;
       padding: 0 8px;
-      margin: 2px;
+      margin: 0px;
       border-radius: $radius;
       border: 1pt solid transparent;
     }
