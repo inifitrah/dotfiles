@@ -1,5 +1,5 @@
 import { Variable, GLib, bind } from "astal";
-import { Astal, Gtk, Gdk } from "astal/gtk3";
+import { Astal, Gtk, Gdk, App } from "astal/gtk3";
 import Hyprland from "gi://AstalHyprland";
 import Mpris from "gi://AstalMpris";
 import Battery from "gi://AstalBattery";
@@ -171,7 +171,9 @@ export default function Bar(monitor: Gdk.Monitor) {
 
   return (
     <window
+      name={"Bar"}
       className="Bar"
+      application={App}
       gdkmonitor={monitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={
