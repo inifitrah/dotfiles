@@ -1,0 +1,123 @@
+// Dynamic Island Component Style
+// Variabel untuk Dynamic Island
+$island-bg: rgba(0, 0, 0, 0.8);
+$island-border-radius: 20px;
+$island-content-color: #ffffff;
+$island-transition-duration: 300ms;
+$island-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+$island-margin-horizontal: 8px;
+$island-content-secondary: #cccccc; // Warna sekunder untuk teks
+
+// Base window style
+.dynamic-island-window {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+// Collapsed state - small pill
+.dynamic-island-collapsed {
+  background-color: $island-bg;
+  border-radius: $island-border-radius;
+  min-width: 120px;
+  min-height: 25px;
+  padding: 2px;
+  margin: 0 $island-margin-horizontal;
+  transition: all $island-transition-duration ease-in-out;
+  box-shadow: $island-box-shadow;
+
+  .island-collapsed-content {
+    padding: 2px;
+  }
+
+  .island-pill {
+    background-color: #666;
+    border-radius: 4px;
+    min-width: 30px;
+    min-height: 4px;
+    margin: 8px auto;
+  }
+}
+
+// Expanded state - for music and notifications
+.dynamic-island-expanded {
+  background-color: $island-bg;
+  border-radius: $island-border-radius;
+  min-width: 280px;
+  min-height: 25px;
+  padding: 2px;
+  margin: 0 $island-margin-horizontal;
+  transition: all $island-transition-duration ease-in-out;
+  box-shadow: $island-box-shadow;
+
+  .island-expanded-content {
+    padding: 8px;
+  }
+}
+
+// Music player content styles
+.island-music-container {
+  padding: 8px 12px;
+
+  .island-album-art {
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 8px;
+    margin-right: 10px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .island-music-title {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: $island-content-color;
+    margin-bottom: 2px;
+  }
+
+  .island-music-artist {
+    font-size: 0.8em;
+    color: $island-content-secondary;
+  }
+
+  .island-music-controls {
+    margin-left: auto;
+
+    .island-music-button {
+      background: transparent;
+      border: none;
+      font-size: 1.2em;
+      color: $island-content-color;
+      padding: 4px;
+      margin-left: 4px;
+    }
+  }
+}
+
+// Notification content styles
+.island-notification-container {
+  padding: 8px 12px;
+
+  .island-notification-icon {
+    min-width: 24px;
+    min-height: 24px;
+    margin-right: 10px;
+
+    icon {
+      font-size: 1.2em;
+      color: $island-content-color;
+    }
+  }
+
+  .island-notification-title {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: $island-content-color;
+    margin-bottom: 2px;
+  }
+
+  .island-notification-body {
+    font-size: 0.8em;
+    color: $island-content-secondary;
+  }
+}
