@@ -160,7 +160,11 @@ function Time({ format = "%H:%M" }) {
   );
 
   return (
-    <button className="Clock" onClicked={"ags toggle calendar"}>
+    <button
+      cursor={"pointer"}
+      className="Clock"
+      onClicked={"ags toggle calendar"}
+    >
       <label onDestroy={() => time.drop()} label={time()} />
     </button>
   );

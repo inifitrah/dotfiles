@@ -16,6 +16,7 @@ const DynamicIsland = (monitor: Gdk.Monitor) => {
       exclusivity={Astal.Exclusivity.NORMAL}
       anchor={Astal.WindowAnchor.TOP}
       layer={Astal.Layer.TOP}
+      margin={-18}
     >
       <box className="dynamic-island" hpack={Gtk.Align.CENTER}>
         {/* Default state - pill shape */}
