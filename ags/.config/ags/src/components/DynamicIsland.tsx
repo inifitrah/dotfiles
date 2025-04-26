@@ -2,16 +2,16 @@ import { Variable, GLib } from "astal";
 import { Astal, Gtk, Gdk, App } from "astal/gtk3";
 
 // DynamicIsland component inspired by iOS
-const DynamicIsland = (monitor: number) => {
+const DynamicIsland = (monitor: Gdk.Monitor) => {
   return (
     <window
       name={`dynamic-island-${monitor}`}
       className="dynamic-island-window"
       application={App}
       gdkmonitor={monitor}
-      exclusivity={Astal.Exclusivity.OVERLAY}
+      exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={Astal.WindowAnchor.TOP}
-      layer={Astal.Layer.TOP}
+      layer={Astal.Layer.OVERLAY}
     >
       <box className="dynamic-island" hpack={Gtk.Align.CENTER}>
         {/* Default state - pill shape */}

@@ -1,6 +1,7 @@
 // Dynamic Island styling
 .dynamic-island {
   margin-top: 6px;
+  margin-bottom: 6px;
   border: 2px solid #006700;
   border-radius: 20px;
   background-color: transparent;
@@ -13,10 +14,9 @@
     background-color: rgba(0, 0, 0, 0.85);
     color: white;
     transition: all 200ms ease;
-
     &:hover {
       min-width: 300px;
-      background-color: rgba(0, 0, 0, 0.95);
+      background-color: rgba(204, 0, 0, 0.95);
     }
   }
 
