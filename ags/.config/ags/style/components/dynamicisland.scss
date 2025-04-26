@@ -1,123 +1,48 @@
-// Dynamic Island Component Style
-// Variabel untuk Dynamic Island
-$island-bg: rgba(0, 0, 0, 0.8);
-$island-border-radius: 20px;
-$island-content-color: #ffffff;
-$island-transition-duration: 300ms;
-$island-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
-$island-margin-horizontal: 8px;
-$island-content-secondary: #cccccc; // Warna sekunder untuk teks
+// Dynamic Island styling
+.dynamic-island {
+  margin-top: 6px;
+  border: 2px solid #006700;
+  border-radius: 20px;
+  background-color: transparent;
 
-// Base window style
-.dynamic-island-window {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-}
+  .dynamic-island-inner {
+    min-width: 120px;
+    min-height: 35px;
+    padding: 0 8px;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    transition: all 200ms ease;
 
-// Collapsed state - small pill
-.dynamic-island-collapsed {
-  background-color: $island-bg;
-  border-radius: $island-border-radius;
-  min-width: 120px;
-  min-height: 25px;
-  padding: 2px;
-  margin: 0 $island-margin-horizontal;
-  transition: all $island-transition-duration ease-in-out;
-  box-shadow: $island-box-shadow;
-
-  .island-collapsed-content {
-    padding: 2px;
+    &:hover {
+      min-width: 300px;
+      background-color: rgba(0, 0, 0, 0.95);
+    }
   }
 
-  .island-pill {
-    background-color: #666;
-    border-radius: 4px;
-    min-width: 30px;
-    min-height: 4px;
-    margin: 8px auto;
-  }
-}
+  .dynamic-island-content {
+    padding: 6px;
 
-// Expanded state - for music and notifications
-.dynamic-island-expanded {
-  background-color: $island-bg;
-  border-radius: $island-border-radius;
-  min-width: 280px;
-  min-height: 25px;
-  padding: 2px;
-  margin: 0 $island-margin-horizontal;
-  transition: all $island-transition-duration ease-in-out;
-  box-shadow: $island-box-shadow;
-
-  .island-expanded-content {
-    padding: 8px;
-  }
-}
-
-// Music player content styles
-.island-music-container {
-  padding: 8px 12px;
-
-  .island-album-art {
-    min-width: 40px;
-    min-height: 40px;
-    border-radius: 8px;
-    margin-right: 10px;
-    background-size: cover;
-    background-position: center;
-  }
-
-  .island-music-title {
-    font-size: 0.9em;
-    font-weight: bold;
-    color: $island-content-color;
-    margin-bottom: 2px;
-  }
-
-  .island-music-artist {
-    font-size: 0.8em;
-    color: $island-content-secondary;
-  }
-
-  .island-music-controls {
-    margin-left: auto;
-
-    .island-music-button {
-      background: transparent;
-      border: none;
-      font-size: 1.2em;
-      color: $island-content-color;
-      padding: 4px;
-      margin-left: 4px;
+    .dynamic-island-indicator {
+      min-width: 8px;
+      min-height: 8px;
+      border-radius: 50%;
+      background-color: #00ff00;
+      animation: pulse 2s infinite;
+      margin-top: 8px;
+      margin-bottom: 8px;
     }
   }
 }
 
-// Notification content styles
-.island-notification-container {
-  padding: 8px 12px;
-
-  .island-notification-icon {
-    min-width: 24px;
-    min-height: 24px;
-    margin-right: 10px;
-
-    icon {
-      font-size: 1.2em;
-      color: $island-content-color;
-    }
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
   }
-
-  .island-notification-title {
-    font-size: 0.9em;
-    font-weight: bold;
-    color: $island-content-color;
-    margin-bottom: 2px;
+  50% {
+    opacity: 1;
   }
-
-  .island-notification-body {
-    font-size: 0.8em;
-    color: $island-content-secondary;
+  100% {
+    opacity: 0.5;
   }
 }
