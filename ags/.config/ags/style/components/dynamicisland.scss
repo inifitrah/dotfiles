@@ -1,36 +1,43 @@
 // Dynamic Island styling
-.dynamic-island {
-  margin-top: 6px;
-  margin-bottom: 6px;
-  border: 2px solid #006700;
-  border-radius: 20px;
-  background-color: transparent;
 
-  .dynamic-island-inner {
-    min-width: 120px;
-    min-height: 35px;
-    padding: 0 8px;
+.dynamic-island-window {
+  background: transparent;
+  .dynamic-island {
+    margin-top: 4px;
+    margin-bottom: 6px;
+    border: 2px solid #006700;
     border-radius: 20px;
-    background-color: rgba(0, 0, 0, 0.85);
-    color: white;
-    transition: all 200ms ease;
-    &:hover {
-      min-width: 300px;
-      background-color: rgba(204, 0, 0, 0.95);
+    background-color: transparent;
+
+    eventbox:hover {
+      .dynamic-island-inner {
+        background-color: rgb(0, 53, 11);
+        min-width: 220px;
+      }
     }
-  }
 
-  .dynamic-island-content {
-    padding: 6px;
+    .dynamic-island-inner {
+      min-width: 120px;
+      min-height: 35px;
+      padding: 0 10px;
+      border-radius: 20px;
+      background-color: rgba(0, 0, 0, 0.85);
+      color: white;
+      transition: all 200ms ease-in-out;
+    }
 
-    .dynamic-island-indicator {
-      min-width: 8px;
-      min-height: 8px;
-      border-radius: 50%;
-      background-color: #00ff00;
-      animation: pulse 2s infinite;
-      margin-top: 8px;
-      margin-bottom: 8px;
+    .dynamic-island-content {
+      padding: 6px;
+
+      .dynamic-island-indicator {
+        min-width: 8px;
+        min-height: 8px;
+        border-radius: 50%;
+        background-color: #00ff00;
+        animation: pulse 2s infinite;
+        margin-top: 8px;
+        margin-bottom: 8px;
+      }
     }
   }
 }
