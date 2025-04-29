@@ -9,14 +9,14 @@
   min-height: 34px;
   min-width: 150px;
   transition: all 200ms ease;
-  padding: 0;
-  border: #ff375f 1px solid;
+  border: #525252 1px solid;
 }
 
 .dynamic-island-inner.expanded {
   min-width: 350px;
   min-height: 70px;
-  border-radius: 32px;
+  border-radius: 24px;
+  border: #c1c1c1 1px solid;
   padding: 12px;
 }
 
@@ -24,7 +24,7 @@
   padding: 8px 12px;
 }
 
-.dynamic-island-hostname {
+.dynamic-island-whoami {
   font-size: 14px;
   font-weight: bold;
   padding: 0 5px;
@@ -33,29 +33,29 @@
 
 .notification-container {
   padding: 2px;
-}
+  .header {
+    padding: 5px 0;
+    border-bottom: 1px;
+    border-color: grey;
+    border-style: solid;
+  }
 
-.notification-icon {
-  margin: 6px;
-}
+  .app-icon {
+    margin-right: 5px;
+  }
 
-.fallback-icon {
-  background-color: #3584e4;
-  border-radius: 50%;
-  min-width: 24px;
-  min-height: 24px;
-}
+  .app-name {
+    margin-left: 0px;
+  }
 
-.notification-title {
-  font-weight: bold;
-  margin-right: 4px;
-  font-size: 14px;
-  color: white;
-}
+  .content {
+    padding: 4px 0;
+  }
 
-.notification-body {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.8);
+  .content .summary {
+    font-size: 16px;
+    font-weight: 500;
+  }
 }
 
 /* Add animation */
