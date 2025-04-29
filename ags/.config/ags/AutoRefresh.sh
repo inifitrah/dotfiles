@@ -5,19 +5,20 @@ relaunch_ags() {
   echo "Relaunching ags..."
   if pidof ags >/dev/null; then
     pkill ags
-    sleep 0.3
-    ags quit
+    sleep 0.5
+    ags quit 
   fi
-  sleep 0.3
+  sleep 0.5
   ags run &
 }
 
 # Handle termination signals (CTRL+C atau kill)
 cleanup() {
   echo "Stopping script and killing ags..."
+  ags quit
   pkill ags
   exit 0
-}
+} 
 
 trap cleanup SIGINT SIGTERM
 
