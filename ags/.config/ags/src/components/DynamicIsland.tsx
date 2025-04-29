@@ -3,12 +3,29 @@ import { Variable, GLib, bind } from "astal";
 import { Astal, Gtk, Gdk } from "astal/gtk3";
 import Notifd from "gi://AstalNotifd";
 
+const LabelMe = ({ text }: string) => {
+  console.log("LabelMe: ", text);
+  return (
+    <box>
+      <label
+        halign={Gtk.Align.CENTER}
+        vexpand={true}
+        hexpand={true}
+        className="dynamic-island-hostname"
+      >
+        {text}
+      </label>
+    </box>
+  );
+};
+
 // DynamicIsland component inspired by iOS
 const DynamicIsland = (monitor: Gdk.Monitor) => {
   const isHovered = Variable(false);
   const activeNotification = Variable<Notification | null>(null);
   const isExpanded = Variable(false);
   let timeoutId: number | null = null;
+  const whoami = GLib.get_user_name();
 
   const notifd = Notifd.get_default();
 
@@ -68,9 +85,11 @@ const DynamicIsland = (monitor: Gdk.Monitor) => {
     >
       <box className="dynamic-island" hpack={Gtk.Align.CENTER}>
         <eventbox
-          onHover={() => isExpanded.set(true)}
-          onHoverLost={() => isExpanded.set(false)}
-          onClick={() => (isExpanded.get() ? isExpanded.set(false) : {})}
+          // onHover={() => isExpanded.set(true)}
+          // onHoverLost={() => isExpanded.set(false)}
+          onClick={() =>
+            isExpanded.get() ? isExpanded.set(false) : isExpanded.set(true)
+          }
         >
           <box
             className={bind(isExpanded).as((v) =>
@@ -109,10 +128,11 @@ const DynamicIsland = (monitor: Gdk.Monitor) => {
                     </box>
                   </box>
                 ) : (
-                  <box className="dynamic-island-indicator" />
+                  ""
                 )
               )}
             </box>
+            <LabelMe text="fitrah" />
           </box>
         </eventbox>
       </box>
