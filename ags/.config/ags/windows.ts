@@ -4,7 +4,7 @@ import Notch from "./src/components/Notch";
 import AudioSlider from "./src/components/AudioSlider";
 import PowerMenu from "./src/components/PowerMenu";
 import OSD from "./src/components/OSD";
-import DynamicIsland from "./src/components/DynamicIsland";
+import DynamicIsland from "./src/components/DynamicIsland/index";
 
 export default [
   Bar,
