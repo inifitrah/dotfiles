@@ -32,6 +32,13 @@
 }
 
 .notification-container {
+  &.critical > .header {
+    color: #ff2323;
+  }
+  &.low > .header {
+    color: #36a8ff;
+  }
+
   padding: 2px;
   .header {
     padding: 5px 0;
