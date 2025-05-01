@@ -9,6 +9,7 @@ import NotificationView from "./NotificationView";
 // import SystemView from "./SystemView";
 // import QuickSettings from "./QuickSettings";
 import StatusIndicator from "./StatusIndicator";
+import NotificationService from "../../services/DynamicIsland/NotificationService";
 
 // Provider type for dynamic content
 type Provider = {
@@ -34,7 +35,7 @@ const DynamicIsland = (monitor: Gdk.Monitor) => {
     {
       id: "notification",
       priority: 100,
-      condition: () => !!notifd.get_notifications()[0],
+      condition: () => NotificationService.hasNotifications.get(),
       render: () => <NotificationView />,
     },
     {
@@ -71,22 +72,24 @@ const DynamicIsland = (monitor: Gdk.Monitor) => {
   };
 
   // Subscribe to new notifications
-  notifd.connect("notified", () => {
-    updateActiveProvider();
-    isExpanded.set(true);
+  NotificationService.latestNotification.subscribe((notification) => {
+    if (notification) {
+      updateActiveProvider();
+      isExpanded.set(true);
 
-    // Reset timeout
-    if (timeoutId !== null) {
-      GLib.source_remove(timeoutId);
-      timeoutId = null;
+      // Reset timeout
+      if (timeoutId !== null) {
+        GLib.source_remove(timeoutId);
+        timeoutId = null;
+      }
+
+      // Auto collapse after 3 seconds
+      timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 3000, () => {
+        isExpanded.set(false);
+        timeoutId = null;
+        return GLib.SOURCE_REMOVE;
+      });
     }
-
-    // Auto collapse after 3 seconds
-    timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 3000, () => {
-      isExpanded.set(false);
-      timeoutId = null;
-      return GLib.SOURCE_REMOVE;
-    });
   });
 
   // Clean up on destroy
