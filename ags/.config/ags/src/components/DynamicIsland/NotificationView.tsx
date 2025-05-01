@@ -2,6 +2,7 @@
 import { GLib, Variable, bind } from "astal";
 import { Astal, Gtk } from "astal/gtk3";
 import Notifd from "gi://AstalNotifd";
+import NotificationService from "../../services/DynamicIsland/NotificationService";
 
 // Helper functions
 const isIcon = (icon: string) => !!Astal.Icon.lookup_icon(icon);
@@ -23,98 +24,99 @@ const urgency = (n: Notifd.Notification) => {
 };
 
 export default function NotificationView() {
-  const notifd = Notifd.get_default();
-  const notifications = notifd.get_notifications();
-  // Sort notifications by time
-  const sortedNotifications = [...notifications].sort(
-    (a, b) => b.time - a.time
-  );
-  const notification = sortedNotifications[0]; // Get the most recent notification
-
-  if (!notification) return null;
-
-  const dismiss = () => {
-    notification.dismiss();
-  };
-
   return (
-    <box className={`notification-container ${urgency(notification)}`} vertical>
-      <box className="header">
-        {(notification.appIcon || notification.desktopEntry) && (
-          <icon
-            className="app-icon"
-            icon={notification.appIcon || notification.desktopEntry}
-            size={24}
-          />
-        )}
-        <label
-          className="app-name"
-          halign={Gtk.Align.START}
-          truncate
-          label={notification.appName || "Notification"}
-        />
-        <label
-          className="time"
-          hexpand
-          halign={Gtk.Align.END}
-          label={time(notification.time)}
-        />
-        {/* <button onClicked={dismiss}>
-          <icon icon="window-close-symbolic" size={16} />
-        </button> */}
-      </box>
+    <box>
+      {bind(NotificationService.latestNotification).as((notification) => {
+        if (!notification) return <box></box>;
 
-      <box className="content">
-        {notification.image && fileExists(notification.image) && (
+        const dismiss = () => notification.dismiss();
+
+        return (
           <box
-            valign={Gtk.Align.START}
-            className="image"
-            css={`
-              background-image: url("${notification.image}");
-            `}
-          />
-        )}
-        {notification.image && isIcon(notification.image) && (
-          <box valign={Gtk.Align.START} className="icon-image">
-            <icon icon={notification.image} size={48} />
+            className={`notification-container ${urgency(notification)}`}
+            vertical
+          >
+            {/* Header section */}
+            <box className="header">
+              {(notification.appIcon || notification.desktopEntry) && (
+                <icon
+                  className="app-icon"
+                  icon={notification.appIcon || notification.desktopEntry}
+                  size={24}
+                />
+              )}
+              <label
+                className="app-name"
+                halign={Gtk.Align.START}
+                truncate
+                label={notification.appName || "Notification"}
+              />
+              <label
+                className="time"
+                hexpand
+                halign={Gtk.Align.END}
+                label={time(notification.time)}
+              />
+              <button
+                className={"close-button"}
+                margin={"5px 0 0 5px"}
+                onClicked={dismiss}
+              >
+                <icon icon="window-close-symbolic" size={16} />
+              </button>
+            </box>
+
+            {/* Content section */}
+            <box className="content">
+              {notification.image && fileExists(notification.image) && (
+                <box
+                  valign={Gtk.Align.START}
+                  className="image"
+                  css={`
+                    background-image: url("${notification.image}");
+                  `}
+                />
+              )}
+              {notification.image && isIcon(notification.image) && (
+                <box valign={Gtk.Align.START} className="icon-image">
+                  <icon icon={notification.image} size={48} />
+                </box>
+              )}
+
+              <box vertical className="notification-text">
+                <label
+                  className="summary"
+                  halign={Gtk.Align.START}
+                  xalign={0}
+                  label={notification.summary || ""}
+                  truncate
+                />
+                {notification.body && (
+                  <label
+                    className="body"
+                    wrap
+                    useMarkup
+                    halign={Gtk.Align.START}
+                    xalign={0}
+                    label={notification.body}
+                  />
+                )}
+              </box>
+            </box>
+
+            {/* Actions */}
+            {notification.get_actions().length > 0 && (
+              <box className="actions">
+                {notification.get_actions().map(({ label, id }) => (
+                  <button hexpand onClicked={() => notification.invoke(id)}>
+                    <label label={label} />
+                  </button>
+                ))}
+              </box>
+            )}
           </box>
-        )}
-
-        <box vertical className="notification-text">
-          <label
-            className="summary"
-            halign={Gtk.Align.START}
-            xalign={0}
-            label={notification.summary || ""}
-            truncate
-          />
-          {notification.body && (
-            <label
-              className="body"
-              wrap
-              useMarkup
-              halign={Gtk.Align.START}
-              xalign={0}
-              label={notification.body}
-            />
-          )}
-        </box>
-      </box>
-
-      {notification.get_actions().length > 0 && (
-        <box className="actions">
-          {notification.get_actions().map(({ label, id }) => (
-            <button
-              hexpand
-              onClicked={() => {
-                notification.invoke(id);
-              }}
-            >
-              <label label={label} />
-            </button>
-          ))}
-        </box>
-      )}
+        );
+      })}
     </box>
   );
 }
