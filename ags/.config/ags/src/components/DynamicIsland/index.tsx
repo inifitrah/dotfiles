@@ -1,34 +1,17 @@
-// @ts-nocheck
-import { Variable, GLib, bind } from "astal";
+import { bind, GLib } from "astal";
 import { Astal, Gtk, Gdk } from "astal/gtk3";
+import type { WindowProps, EventBoxProps, BoxProps } from "astal/gtk3";
 import Notifd from "gi://AstalNotifd";
 
 // Import views
 import NotificationView from "./NotificationView";
-// import MusicView from "./MusicView";
-// import SystemView from "./SystemView";
-// import QuickSettings from "./QuickSettings";
 import StatusIndicator from "./StatusIndicator";
 import NotificationService from "../../services/DynamicIsland/NotificationService";
-
-// Provider type for dynamic content
-type Provider = {
-  id: string;
-  priority: number;
-  condition: () => boolean;
-  render: () => JSX.Element;
-};
+import { DynamicIslandStore, Provider } from "./types";
 
 const DynamicIsland = (monitor: Gdk.Monitor) => {
-  // State
-  const isHovered = Variable(false);
-  const isExpanded = Variable(false);
-  const isDashboardOpen = Variable(false);
-  const activeProvider = Variable<string | null>(null);
-  let timeoutId: number | null = null;
-
-  // Services
-  const notifd = Notifd.get_default();
+  // Initialize store
+  const store = new DynamicIslandStore();
 
   // Content providers
   const providers: Provider[] = [
@@ -38,24 +21,6 @@ const DynamicIsland = (monitor: Gdk.Monitor) => {
       condition: () => NotificationService.hasNotifications.get(),
       render: () => <NotificationView />,
     },
-    {
-      id: "music",
-      priority: 80,
-      condition: () => false, // TODO: Check MPRIS active player
-      render: () => <MusicView />,
-    },
-    {
-      id: "system",
-      priority: 60,
-      condition: () => false, // TODO: System threshold condition
-      render: () => <SystemView />,
-    },
-    {
-      id: "dashboard",
-      priority: 40,
-      condition: () => isDashboardOpen.get(),
-      render: () => <QuickSettings />,
-    },
   ];
 
   // Update active provider based on conditions and priorities
@@ -64,44 +29,21 @@ const DynamicIsland = (monitor: Gdk.Monitor) => {
       .filter((p) => p.condition())
       .sort((a, b) => b.priority - a.priority);
 
-    if (eligible[0]) {
-      activeProvider.set(eligible[0].id);
-    } else {
-      activeProvider.set(null);
-    }
+    store.setActiveProvider(eligible[0]?.id || null);
   };
 
   // Subscribe to new notifications
   NotificationService.latestNotification.subscribe((notification) => {
     if (notification) {
       updateActiveProvider();
-      isExpanded.set(true);
-
-      // Reset timeout
-      if (timeoutId !== null) {
-        GLib.source_remove(timeoutId);
-        timeoutId = null;
-      }
-
-      // Auto collapse after 3 seconds
-      timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 3000, () => {
-        isExpanded.set(false);
-        timeoutId = null;
-        return GLib.SOURCE_REMOVE;
-      });
+      store.setExpanded(true);
+      store.setupAutoCollapse();
     }
   });
 
   // Clean up on destroy
   const onDestroy = () => {
-    isHovered.drop();
-    isExpanded.drop();
-    isDashboardOpen.drop();
-    activeProvider.drop();
-    if (timeoutId !== null) {
-      GLib.source_remove(timeoutId);
-      timeoutId = null;
-    }
+    store.destroy();
   };
 
   return (
@@ -113,40 +55,43 @@ const DynamicIsland = (monitor: Gdk.Monitor) => {
       exclusivity={Astal.Exclusivity.NORMAL}
       anchor={Astal.WindowAnchor.TOP}
       layer={Astal.Layer.TOP}
-      margin={7}
+      margin={bind(store.getStateBinding()).as((state) =>
+        state.isExpanded ? -15 : -40
+      )}
       onDestroy={onDestroy}
     >
       <eventbox
-        onHover={() => isHovered.set(true)}
-        onHoverLost={() => isHovered.set(false)}
+        onHover={() => store.setHovered(true)}
+        onHoverLost={() => store.setHovered(false)}
         onClick={() => {
-          if (isExpanded.get()) {
-            // if expanded, collapse
-            isExpanded.set(false);
-            isDashboardOpen.set(false);
+          const state = store.get();
+          if (state.isExpanded) {
+            store.setExpanded(false);
           } else {
-            // if not expanded, expand
-            isDashboardOpen.set(true);
-            isExpanded.set(true);
+            store.setDashboardOpen(true);
             updateActiveProvider();
           }
         }}
       >
         <box className="dynamic-island" hpack={Gtk.Align.CENTER}>
           <box
-            className={bind(isExpanded).as((v) =>
-              v ? "dynamic-island-inner expanded" : "dynamic-island-inner"
+            className={bind(store.getStateBinding()).as((state) =>
+              state.isExpanded
+                ? "dynamic-island-inner expanded"
+                : "dynamic-island-inner"
             )}
           >
-            {/* Gunakan kondisional bind untuk menampilkan konten yang sesuai */}
-            {bind(isExpanded).as((expanded) =>
-              expanded ? (
+            {/* Render content based on state */}
+            {bind(store.getStateBinding()).as((state) =>
+              state.isExpanded ? (
                 <box className="dynamic-island-content">
-                  {bind(activeProvider).as((provider) => {
-                    if (!provider) return <StatusIndicator />;
-                    const selected = providers.find((p) => p.id === provider);
-                    return selected ? selected.render() : <StatusIndicator />;
-                  })}
+                  {state.activeProviderId ? (
+                    providers
+                      .find((p) => p.id === state.activeProviderId)
+                      ?.render() || <StatusIndicator />
+                  ) : (
+                    <StatusIndicator />
+                  )}
                 </box>
               ) : (
                 <StatusIndicator />
