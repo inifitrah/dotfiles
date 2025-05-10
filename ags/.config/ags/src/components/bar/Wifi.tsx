@@ -7,18 +7,26 @@ export function Wifi() {
 
   return (
     <box visible={wifi.as(Boolean)}>
-      {wifi.as(
-        (wifi) =>
-          wifi && (
-            <box>
-              <icon
-                tooltipText={bind(wifi, "strength").as(String)}
-                className="Wifi"
-                icon={bind(wifi, "iconName")}
-              />
-              <label>{bind(wifi, "ssid").as(String)}</label>
-            </box>
-          )
+      {wifi.as((wifi) =>
+        wifi ? (
+          <box>
+            <icon
+              tooltipText={bind(wifi, "strength").as(
+                (str) => `${str}% ${wifi.ssid}`
+              )}
+              className="Wifi"
+              icon={bind(wifi, "iconName")}
+            />
+          </box>
+        ) : (
+          <box>
+            <icon
+              className="Wifi"
+              tooltipText={"No Wifi"}
+              icon={bind(wifi, "iconName")}
+            />
+          </box>
+        )
       )}
     </box>
   );
