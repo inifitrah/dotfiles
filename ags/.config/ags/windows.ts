@@ -1,4 +1,4 @@
-import Bar from "./src/components/Bar";
+import Bar from "./src/components/bar/Bar";
 import Calendar from "./src/components/Calendar";
 import Notch from "./src/components/Notch";
 import AudioSlider from "./src/components/AudioSlider";
