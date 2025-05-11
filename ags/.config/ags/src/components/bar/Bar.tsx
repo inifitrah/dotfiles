@@ -24,7 +24,6 @@ export default function Bar(monitor: Gdk.Monitor) {
       <centerbox>
         <box hexpand halign={Gtk.Align.START}>
           <button
-            className=""
             onClick={() => {
               App.toggle_window("controll-center");
             }}

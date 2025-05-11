@@ -9,7 +9,7 @@ export function BatteryLevel() {
     .as((b) => `battery-level-${b}-symbolic`);
   const label = bind(bat, "percentage").as((b) => `${Math.round(b * 100)}%`);
   return (
-    <box>
+    <box className={"Battery"} spacing={3}>
       <icon icon={icon} />
       <label>{label}</label>
     </box>

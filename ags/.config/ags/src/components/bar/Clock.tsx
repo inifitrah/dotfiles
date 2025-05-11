@@ -11,11 +11,7 @@ export function Clock({ format = "%H:%M" }: ClockProps) {
   );
 
   return (
-    <button
-      cursor={"pointer"}
-      className="Clock"
-      onClicked={"ags toggle calendar"}
-    >
+    <button cursor={"pointer"} onClicked={"ags toggle calendar"}>
       <label onDestroy={() => time.drop()} label={time()} />
     </button>
   );

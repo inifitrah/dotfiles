@@ -12,17 +12,11 @@ const mem = Variable({ total: 0, used: 0 }).poll(
 
 export default function Memory() {
   return (
-    <button
-      onClick={() => {
-        mem.stopPoll();
-        mem.startPoll();
-      }}
-      className="Memory"
-    >
+    <box className="Memory">
       {bind(mem).as(({ used }) => {
         const usedGB = (used / 1024).toFixed(1);
-        return `󰍛 ${usedGB} GB`;
+        return `󰍛 ${usedGB}GB`;
       })}
-    </button>
+    </box>
   );
 }
