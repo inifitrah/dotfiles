@@ -5,7 +5,7 @@ import { BatteryLevel } from "./Battery";
 import { Clock } from "./Clock";
 import { FocusedClient } from "./FocusedClient";
 import Memory from "./Memory";
-import Workspacess from "./Workspacess";
+import Workspaces from "./Workspaces";
 
 export default function Bar(monitor: Gdk.Monitor) {
   return (
@@ -30,7 +30,7 @@ export default function Bar(monitor: Gdk.Monitor) {
           >
             󰣇
           </button>
-          <Workspacess gdkmonitor={monitor} />
+          <Workspaces gdkmonitor={monitor} />
           <FocusedClient />
         </box>
         <box />
