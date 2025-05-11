@@ -10,43 +10,24 @@ $border-radius-sm: 8px;
 $shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 $transition: background-color 200ms ease;
 
-.controll-center {
+.ControllCenter {
   background-color: $bg-primary;
   border-radius: $border-radius-lg;
   padding: 12px;
   box-shadow: $shadow;
 
-  &-wrapper {
+  &Wrapper {
     padding: 8px;
     margin: 4px;
     min-width: 320px;
   }
 }
 
-.equal-wrapper {
-  min-height: 80px;
+.Connectivity {
 }
 
-.side-panel {
-  background-color: $bg-secondary;
-  padding: 8px;
-  border-radius: $border-radius-md;
-  margin-right: 8px;
-
-  &-button {
-    padding: 8px;
-    margin: 4px 0;
-    border-radius: $border-radius-sm;
-    transition: $transition;
-
-    &:hover {
-      background-color: $hover-color;
-    }
-
-    &.active {
-      background-color: $accent-color;
-    }
-  }
+.equal-wrapper {
+  min-height: 80px;
 }
 
 // Component styles
@@ -64,13 +45,6 @@ $transition: background-color 200ms ease;
   min-height: 36px;
   border-radius: $border-radius-sm;
   padding: 0 8px;
-  background-color: $bg-component;
-}
-
-.power-line {
-  margin-top: 8px;
-  padding: 8px;
-  border-radius: $border-radius-sm;
   background-color: $bg-component;
 }
 
