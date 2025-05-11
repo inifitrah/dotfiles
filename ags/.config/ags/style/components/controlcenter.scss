@@ -1,0 +1,105 @@
+// Variables
+$bg-primary: rgba(30, 30, 30, 0.95);
+$bg-secondary: rgba(40, 40, 40, 0.8);
+$bg-component: rgba(60, 60, 60, 0.7);
+$accent-color: rgba(80, 120, 255, 0.3);
+$hover-color: rgba(255, 255, 255, 0.1);
+$border-radius-lg: 12px;
+$border-radius-md: 10px;
+$border-radius-sm: 8px;
+$shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+$transition: background-color 200ms ease;
+
+.controll-center {
+  background-color: $bg-primary;
+  border-radius: $border-radius-lg;
+  padding: 12px;
+  box-shadow: $shadow;
+
+  &-wrapper {
+    padding: 8px;
+    margin: 4px;
+    min-width: 320px;
+  }
+}
+
+.equal-wrapper {
+  min-height: 80px;
+}
+
+.side-panel {
+  background-color: $bg-secondary;
+  padding: 8px;
+  border-radius: $border-radius-md;
+  margin-right: 8px;
+
+  &-button {
+    padding: 8px;
+    margin: 4px 0;
+    border-radius: $border-radius-sm;
+    transition: $transition;
+
+    &:hover {
+      background-color: $hover-color;
+    }
+
+    &.active {
+      background-color: $accent-color;
+    }
+  }
+}
+
+// Component styles
+.connectivity-button {
+  border-radius: $border-radius-sm;
+  padding: 10px;
+  background-color: $bg-component;
+
+  &:hover {
+    background-color: lighten($bg-component, 5%);
+  }
+}
+
+.slider {
+  min-height: 36px;
+  border-radius: $border-radius-sm;
+  padding: 0 8px;
+  background-color: $bg-component;
+}
+
+.power-line {
+  margin-top: 8px;
+  padding: 8px;
+  border-radius: $border-radius-sm;
+  background-color: $bg-component;
+}
+
+// Quick buttons
+.quick-buttons button {
+  padding: 10px;
+  border-radius: $border-radius-sm;
+  background-color: $bg-component;
+  transition: $transition;
+
+  &:hover {
+    background-color: $hover-color;
+  }
+
+  &.active {
+    background-color: $accent-color;
+  }
+}
+
+// Power profiles
+.power-profiles {
+  padding: 8px;
+  border-radius: $border-radius-sm;
+  background-color: $bg-component;
+}
+
+// Do not disturb
+.do-not-disturb {
+  padding: 8px;
+  border-radius: $border-radius-sm;
+  background-color: $bg-component;
+}
