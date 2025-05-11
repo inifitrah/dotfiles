@@ -44,6 +44,12 @@ export default function PowerMenu(monitor: Gdk.Monitor) {
       gdkmonitor={monitor}
       application={App}
       visible={false}
+      keymode={Astal.Keymode.EXCLUSIVE}
+      onKeyPressEvent={(self, event: Gdk.Event) => {
+        if (event.get_keyval()[1] === Gdk.KEY_Escape) {
+          self.hide();
+        }
+      }}
     >
       <box spacing={8} className={"power-menu"}>
         <SysButton action={"sleep"} label={"Sleep"} />
