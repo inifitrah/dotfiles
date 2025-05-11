@@ -3,12 +3,20 @@
   box-shadow: none;
   background-color: $bg;
   color: $fg;
-  font-size: 0.9em;
-  font-weight: bold;
 
   label {
     margin: 2px 8px;
-    font-size: 0.9em;
+    font-size: $FONT-SIZE;
+  }
+
+  button {
+    all: unset;
+    background-color: transparent;
+    padding: 1px 4px;
+
+    &:hover {
+      background-color: color.adjust($fg, $alpha: -0.84);
+    }
   }
 
   .Workspaces {
@@ -39,6 +47,16 @@
   .Focused {
     label {
       color: $fg;
+    }
+  }
+
+  .ControlCenterButton {
+    all: unset;
+    background-color: transparent;
+    padding: 0 4px;
+
+    &:hover {
+      background-color: color.adjust($fg, $alpha: -0.84);
     }
   }
 
@@ -110,69 +128,10 @@
     }
   }
 
-  .Media .Cover {
-    min-height: 1.2em;
-    min-width: 1.2em;
-    border-radius: $radius;
-    background-position: center;
-    background-size: contain;
-  }
-
   .Battery {
-    icon {
-      color: $color_green;
-      font-size: medium;
-    }
+    padding: 0 10px;
     label {
-      padding-left: 0;
-      margin-left: 0;
+      margin: 0;
     }
   }
-
-  .AudioSlider {
-    * {
-      all: unset;
-    }
-
-    icon {
-      margin-right: 0.6em;
-    }
-
-    & {
-      margin: 0 1em;
-    }
-
-    trough {
-      background-color: color.adjust($fg, $alpha: -0.8);
-      border-radius: $radius;
-    }
-
-    highlight {
-      background-color: $accent;
-      min-height: 0.8em;
-      border-radius: $radius;
-    }
-
-    slider {
-      background-color: $fg;
-      border-radius: $radius;
-      min-height: 1em;
-      min-width: 1em;
-      margin: -0.2em;
-    }
-  }
-
-  .Clock {
-    background-color: $bg;
-    border: none;
-    padding: 0;
-    margin: 0;
-  }
-}
-
-window .calendar {
-  background: #222222;
-  font-weight: bold;
-  border-radius: $radius;
-  min-width: 320px;
 }
