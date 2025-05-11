@@ -103,7 +103,7 @@ export const Connectivity = ({
   onBluetoothSecondary,
 }: ConnectivityProps) => {
   return (
-    <box hexpand className="connectivity bordered" vertical>
+    <box hexpand className="Connectivity bordered" spacing={6} vertical>
       <WiFiButton onPrimary={onWifiPrimary} onSecondary={onWifiSecondary} />
       <BluetoothButton
         onPrimary={onBluetoothPrimary}

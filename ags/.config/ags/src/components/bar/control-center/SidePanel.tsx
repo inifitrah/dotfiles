@@ -1,16 +1,16 @@
 import { Variable } from "astal";
-import { View } from "../../types";
 import { App } from "astal/gtk3";
+
+type View = "controlls" | "wifi" | "bluetooth" | "apps" | "mixer";
 
 type TabButton = [string, View];
 const tabButtons: TabButton[] = [
   [" ", "controlls"],
   ["󰀻 ", "apps"],
-  [" ", "mixer"],
 ];
 
 export const SidePanel = ({ currentView }: { currentView: Variable<View> }) => (
-  <box vertical className="view-select">
+  <box vertical className="view-select" spacing={6}>
     {tabButtons.map(([icon, view]) => (
       <button
         className={currentView((v) => (v === view ? "focused" : ""))}
@@ -20,6 +20,8 @@ export const SidePanel = ({ currentView }: { currentView: Variable<View> }) => (
       </button>
     ))}
     <box vexpand />
-    <button onClick={() => App.toggle_window("power")}></button>
+    <button onClick={() => App.toggle_window("powermenu")}>
+      <icon icon={"system-shutdown-symbolic"} />
+    </button>
   </box>
 );

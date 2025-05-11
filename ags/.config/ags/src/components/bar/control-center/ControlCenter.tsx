@@ -1,21 +1,15 @@
 import { App, Astal, Gdk } from "astal/gtk3";
-import { PowerLine } from "./PowerLine";
 import { Connectivity } from "./Connectivity";
-import { QuickButtons } from "./QuickButtons";
-import { PowerProfiles } from "./PowerProfiles";
 import { Sliders } from "./Sliders/Sliders";
-// import { Media } from "./Media/Media";
-import { DoNotDisturb } from "./DoNotDisturb";
 import { Variable } from "astal";
 import { WiFi } from "./WifiView";
 import { Bluetooth } from "./BluetoothView";
 import AstalNetwork from "gi://AstalNetwork";
 import AstalBluetooth from "gi://AstalBluetooth";
 import { Apps } from "./Apps/Apps";
-// import { Mixer } from "./Mixer/Mixer";
 import { SidePanel } from "./SidePanel";
 
-type View = "controlls" | "wifi" | "bluetooth" | "apps" | "mixer";
+type View = "controlls" | "wifi" | "bluetooth" | "apps";
 
 type ControllProps = { setCurrentView: (view: View) => void };
 
@@ -25,22 +19,15 @@ const Controlls = ({ setCurrentView }: ControllProps) => {
 
   return (
     <>
-      <box spacing={8} className="equal-wrapper">
+      <box className="equal-wrapper">
         <Connectivity
           onWifiPrimary={() => setCurrentView("wifi")}
           onWifiSecondary={() => (network.wifi.enabled = !network.wifi.enabled)}
           onBluetoothPrimary={() => setCurrentView("bluetooth")}
           onBluetoothSecondary={() => bluetooth.toggle()}
         />
-        {/* <QuickButtons /> */}
       </box>
-      {/* <box spacing={8} className="equal-wrapper">
-        <PowerProfiles />
-        <DoNotDisturb />
-      </box> */}
       <Sliders />
-      {/* <Media /> */}
-      {/* <PowerLine /> */}
     </>
   );
 };
@@ -58,7 +45,7 @@ export const ControllCenter = () => {
   return (
     <window
       name="controll-center"
-      className="controll-center"
+      className="ControllCenter"
       exclusivity={Astal.Exclusivity.NORMAL}
       anchor={TOP | LEFT}
       application={App}
@@ -74,8 +61,8 @@ export const ControllCenter = () => {
       }}
     >
       <box>
-        {/* <SidePanel currentView={currentView} /> */}
-        <box vertical spacing={8} className="controll-center-wrapper">
+        <SidePanel currentView={currentView} />
+        <box vertical spacing={6} className="ControllCenterWrapper">
           {currentView((view) => {
             switch (view) {
               case "controlls":
@@ -88,8 +75,6 @@ export const ControllCenter = () => {
                 return <Bluetooth reset={reset} />;
               case "apps":
                 return <Apps reset={resetAndClose} />;
-              case "mixer":
-                return <Mixer reset={resetAndClose} />;
             }
           })}
         </box>
