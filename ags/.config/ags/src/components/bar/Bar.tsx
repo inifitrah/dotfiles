@@ -3,8 +3,9 @@ import { SysTray } from "./SysTray";
 import { Wifi } from "./Wifi";
 import { BatteryLevel } from "./Battery";
 import { Clock } from "./Clock";
-import { Workspaces } from "./Workspaces";
 import { FocusedClient } from "./FocusedClient";
+import Memory from "./Memory";
+import Workspacess from "./Workspacess";
 
 export default function Bar(monitor: Gdk.Monitor) {
   return (
@@ -22,11 +23,20 @@ export default function Bar(monitor: Gdk.Monitor) {
     >
       <centerbox>
         <box hexpand halign={Gtk.Align.START}>
-          <Workspaces />
+          <button
+            className=""
+            onClick={() => {
+              App.toggle_window("controll-center");
+            }}
+          >
+            󰣇
+          </button>
+          <Workspacess gdkmonitor={monitor} />
           <FocusedClient />
         </box>
         <box />
         <box hexpand halign={Gtk.Align.END}>
+          <Memory />
           <SysTray />
           <Wifi />
           <BatteryLevel />
