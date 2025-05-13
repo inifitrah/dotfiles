@@ -23,6 +23,8 @@ export default function Calendar(monitor: Gdk.Monitor) {
       gdkmonitor={monitor}
       application={App}
       anchor={anchor}
+      margin-top={8}
+      margin-right={8}
       keymode={Astal.Keymode.EXCLUSIVE}
       onKeyPressEvent={(self, event: Gdk.Event) => {
         if (event.get_keyval()[1] === Gdk.KEY_Escape) {
