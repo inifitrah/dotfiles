@@ -26,6 +26,11 @@ elif [[ "$1" == "--volume" ]]; then
         exit 0
     fi
     soundoption="audio-volume-change.*"
+elif [[ "$1" == "--alarm" ]]; then  # Add this block for alarm
+    if [[ "$muteAlarm" = true ]]; then
+        exit 0
+    fi
+    soundoption="alarm-clock-elapsed.*"
 elif [[ "$1" == "--error" ]]; then
     if [[ "$muteScreenshots" = true ]]; then
         exit 0
