@@ -14,8 +14,8 @@ configuration {
  // bg: #f2f3f4;
  bg: #1c1c1c;
   // bg-alt: #0070ee;
-  bg-alt: #1793d1;
-  bg-selected: #1793d1;
+  bg-alt: #1c1c1c;
+  bg-selected:rgb(63, 63, 63);
 
   fg: #f2f3f4;
   fg-alt: #111111;
@@ -28,14 +28,14 @@ configuration {
 }
 
 window {
-  width: 26%;
+  width: 18%;
   background-color: @bg;
   location: center;
   anchor: center;
-  x-offset: 620px;
-  y-offset: 300px;
+ // x-offset: 620px;
+ // y-offset: 300px;
   border-radius: 15px;
-  opacity: 1;
+  opacity: 1; 
 }
 
 element {

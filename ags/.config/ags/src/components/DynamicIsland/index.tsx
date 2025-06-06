@@ -54,7 +54,7 @@ const DynamicIsland = (monitor: Gdk.Monitor) => {
       gdkmonitor={monitor}
       exclusivity={Astal.Exclusivity.NORMAL}
       anchor={Astal.WindowAnchor.TOP}
-      layer={Astal.Layer.TOP}
+      layer={Astal.Layer.OVERLAY}
       margin={bind(store.getStateBinding()).as((state) =>
         state.isExpanded ? -15 : -40
       )}

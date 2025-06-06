@@ -13,5 +13,5 @@ export default [
   AudioSlider,
   PowerMenu,
   OSD,
-  DynamicIsland,
+  // DynamicIsland,
 ];

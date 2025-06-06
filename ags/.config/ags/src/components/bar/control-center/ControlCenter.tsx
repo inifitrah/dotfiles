@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { App, Astal, Gdk } from "astal/gtk3";
 import { Connectivity } from "./Connectivity";
 import { Sliders } from "./Sliders/Sliders";
