@@ -15,7 +15,7 @@ export default function Bar(monitor: Gdk.Monitor) {
       application={App}
       gdkmonitor={monitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
-      layer={Astal.Layer.BOTTOM}
+      layer={Astal.Layer.TOP}
       anchor={
         Astal.WindowAnchor.TOP |
         Astal.WindowAnchor.LEFT |
@@ -23,7 +23,7 @@ export default function Bar(monitor: Gdk.Monitor) {
       }
     >
       <centerbox>
-        <box hexpand halign={Gtk.Align.START}>
+        <box hexpand halign={Gtk.Align.START} className={"leftBar"}>
           <button
             onClick={() => {
               App.toggle_window("controll-center");
@@ -34,8 +34,8 @@ export default function Bar(monitor: Gdk.Monitor) {
           <Workspaces gdkmonitor={monitor} />
           <FocusedClient />
         </box>
-        <box />
-        <box hexpand halign={Gtk.Align.END}>
+        <box className={"centerBar"} />
+        <box hexpand halign={Gtk.Align.END} className={"rightBar"}>
           <Memory />
           <SysTray />
           <Wifi />

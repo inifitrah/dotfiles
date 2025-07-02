@@ -7,4 +7,4 @@
 echo ":: Reload ags"
 ags quit &
 sleep 0.2
-ags run &
+ags run -g 3 &
