@@ -8,7 +8,7 @@ return {
         local builtin = require('telescope.builtin')
 
         -- Key mappings
-        vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd>lua require("telescope.builtin").find_files()<cr>',
+        vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd>lua require("telescope.builtin").find_files({hidden: true})<cr>',
             { noremap = true, silent = true })
         vim.api.nvim_set_keymap('n', '<leader>fg', '<cmd>lua require("telescope.builtin").live_grep()<cr>',
             { noremap = true, silent = true })
