@@ -9,7 +9,7 @@ relaunch_ags() {
     ags quit 
   fi
   sleep 0.5
-  ags run &
+  ags run -g 3 &
 }
 
 # Handle termination signals (CTRL+C atau kill)
