@@ -1,0 +1,151 @@
+configuration {
+  display-drun: "Applications:";
+  display-window: "Windows:";
+  drun-display-format: "{icon} {name}";
+  font: "SF Pro Text Medium 13";
+  modi: "window,run,drun";
+  show-icons: true;
+  icon-theme: "Tela";
+}
+
+@theme "/dev/null"
+
+* {
+  /* Catppuccin Mocha */
+  base: #1e1e2e;
+  mantle: #181825;
+  crust: #11111b;
+  
+  text: #cdd6f4;
+  subtext0: #a6adc8;
+  subtext1: #bac2de;
+  
+  surface0: #313244;
+  surface1: #45475a;
+  surface2: #585b70;
+  
+  overlay0: #6c7086;
+  overlay1: #7f849c;
+  overlay2: #9399b2;
+  
+  blue: #89b4fa;
+  lavender: #b4befe;
+  sapphire: #74c7ec;
+  sky: #89dceb;
+  teal: #94e2d5;
+  green: #a6e3a1;
+  yellow: #f9e2af;
+  peach: #fab387;
+  maroon: #eba0ac;
+  red: #f38ba8;
+  mauve: #cba6f7;
+  pink: #f5c2e7;
+  flamingo: #f2cdcd;
+  rosewater: #f5e0dc;
+  
+  border: 0;
+  margin: 0;
+  padding: 0;
+  spacing: 0;
+}
+
+window {
+  width: 24%;
+  background-color: @base;
+  location: center;
+  anchor: center;
+  border-radius: 12px;
+  border: 1px;
+  border-color: @surface0;
+}
+
+mainbox {
+  children: [inputbar, listview];
+  background-color: @base;
+  padding: 8px;
+  spacing: 8px;
+}
+
+inputbar {
+  children: [prompt, entry];
+  background-color: @mantle;
+  border-radius: 8px;
+  border: 1px;
+  border-color: @surface0;
+}
+
+prompt {
+  enabled: true;
+  padding: 14px 16px;
+  background-color: @mauve;
+  text-color: @base;
+  font: "SF Pro Text Bold 13";
+  border-radius: 6px 0 0 6px;
+}
+
+entry {
+  padding: 14px 16px;
+  background-color: transparent;
+  text-color: @text;
+  placeholder: "Search...";
+  placeholder-color: @subtext0;
+}
+
+listview {
+  background-color: transparent;
+  columns: 1;
+  lines: 8;
+  spacing: 4px;
+  cycle: true;
+  dynamic: true;
+  scrollbar: false;
+  padding: 4px 0;
+}
+
+element {
+  padding: 12px 16px;
+  background-color: transparent;
+  text-color: @subtext1;
+  border-radius: 6px;
+}
+
+element normal.normal {
+  background-color: transparent;
+  text-color: @subtext1;
+}
+
+element selected.normal {
+  background-color: @surface1;
+  text-color: @text;
+  border: 1px;
+  border-color: @mauve;
+}
+
+element alternate.normal {
+  background-color: transparent;
+  text-color: @subtext1;
+}
+
+element-text {
+  background-color: transparent;
+  text-color: inherit;
+  vertical-align: 0.5;
+  margin: 0 0 0 10px;
+}
+
+element-icon {
+  size: 18px;
+  background-color: transparent;
+  margin: 0;
+}
+
+/* Highlight active element */
+element selected.normal {
+  background-color: @surface2;
+  text-color: @text;
+}
+
+element.selected.active {
+  background-color: @mauve;
+  text-color: @base;
+}

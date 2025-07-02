@@ -11,83 +11,86 @@ configuration {
 @theme "/dev/null"
 
 * {
-  bg: #0f0f0f;
-  bg-alt: #1a1a1a;
-  bg-selected: #2d2d2d;
-  bg-hover: #252525;
+  bg: rgba(16, 16, 16, 0.85);
+  bg-alt: rgba(32, 32, 32, 0.9);
+  bg-selected: rgba(255, 255, 255, 0.15);
+  bg-hover: rgba(255, 255, 255, 0.08);
   
   fg: #ffffff;
-  fg-alt: #cccccc;
-  fg-dim: #999999;
+  fg-alt: #b0b0b0;
+  fg-selected: #ffffff;
   
-  accent: #ff6b6b;
-  accent-alt: #4ecdc4;
+  accent: #7c3aed;
+  accent-alt: #a855f7;
   
-  border: 0;
+  border-width: 1px;
   margin: 0;
   padding: 0;
   spacing: 0;
+  
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: transparent;
 }
 
 window {
-  width: 35%;
-  height: 60%;
+  width: 25%;
   background-color: @bg;
   location: center;
   anchor: center;
   border-radius: 16px;
-  border: 1px;
-  border-color: #333333;
+  border-width: 1px;
+  border-color: rgba(255, 255, 255, 0.15);
+  transparency: "real";
 }
 
 mainbox {
   children: [inputbar, listview];
   background-color: transparent;
-  orientation: vertical;
+  padding: 8px;
 }
 
 inputbar {
   children: [prompt, entry];
   background-color: @bg-alt;
-  padding: 0;
-  margin: 0;
-  border: 0 0 1px 0;
-  border-color: #333333;
+  border-radius: 12px;
+  margin: 0 0 8px 0;
+  border-width: 1px;
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 prompt {
   enabled: true;
-  padding: 20px 24px;
+  padding: 16px 0 16px 16px;
   background-color: transparent;
   text-color: @accent;
-  font: "SF Pro Text Bold 14";
+  font: "SF Pro Text Semibold 13";
 }
 
 entry {
-  padding: 20px 24px 20px 0;
+  padding: 16px;
   background-color: transparent;
   text-color: @fg;
-  placeholder: "Search applications and more...";
-  placeholder-color: @fg-dim;
-  font: "SF Pro Text 14";
+  placeholder: "Search applications...";
+  placeholder-color: @fg-alt;
 }
 
 listview {
   background-color: transparent;
   columns: 1;
-  lines: 10;
-  spacing: 0;
+  lines: 8;
+  spacing: 4px;
   cycle: true;
   dynamic: true;
-  scrollbar: true;
-  padding: 8px 0;
+  scrollbar: false;
 }
 
 element {
-  padding: 16px 24px;
+  padding: 12px 16px;
   background-color: transparent;
   text-color: @fg-alt;
-  orientation: horizontal;
+  border-radius: 10px;
+  border-width: 1px;
+  border-color: transparent;
 }
 
 element normal.normal {
@@ -97,9 +100,8 @@ element normal.normal {
 
 element selected.normal {
   background-color: @bg-selected;
-  text-color: @fg;
-  border: 0 0 0 4px;
-  border-color: @accent;
+  text-color: @fg-selected;
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 element alternate.normal {
@@ -111,22 +113,20 @@ element-text {
   background-color: transparent;
   text-color: inherit;
   vertical-align: 0.5;
-  margin: 0 0 0 16px;
-  font: "SF Pro Text Medium 14";
+  margin: 0 0 0 8px;
 }
 
 element-icon {
-  size: 24px;
+  size: 20px;
   background-color: transparent;
   margin: 0;
 }
 
-/* Scrollbar styling */
+/* Scrollbar */
 scrollbar {
   width: 4px;
-  border: 0;
+  border-width: 0;
+  handle-color: rgba(255, 255, 255, 0.3);
   handle-width: 4px;
-  padding: 0 2px;
-  handle-color: @accent;
-  background-color: transparent;
+  padding: 0;
 }

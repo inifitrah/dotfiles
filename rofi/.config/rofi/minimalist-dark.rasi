@@ -11,17 +11,16 @@ configuration {
 @theme "/dev/null"
 
 * {
-  bg: #0f0f0f;
-  bg-alt: #1a1a1a;
-  bg-selected: #2d2d2d;
-  bg-hover: #252525;
+  bg: #0d1117;
+  bg-alt: #161b22;
+  bg-selected: #21262d;
+  bg-hover: #30363d;
   
-  fg: #ffffff;
-  fg-alt: #cccccc;
-  fg-dim: #999999;
+  fg: #f0f6fc;
+  fg-alt: #8b949e;
+  fg-selected: #ffffff;
   
-  accent: #ff6b6b;
-  accent-alt: #4ecdc4;
+  accent: #58a6ff;
   
   border: 0;
   margin: 0;
@@ -30,64 +29,60 @@ configuration {
 }
 
 window {
-  width: 35%;
-  height: 60%;
+  width: 22%;
   background-color: @bg;
   location: center;
   anchor: center;
-  border-radius: 16px;
+  border-radius: 8px;
   border: 1px;
-  border-color: #333333;
+  border-color: #30363d;
 }
 
 mainbox {
   children: [inputbar, listview];
-  background-color: transparent;
-  orientation: vertical;
+  background-color: @bg;
+  padding: 0;
 }
 
 inputbar {
   children: [prompt, entry];
   background-color: @bg-alt;
-  padding: 0;
-  margin: 0;
   border: 0 0 1px 0;
-  border-color: #333333;
+  border-color: #21262d;
 }
 
 prompt {
   enabled: true;
-  padding: 20px 24px;
+  padding: 16px 0 16px 20px;
   background-color: transparent;
   text-color: @accent;
-  font: "SF Pro Text Bold 14";
+  font: "SF Pro Text Semibold 13";
 }
 
 entry {
-  padding: 20px 24px 20px 0;
+  padding: 16px 20px 16px 0;
   background-color: transparent;
   text-color: @fg;
-  placeholder: "Search applications and more...";
-  placeholder-color: @fg-dim;
-  font: "SF Pro Text 14";
+  placeholder: "Type to search...";
+  placeholder-color: @fg-alt;
 }
 
 listview {
-  background-color: transparent;
+  background-color: @bg;
   columns: 1;
-  lines: 10;
+  lines: 8;
   spacing: 0;
   cycle: true;
   dynamic: true;
-  scrollbar: true;
-  padding: 8px 0;
+  scrollbar: false;
+  padding: 4px 0;
 }
 
 element {
-  padding: 16px 24px;
+  padding: 14px 20px;
   background-color: transparent;
   text-color: @fg-alt;
-  orientation: horizontal;
+  border: 0;
 }
 
 element normal.normal {
@@ -97,9 +92,7 @@ element normal.normal {
 
 element selected.normal {
   background-color: @bg-selected;
-  text-color: @fg;
-  border: 0 0 0 4px;
-  border-color: @accent;
+  text-color: @fg-selected;
 }
 
 element alternate.normal {
@@ -111,22 +104,18 @@ element-text {
   background-color: transparent;
   text-color: inherit;
   vertical-align: 0.5;
-  margin: 0 0 0 16px;
-  font: "SF Pro Text Medium 14";
+  margin: 0 0 0 12px;
+  font: "SF Pro Text Medium 13";
 }
 
 element-icon {
-  size: 24px;
+  size: 18px;
   background-color: transparent;
   margin: 0;
 }
 
-/* Scrollbar styling */
-scrollbar {
-  width: 4px;
-  border: 0;
-  handle-width: 4px;
-  padding: 0 2px;
-  handle-color: @accent;
-  background-color: transparent;
+/* Clean separator line */
+element selected.normal {
+  border: 0 0 0 3px;
+  border-color: @accent;
 }
