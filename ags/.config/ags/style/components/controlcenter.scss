@@ -13,7 +13,7 @@ $transition: background-color 200ms ease;
 .ControllCenter {
   background-color: $bg-primary;
   border-radius: $border-radius-lg;
-  padding: 12px;
+  padding: 20px;
   box-shadow: $shadow;
 
   &Wrapper {
@@ -23,8 +23,7 @@ $transition: background-color 200ms ease;
   }
 }
 
-.Connectivity {
-}
+.Connectivity {}
 
 .equal-wrapper {
   min-height: 80px;

@@ -50,8 +50,8 @@ export const ControllCenter = () => {
       exclusivity={Astal.Exclusivity.NORMAL}
       anchor={TOP | LEFT}
       application={App}
-      margin-top={8}
-      margin-left={8}
+      margin-top={0}
+      margin-left={0}
       setup={(self) => App.add_window(self)}
       visible={false}
       keymode={Astal.Keymode.EXCLUSIVE}

@@ -6,6 +6,7 @@ import { Clock } from "./Clock";
 import { FocusedClient } from "./FocusedClient";
 import Memory from "./Memory";
 import Workspaces from "./Workspaces";
+import { Media } from "./Media";
 
 export default function Bar(monitor: Gdk.Monitor) {
   return (
@@ -34,7 +35,10 @@ export default function Bar(monitor: Gdk.Monitor) {
           <Workspaces gdkmonitor={monitor} />
           <FocusedClient />
         </box>
-        <box className={"centerBar"} />
+        <box className="centerBar">
+          <Media />
+        </box>
+
         <box hexpand halign={Gtk.Align.END} className={"rightBar"}>
           <Memory />
           <SysTray />

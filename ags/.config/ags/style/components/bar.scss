@@ -18,6 +18,10 @@
       color: white;
     }
 
+    .centerBar {
+      border-radius: 0rem 0rem 1rem 1rem;
+    }
+
     .leftBar {
       padding: 3px 10px 3px 3px;
       border-radius: 0rem 0rem 1.2rem 0rem;
@@ -43,6 +47,7 @@
     .active {
       color: $accent;
     }
+
     .urgent {
       color: $urgent;
     }
@@ -82,6 +87,7 @@
 
   .Battery {
     padding: 0 10px;
+
     label {
       margin: 0;
     }
