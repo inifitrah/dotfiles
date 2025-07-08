@@ -7,6 +7,8 @@ import { Variable } from "astal";
 
 const audio = Wp.get_default()?.audio!;
 
+print(audio);
+
 const DELAY = 2000;
 
 // Debounce function to avoid multiple rapid calls
@@ -20,9 +22,9 @@ const debounce = (func: () => void, delay: number) => {
 
 // Function to map value to icon
 const getIcon = (value: number, icons: string[]) => {
-  if (value > 0.75) return icons[0];
-  if (value > 0.5) return icons[1];
-  if (value > 0.25) return icons[2];
+  if (value > 0.6) return icons[0];
+  if (value > 0.3) return icons[1];
+  if (value > 0) return icons[2];
   return icons[3];
 };
 
@@ -86,8 +88,8 @@ const osdSlider = (
 };
 
 function OnScreenProgress(vertical: boolean) {
-  const volumeIcons = ["", "", "", ""];
-  const brightnessIcons = ["󰃠", "󰃟", "󰃞", "󰃞"];
+  const volumeIcons = ["󰕾", "󰖀", "󰕿", "󰝟"];
+  const brightnessIcons = ["󰃠", "󰃟", "󰃞", "󰃝"];
 
   const VolumeSlider = osdSlider(
     audio.defaultSpeaker,
