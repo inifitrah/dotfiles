@@ -1,10 +1,7 @@
 #!/bin/bash
 
-# ----------------------------------------------------- 
-# Reload AGS
-# -----------------------------------------------------
+INSTANCE_NAME="trah-shell"
 
-echo ":: Reload ags"
-ags quit &
+ags quit -i "$INSTANCE_NAME" &
 sleep 0.2
 ags run -g 3 &
