@@ -277,6 +277,10 @@ hotkey-overlay {
 // After enabling or disabling this, you need to restart the apps for this to take effect.
 prefer-no-csd
 
+    cursor {
+        xcursor-theme "Afterglow-cursors"
+        xcursor-size 24
+    }
 // You can change the path where screenshots are saved.
 // A ~ at the front will be expanded to the home directory.
 // The path is formatted with strftime(3) to give you the screenshot date and time.
@@ -371,7 +375,7 @@ binds {
     Mod+Space hotkey-overlay-title="Application Launcher" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "toggle"; }
     Mod+Shift+Escape hotkey-overlay-title="Power Session" {spawn "qs" "-c" "noctalia-shell" "ipc" "call" "sessionMenu" "toggle"; }
-
+    Mod+B hotkey-overlay-title="Toggle visible bar" {spawn "qs" "-c" "noctalia-shell" "ipc" "call" "bar" "toggle";}
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
     // For example, this is a standard bind to toggle the screen reader (orca).
