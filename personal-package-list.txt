@@ -33,7 +33,6 @@ entr
 expac
 eza
 fabric-cli-git
-fastfetch
 fd
 ffmpegthumbnailer
 firefox
@@ -76,6 +75,7 @@ jre17-openjdk-headless
 kio-gdrive
 kitty
 lazygit
+less
 libcava-debug
 libgusb
 libpulse
@@ -110,6 +110,7 @@ obs-studio
 ollama
 opencode-bin
 pacman-contrib
+papirus-icon-theme
 paru-debug
 pavucontrol
 pfetch
@@ -150,6 +151,7 @@ slurp
 smartmontools
 sof-firmware
 speech-dispatcher
+starship
 stow
 swaybg
 telegram-desktop
@@ -165,7 +167,6 @@ unzip
 usbutils
 uwsm
 valgrind
-visual-studio-code-bin
 vlc
 vlc-plugin-ffmpeg
 vte3
