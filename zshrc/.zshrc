@@ -1,6 +1,6 @@
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="gnzh"
+ZSH_THEME="edvardm"
 plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
@@ -27,8 +27,24 @@ alias dev="npm run dev"
 # Distrobox
 alias box="distrobox"
 
+# Zoxide
+alias c="cd"
+
+# Yazi
+export EDITOR="nvim"
+
+# Nmcli
+alias ndw="nmcli device wifi"
+alias ndwc="nmcli device wifi connect"
+
+# Zed
+alias ze="zeditor"
+
 eval "$(zoxide init zsh --cmd cd --hook prompt)"
 eval "$(fzf --zsh)"
+
+# Starship
+eval "$(starship init zsh)"
 
 # bun completions
 [ -s "/home/fitrah/.bun/_bun" ] && source "/home/fitrah/.bun/_bun"
