@@ -1,15 +1,11 @@
 7zip
-alacritty
-alsa-plugins
 amd-ucode
 amdgpu_top
 android-sdk-platform-tools
 android-tools
 android-udev
-anyrun
 arc-gtk-theme
 ario
-auto-cpufreq
 base
 base-devel
 brave-bin
@@ -21,6 +17,7 @@ cliphist
 cmake
 cmatrix
 cpio
+cpupower
 discord
 distrobox
 docker
@@ -33,14 +30,13 @@ entr
 expac
 eza
 fabric-cli-git
+fastfetch
 fd
 ffmpegthumbnailer
 firefox
 firefoxpwa
-fish
 flatpak
 font-manager
-fuzzel
 fzf
 gammastep
 getnf
@@ -61,7 +57,6 @@ haskell-tasty
 htop
 hyprland
 hyprlock
-hyprpaper
 hyprpolkitagent
 hyprshot-git
 imagemagick
@@ -81,7 +76,6 @@ libgusb
 libpulse
 libxcrypt-compat
 libxml2-legacy
-limitcpu
 linux
 linux-firmware
 lolcat
@@ -95,7 +89,6 @@ mpd
 mpvpaper-git
 nano
 ncmpcpp
-neofetch
 neovim
 network-manager-applet
 networkmanager
@@ -108,10 +101,10 @@ noto-fonts
 nwg-look
 obs-studio
 ollama
+opencl-mesa
 opencode-bin
 pacman-contrib
 papirus-icon-theme
-paru-debug
 pavucontrol
 pfetch
 piper-tts-bin
@@ -142,8 +135,6 @@ radeontop
 rar
 rclone
 rhythmbox
-rocm-opencl-runtime
-rofi
 scrcpy
 shotcut
 showmethekey-git
@@ -172,9 +163,7 @@ vlc-plugin-ffmpeg
 vte3
 vulkan-radeon
 vulkan-tools
-walker
 waybar
-wezterm
 wget
 whitesur-gtk-theme
 wireless_tools
@@ -182,7 +171,6 @@ wireplumber
 wl-clipboard
 wlsunset
 woff2-font-awesome
-wpaperd
 wps-office-debug
 xclip
 xdg-desktop-portal-gnome
@@ -199,7 +187,6 @@ xreader
 xwayland-satellite
 yay
 yay-debug
-yazi
 yt-dlp
 zed
 zen-browser-bin
