@@ -1,0 +1,269 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "edit_predictions": {
+    "mode": "eager"
+  },
+  "debugger": {
+    "dock": "bottom"
+  },
+  "buffer_font_weight": 400.0,
+  "buffer_font_family": "FiraCode Nerd Font",
+  "vim_mode": false,
+  "ui_font_weight": 400.0,
+  "ui_font_family": "Fira Code",
+  "agent_buffer_font_size": 14.0,
+  "agent_ui_font_size": 17.0,
+  "features": {
+    "edit_prediction_provider": "zed"
+  },
+  "use_system_window_tabs": false,
+  "tabs": {
+    "close_position": "right",
+    "git_status": true,
+
+    "file_icons": true,
+
+    "activate_on_close": "neighbour",
+
+    "show_close_button": "hover",
+
+    "show_diagnostics": "all"
+  },
+  "tab_bar": {
+    // "show_nav_history_buttons": true,
+    // "show": true
+    "show": true,
+    "show_nav_history_buttons": false,
+    "show_tab_bar_buttons": false
+  },
+  "tab_size": 2,
+  "title_bar": {
+    "show_menus": false,
+    "show_branch_icon": true,
+    "show_branch_name": false,
+    "show_project_items": false,
+    "show_onboarding_banner": false,
+    "show_user_picture": false,
+    "show_sign_in": true
+  },
+  "toolbar": {
+    "breadcrumbs": true,
+
+    "quick_actions": true,
+
+    "selections_menu": true,
+
+    "agent_review": true
+  },
+  "minimap": {
+    "show": "never",
+
+    "thumb": "always",
+
+    "thumb_border": "left_open",
+
+    "current_line_highlight": null
+  },
+
+  // Git
+
+  "git": {
+    "git_gutter": "tracked_files",
+
+    "inline_blame": {
+      "enabled": true,
+
+      "show_commit_summary": true,
+
+      "padding": 7
+    },
+
+    "branch_picker": {
+      "show_author_name": true
+    },
+
+    "hunk_style": "unstaged_hollow"
+  },
+
+  // Editor
+  "cursor_blink": true,
+
+  "show_whitespaces": "none",
+
+  "indent_guides": {
+    "enabled": true,
+
+    "line_width": 1,
+
+    "active_line_width": 0,
+
+    "coloring": "indent_aware",
+
+    "background_coloring": "disabled"
+  },
+
+  // Explorer / Project Panel
+
+  "project_panel": {
+    "button": false,
+
+    "default_width": 240,
+
+    "folder_icons": false,
+
+    // "hide_root": true,
+
+    "indent_size": 20,
+
+    "auto_fold_dirs": false,
+
+    "drag_and_drop": true,
+
+    "git_status": true,
+
+    "auto_reveal_entries": true,
+
+    "entry_spacing": "comfortable",
+
+    "starts_open": true,
+
+    "scrollbar": {
+      "show": null
+    },
+
+    "indent_guides": {
+      "show": "always"
+    }
+  },
+
+  "collaboration_panel": {
+    "button": false
+  },
+
+  "outline_panel": {
+    "button": false,
+
+    "default_width": 300,
+
+    "file_icons": true,
+
+    "folder_icons": true,
+
+    "git_status": true,
+
+    "indent_size": 20,
+
+    "auto_reveal_entries": true,
+
+    "auto_fold_dirs": true,
+
+    "indent_guides": {
+      "show": "always"
+    },
+
+    "scrollbar": {
+      "show": null
+    }
+  },
+
+  "terminal": {
+    "alternate_scroll": "off",
+
+    "blinking": "on",
+
+    "copy_on_select": false,
+
+    "keep_selection_on_copy": false,
+
+    "dock": "bottom",
+
+    "default_width": 640,
+
+    "default_height": 320,
+
+    "env": {
+      "FIG_NEW_SESSION": "1",
+
+      "Q_NEW_SESSION": "1"
+    },
+
+    "detect_venv": {
+      "on": {
+        "directories": [".env", "env", ".venv", "venv"],
+
+        "activate_script": "default"
+      }
+    },
+
+    "font_size": 15,
+
+    "line_height": "comfortable",
+
+    "minimum_contrast": 45,
+
+    "button": false,
+
+    "shell": "system",
+
+    "toolbar": {
+      "breadcrumbs": false
+    },
+
+    "working_directory": "current_project_directory",
+
+    "scrollbar": {
+      "show": null
+    }
+  },
+
+  "scrollbar": {
+    "show": "never",
+
+    "cursors": true
+  },
+
+  "file_types": {
+    "css": ["*.css"],
+
+    "json": [".prettierrc"],
+
+    "dotenv": [".env.*"]
+  },
+
+  //
+
+  "agent": {
+    "always_allow_tool_actions": true,
+    "default_profile": "write",
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "gpt-4.1"
+    },
+    "model_parameters": []
+  },
+  "disable_ai": false,
+  "icon_theme": "Material Icon Theme",
+  "ui_font_size": 17.0,
+  "buffer_font_size": 14.0,
+  "theme": {
+    "mode": "system",
+    "light": "Catppuccin Espresso (Blur) [Light]",
+    "dark": "Catppuccin Mocha (Blur) [Light]"
+  },
+  "wrap_guides": [80, 120],
+  "soft_wrap": "editor_width",
+  "status_bar": {
+    "active_language_button": true,
+    "cursor_position_button": false
+  },
+  "cursor_shape": "bar",
+  "hide_mouse": "on_typing",
+  "current_line_highlight": "gutter"
+}
