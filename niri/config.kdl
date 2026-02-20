@@ -61,6 +61,7 @@ input {
     // focus-follows-mouse max-scroll-amount="0%"
 }
 
+
 output "eDP-1" {
     // Uncomment this line to disable this output.
     // off
@@ -74,7 +75,7 @@ output "eDP-1" {
     mode "1920x1200@60"
 
     // You can use integer or fractional scale, for example use 1.5 for 150% scale.
-    scale 1.20
+    scale 1.25
 
     // Transform allows to rotate the output counter-clockwise, valid values are:
     // normal, 90, 180, 270, flipped, flipped-90, flipped-180 and flipped-270.
@@ -98,7 +99,7 @@ debug {
 
 layout {
     // Set gaps around windows in logical pixels.
-    gaps 13
+    gaps 8
 
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
@@ -144,9 +145,9 @@ layout {
     // You can change how the focus ring looks.
     focus-ring {
         // Uncomment this line to disable the focus ring.
-       //  off
+        // off
         // How many logical pixels the ring extends out from the windows.
-        width 2
+        width 1
 
         // Colors can be set in a variety of ways:
         // - CSS named colors: "red"
@@ -156,7 +157,9 @@ layout {
         // Color of the ring on the active monitor.
        // active-color "rgba(255,255,255,0.5)"
       // active-color "#A78BFA"
-      active-color "rgba(167, 139, 250, 0.8)"
+      // active-color "#9ECAE1"
+      // active-color "rgba(167, 139, 250, 0.6)"
+       active-color "rgba(220, 220, 220, 0.5)"
       // Color of the ring on inactive monitors.
         //
         // The focus ring only draws around the active window, so the only place
@@ -256,17 +259,19 @@ layout {
 // which may be more convenient to use.
 // See the binds section below for more spawn examples.
 
+// SPAWN AT STARTUP
 // This line starts waybar, a commonly used bar for Wayland compositors.
 // spawn-at-startup "waybar"
 // spawn-sh-at-startup "swaybg -i ~/.dotfiles/hyprland/.config/hypr/wallpapers/wallpaper565.png -m fill"
-spawn-at-startup "qs" "-c" "noctalia-shell"
+// spawn-at-startup "qs" "-c" "noctalia-shell" "--no-duplicate"
+spawn-at-startup "zen"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
 
 hotkey-overlay {
     // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
-    // skip-at-startup
+     skip-at-startup
 }
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
@@ -310,10 +315,11 @@ gestures {
 // Find more information on the wiki:
 // https://yalter.github.io/niri/Configuration:-Window-Rules
 
-layer-rule {
-    match namespace="^quickshell-overview$"
-    place-within-backdrop true
-  }
+// layer-rule {
+//     match namespace="^quickshell-overview$"
+//     place-within-backdrop false
+//   }
+
 
 // Work around WezTerm's initial configure bug
 // by setting an empty default-column-width.
@@ -321,10 +327,27 @@ window-rule {
     // This regular expression is intentionally made as specific as possible,
     // since this is the default config, and we want no false positives.
     // You can get away with just app-id="wezterm" if you want.
-    match app-id=r#"^org\.wezfurlong\.wezterm$"#
-    default-column-width {}
+    match app-id="kitty"
+open-floating true
+baba-is-float true
+default-floating-position x=32 y=32 relative-to="bottom-right"
+open-focused false
 }
 
+window-rule {
+
+    }
+
+window-rule {
+    match app-id="dev.zed.Zed"
+   open-maximized true
+    }
+
+window-rule {
+    match app-id="^mpv$"
+
+    variable-refresh-rate true
+}
 // Disable drawing border with background for all windows by default.
 // https://yalter.github.io/niri/Configuration%3A-Window-Rules.html#draw-border-with-background
 window-rule {
@@ -357,7 +380,7 @@ window-rule {
 // (This example rule is commented out with a "/-" in front.)
 window-rule {
 
-    geometry-corner-radius 10
+    geometry-corner-radius 12
     clip-to-geometry true
 }
 
@@ -382,6 +405,7 @@ binds {
     Super+Alt+L hotkey-overlay-title="Lock the Screen" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "toggle"; }
     Mod+Shift+Escape hotkey-overlay-title="Power Session" {spawn "qs" "-c" "noctalia-shell" "ipc" "call" "sessionMenu" "toggle"; }
     Mod+B hotkey-overlay-title="Toggle visible bar" {spawn "qs" "-c" "noctalia-shell" "ipc" "call" "bar" "toggle";}
+    Mod+Shift+B hotkey-overlay-title="Toggle visible dock" {spawn "qs" "-c" "noctalia-shell" "ipc" "call" "dock" "toggle";}
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
     // For example, this is a standard bind to toggle the screen reader (orca).
@@ -414,11 +438,11 @@ binds {
     Mod+Up    { focus-window-up; }
     Mod+Right { focus-column-right; }
     Mod+H     { focus-column-left; }
-    Mod+Z     { focus-column-left; }
+    Mod+A     { focus-column-left; }
     Mod+J     { focus-window-down; }
     Mod+K     { focus-window-up; }
     Mod+L     { focus-column-right; }
-    Mod+X     { focus-column-right; }
+    Mod+D     { focus-column-right; }
 
     Mod+Ctrl+Left  { move-column-left; }
     Mod+Ctrl+Down  { move-window-down; }
