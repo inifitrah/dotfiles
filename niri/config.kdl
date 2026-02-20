@@ -78,7 +78,7 @@ layout {
 }
 
 // Processes to launch on startup.
-spawn-at-startup "zen"
+// spawn-at-startup "zen-browser"
 
 hotkey-overlay {
     skip-at-startup
@@ -95,8 +95,27 @@ cursor {
 // Path is formatted with strftime(3); ~ expands to home directory.
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
+// Animations
 animations {
-    // Uncomment to disable: off
+    workspace-switch {
+        spring damping-ratio=0.92 stiffness=800 epsilon=0.0001
+   }
+
+    window-open {
+        spring damping-ratio=0.92 stiffness=900 epsilon=0.0001
+    }
+
+    window-close {
+        spring damping-ratio=0.95 stiffness=1000 epsilon=0.0001
+    }
+
+    horizontal-view-movement {
+        spring damping-ratio=0.90 stiffness=800 epsilon=0.0001
+    }
+
+    window-movement {
+        spring damping-ratio=0.96 stiffness=850 epsilon=0.0001
+    }
 }
 
 gestures {
@@ -114,7 +133,11 @@ window-rule {
     open-focused false
 }
 
+
 window-rule {
+    match app-id="scrcpy"
+    open-floating true
+    default-floating-position x=32 y=32 relative-to="top-left"
 }
 
 window-rule {
@@ -147,6 +170,19 @@ window-rule {
     geometry-corner-radius 12
     clip-to-geometry true
 }
+
+// Layer rule
+layer-rule {
+  match namespace="^noctalia-wallpaper*"
+  place-within-backdrop true
+}
+
+// Overview
+overview {
+    workspace-shadow {
+        off
+        }
+    }
 
 binds {
     // Mod = Super on TTY, Alt in winit window. Use `wev` to find XKB key names.
