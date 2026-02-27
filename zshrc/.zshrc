@@ -1,9 +1,9 @@
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME=""
-plugins=(git)
-source $ZSH/oh-my-zsh.sh
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting zsh-autocomplete)lugins=(git)
 
+source $ZSH/oh-my-zsh.sh
 # User configuration
 
 # alias
@@ -52,6 +52,7 @@ eval "$(starship init zsh)"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$HOME/.npm-global/bin:$PATH"
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/home/fitrah/.lmstudio/bin"
+# OpenClaw Completion
+source "/home/fitrah/.openclaw/completions/openclaw.zsh"

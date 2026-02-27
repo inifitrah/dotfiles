@@ -7,3 +7,4 @@ This repository contains my personal configuration files.
 
 ## Screenshots
 ![Desktop Screenshot](./screenshots/desktop.png)
+![Zed](./screenshots/z.png)

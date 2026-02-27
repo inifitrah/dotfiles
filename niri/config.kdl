@@ -45,11 +45,29 @@ layout {
         proportion 1.0
     }
 
+    // heights cycled through by Mod+Shift+R.
+    preset-window-heights {
+        proportion 0.5
+        proportion 0.66667
+        proportion 1.0
+    }
+
+    // Tabbed
+    tab-indicator {
+       width 2
+       gap 3
+       length total-proportion=0.6
+       // place-within-column
+       position "top"
+       active-color "rgba(220, 220, 220, 0.6)"
+       inactive-color "rgba(180, 180, 180, 0.3)"
+    }
+
     default-column-width { proportion 0.5; }
 
     focus-ring {
         width 1
-        active-color "rgba(220, 220, 220, 0.5)"
+        active-color "rgba(220, 220, 220, 0.3)"
         inactive-color "#0b0b0c"
     }
 
@@ -64,10 +82,10 @@ layout {
 
     shadow {
         // Uncomment to enable drop shadows.
-        // on
-        softness 30
-        spread 5
-        offset x=0 y=5
+        on
+        softness 8
+        spread 2
+        offset x=0 y=2
         color "#0007"
     }
 
@@ -128,9 +146,19 @@ gestures {
 window-rule {
     match app-id="kitty"
     open-floating true
-    baba-is-float true
-    default-floating-position x=32 y=32 relative-to="bottom-right"
+    default-floating-position x=50 y=50 relative-to="bottom-right"
     open-focused false
+    background-effect {
+        blur true
+        xray false
+        saturation 0.5
+        noise 0.2
+        }
+}
+
+window-rule {
+    match app-id="org.gnome.Nautilus"
+    open-floating true
 }
 
 
@@ -143,6 +171,12 @@ window-rule {
 window-rule {
     match app-id="dev.zed.Zed"
     open-maximized true
+    background-effect {
+        blur true
+        xray true
+        saturation 0.5
+        noise 0.2
+        }
 }
 
 window-rule {
@@ -172,6 +206,15 @@ window-rule {
 }
 
 // Layer rule
+// layer-rule {
+//     match namespace="^noctalia-bar-exclusion-bottom*"
+//     background-effect {
+//         blur true
+//         xray false
+//         saturation 0.3
+//         }
+//     }
+
 layer-rule {
   match namespace="^noctalia-wallpaper*"
   place-within-backdrop true
@@ -182,6 +225,7 @@ overview {
     workspace-shadow {
         off
         }
+    zoom 0.35
     }
 
 binds {
@@ -196,10 +240,15 @@ binds {
     Mod+B hotkey-overlay-title="Toggle visible bar" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "bar" "toggle"; }
     Mod+Shift+B hotkey-overlay-title="Toggle visible dock" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "dock" "toggle"; }
     Super+Alt+S allow-when-locked=true hotkey-overlay-title=null { spawn-sh "pkill orca || exec orca"; }
+    // Plugin
+    Mod+N hotkey-overlay-title="Launch the translator" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "plugin:translator" "toggle" "en" ""; }
+    Mod+Shift+D hotkey-overlay-title="Recording" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "plugin:screen-recorder" "toggle"; }
 
     // Media & hardware keys — work even when the session is locked.
     XF86AudioRaiseVolume  allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+"; }
     XF86AudioLowerVolume  allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
+    Mod+Alt+Up            allow-when-locked=false { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "volume" "increase"; }
+    Mod+Alt+Down          allow-when-locked=false { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "volume" "decrease"; }
     XF86AudioMute         allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
     XF86AudioMicMute      allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
     XF86MonBrightnessUp   allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
@@ -258,6 +307,8 @@ binds {
     // Workspace navigation
     Mod+Page_Down      { focus-workspace-down; }
     Mod+Page_Up        { focus-workspace-up; }
+    Mod+Z              { focus-workspace-down; }
+    Mod+X              { focus-workspace-up; }
     Mod+U              { focus-workspace-down; }
     Mod+I              { focus-workspace-up; }
     Mod+Ctrl+Page_Down { move-column-to-workspace-down; }
@@ -318,6 +369,7 @@ binds {
     Mod+Ctrl+R  { reset-window-height; }
     Mod+F       { maximize-column; }
     Mod+Shift+F { fullscreen-window; }
+    Mod+Alt+F   { maximize-window-to-edges; }
     Mod+Ctrl+F  { expand-column-to-available-width; }
     Mod+C       { center-column; }
     Mod+Ctrl+C  { center-visible-columns; }

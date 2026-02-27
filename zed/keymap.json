@@ -9,13 +9,15 @@
   {
     "context": "Workspace",
     "bindings": {
-      "ctrl-s": "workspace::SaveAll"
-    }
+      "shift shift": "file_finder::Toggle",
+      "ctrl-s": "workspace::SaveAll",
+      "ctrl-escape": "terminal_panel::Toggle",
+    },
   },
   {
     "context": "Editor && vim_mode == insert",
     "bindings": {
-      // "j k": "vim::NormalBefore"
-    }
-  }
+      "j k": "vim::NormalBefore",
+    },
+  },
 ]
