@@ -1,0 +1,20 @@
+[Desktop Entry]
+Name=Roblox Studio
+GenericName=Studio Launcher
+Comment=Run Roblox Studio on Linux
+Exec=vinegar %u
+Icon=vinegar
+Terminal=false
+Type=Application
+MimeType=application/x-roblox-place;application/x-roblox-model;x-scheme-handler/roblox-studio;x-scheme-handler/roblox-studio-auth;
+Actions=manage;custom;
+Categories=GNOME;GTK;Game;
+Keywords=gaming;launcher;roblox;
+
+[Desktop Action manage]
+Name=Manage
+Exec=vinegar manage
+
+[Desktop Action custom]
+Name=Launch With XWaylandSatellite
+Exec=/home/user/.dotfiles/vinegar_roblox/launch-with-xwayland-satellite.sh
