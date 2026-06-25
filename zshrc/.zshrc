@@ -16,12 +16,10 @@ source "$ZINIT_HOME/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-# ==============================================================================
+# =========================================d=====================================
 # 2. PLUGINS (Loaded via Zinit)
 # ==============================================================================
 zinit light marlonrichert/zsh-autocomplete
-zinit ice wait lucid
-zinit light zsh-users/zsh-syntax-highlighting
 
 # ==============================================================================
 # 3. COMPLETION SYSTEM
@@ -66,28 +64,28 @@ eval "$(zoxide init zsh --cmd cd --hook prompt)"
 
 # FZF
 eval "$(fzf --zsh)"
+fzf-cd() {
+  local dir
+  dir="$(zoxide query -l | fzf --height 40% --reverse --prompt='Directory > ')" && cd "$dir"
+}
+alias fcd='fzf-cd'
 
 # ==============================================================================
 # 6. LAZY LOADING NVM (Node Version Manager)
 # ==============================================================================
-export NVM_DIR="$HOME/.nvm"
-
 load-nvm() {
   unset -f node npm npx nvm
-  [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-  [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
+  source /usr/share/nvm/init-nvm.sh
 }
 
 for cmd in node npm npx nvm; do
   eval "$cmd() { load-nvm; $cmd \"\$@\" }"
 done
-
 # ==============================================================================
 # 7. PATH & OTHER TOOLS
 # ==============================================================================
-# Bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+# Cargo
+export PATH="$HOME/.cargo/bin:$PATH"
 
 # NPM Global
 export PATH="$HOME/.npm-global/bin:$PATH"

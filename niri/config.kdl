@@ -22,7 +22,7 @@ input {
 output "eDP-1" {
     // Run `niri msg outputs` to list all available outputs and their modes.
     mode "1920x1200@60"
-    scale 1.25
+    scale 1.16
     transform "normal"
     position x=1280 y=0
 }
@@ -31,9 +31,23 @@ debug {
     honor-xdg-activation-with-invalid-serial
 }
 
+blur {
+  passes 5        // more passes = stronger blur (default: 3)
+  offset 5.0      // sample distance per pass (default: 3.0)
+  noise 0.03      // grain overlay (default: 0.02)
+  saturation 1.0  // color saturation boost (default: 1.5)
+}
+
 layout {
     // Gaps between windows and screen edges, in logical pixels.
-    gaps 8
+    gaps 16
+
+    struts {
+         // left 16
+         // right 16
+         // top 16
+         // bottom 16
+     }
 
     center-focused-column "never"
 
@@ -54,21 +68,25 @@ layout {
 
     // Tabbed
     tab-indicator {
-       width 2
-       gap 3
-       length total-proportion=0.6
+       width 6
+       gap 8
+       length total-proportion=0.155
        // place-within-column
-       position "top"
-       active-color "rgba(220, 220, 220, 0.6)"
-       inactive-color "rgba(180, 180, 180, 0.3)"
+       position "bottom"
+       // active-color "rgba(220, 220, 220, 0.4)"
+       active-color "rgba(200, 80, 255, 0.8)"
+       inactive-color "rgba(180, 180, 180, 0.2)"
     }
 
     default-column-width { proportion 0.5; }
 
     focus-ring {
-        width 1
-        active-color "rgba(220, 220, 220, 0.3)"
-        inactive-color "#0b0b0c"
+        width 5
+        // active-color "rgba(16, 16, 16, 0.7)"
+        active-color "rgba(129, 29, 192, 0.155)"
+        inactive-color "rgba(16, 16, 16, 0)"
+        // active-color "rgba(30, 30, 30, 0.35)"
+        // inactive-color "rgba(10, 10, 10, 0.98)"
     }
 
     border {
@@ -82,21 +100,20 @@ layout {
 
     shadow {
         // Uncomment to enable drop shadows.
-        on
+        // on
         softness 8
         spread 2
         offset x=0 y=2
         color "#0007"
     }
 
-    struts {
-    }
 
     background-color "transparent"
 }
 
 // Processes to launch on startup.
 // spawn-at-startup "zen-browser"
+spawn-at-startup "vibepanel"
 
 hotkey-overlay {
     skip-at-startup
@@ -114,27 +131,27 @@ cursor {
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 // Animations
-animations {
-    workspace-switch {
-        spring damping-ratio=0.92 stiffness=800 epsilon=0.0001
-   }
+// animations {
+//     workspace-switch {
+//         spring damping-ratio=0.92 stiffness=800 epsilon=0.0001
+//    }
 
-    window-open {
-        spring damping-ratio=0.92 stiffness=900 epsilon=0.0001
-    }
+//     window-open {
+//         spring damping-ratio=0.92 stiffness=900 epsilon=0.0001
+//     }
 
-    window-close {
-        spring damping-ratio=0.95 stiffness=1000 epsilon=0.0001
-    }
+//     window-close {
+//         spring damping-ratio=0.95 stiffness=1000 epsilon=0.0001
+//     }
 
-    horizontal-view-movement {
-        spring damping-ratio=0.90 stiffness=800 epsilon=0.0001
-    }
+//     horizontal-view-movement {
+//         spring damping-ratio=0.90 stiffness=800 epsilon=0.0001
+//     }
 
-    window-movement {
-        spring damping-ratio=0.96 stiffness=850 epsilon=0.0001
-    }
-}
+//     window-movement {
+//         spring damping-ratio=0.96 stiffness=850 epsilon=0.0001
+//     }
+// }
 
 gestures {
     hot-corners {
@@ -145,14 +162,10 @@ gestures {
 // Window rules — adjust behavior for individual windows.
 window-rule {
     match app-id="kitty"
-    open-floating true
-    default-floating-position x=50 y=50 relative-to="bottom-right"
-    open-focused false
     background-effect {
         blur true
         xray false
-        saturation 0.5
-        noise 0.2
+        saturation 1
         }
 }
 
@@ -163,19 +176,12 @@ window-rule {
 
 
 window-rule {
-    match app-id="scrcpy"
-    open-floating true
-    default-floating-position x=32 y=32 relative-to="top-left"
-}
-
-window-rule {
     match app-id="dev.zed.Zed"
     open-maximized true
     background-effect {
         blur true
         xray true
-        saturation 0.5
-        noise 0.2
+        // saturation 0
         }
 }
 
@@ -201,31 +207,17 @@ window-rule {
 
 // Apply rounded corners to all windows.
 window-rule {
-    geometry-corner-radius 12
+    geometry-corner-radius 23
     clip-to-geometry true
 }
 
-// Layer rule
-// layer-rule {
-//     match namespace="^noctalia-bar-exclusion-bottom*"
-//     background-effect {
-//         blur true
-//         xray false
-//         saturation 0.3
-//         }
-//     }
-
-layer-rule {
-  match namespace="^noctalia-wallpaper*"
-  place-within-backdrop true
-}
 
 // Overview
 overview {
     workspace-shadow {
         off
         }
-    zoom 0.35
+    zoom 0.5
     }
 
 binds {
