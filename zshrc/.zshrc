@@ -1,3 +1,5 @@
+export PATH="/usr/bin:$PATH"
+export PATH="$HOME/.npm-global/bin:$PATH"
 # ==============================================================================
 # 1. ZINIT INSTALLATION & LOADING
 # ==============================================================================
@@ -16,7 +18,7 @@ source "$ZINIT_HOME/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-# =========================================d=====================================
+# ==============================================================================
 # 2. PLUGINS (Loaded via Zinit)
 # ==============================================================================
 zinit light marlonrichert/zsh-autocomplete
@@ -33,7 +35,7 @@ compinit -C
 # General
 alias cls="clear"
 alias v="nvim"
-export EDITOR="nvim"
+export EDITOR="zeditor"
 
 # Eza (Modern ls)
 alias l="eza -l --icons --git -a"
@@ -84,11 +86,11 @@ done
 # ==============================================================================
 # 7. PATH & OTHER TOOLS
 # ==============================================================================
+
 # Cargo
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # NPM Global
-export PATH="$HOME/.npm-global/bin:$PATH"
 
 # Pipx
 export PATH="$PATH:$HOME/.local/bin"
@@ -117,3 +119,8 @@ setopt EXTENDED_HISTORY         # Simpan timestamp
 if [[ ! -f ~/.zshrc.zwc || ~/.zshrc -nt ~/.zshrc.zwc ]]; then
     zcompile ~/.zshrc
 fi
+
+# OpenClaw Completion
+source "/home/fitrah/.openclaw/completions/openclaw.zsh"
+
+export PATH=$PATH:/home/fitrah/.spicetify

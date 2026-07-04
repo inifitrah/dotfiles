@@ -7,15 +7,77 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+    "agent_servers": {
+        "opencode": {
+            "type": "registry",
+        },
+    },
+    "focus_follows_mouse": {
+        "enabled": false,
+    },
+    "window_decorations": "client",
+    "git": {
+        "branch_picker": {
+            "show_author_name": true,
+        },
+    },
+    "proxy": "",
+    "diff_view_style": "split",
+    "cli_default_open_behavior": "new_window",
+    "collaboration_panel": {
+        "dock": "left",
+    },
+    "hover_popover_enabled": true,
+    "hover_popover_delay": 1000,
+    "hover_popover_hiding_delay": 1000,
+    "hover_popover_sticky": true,
+    "confirm_quit": true,
+    "git_panel": {
+        "dock": "left",
+    },
+    "context_servers": {
+        "mcp-server-github": {
+            "enabled": true,
+            "remote": false,
+            "settings": {},
+        },
+        "Roblox_Studio": {
+            "enabled": true,
+            "remote": false,
+            "command": "/home/fitrah/.var/app/org.vinegarhq.Vinegar/data/vinegar/kombucha/bin/wine",
+            "args": [
+                "cmd.exe",
+                "/c",
+                "Z:\\home\\fitrah\\.var\\app\\org.vinegarhq.Vinegar\\data\\vinegar\\appdata\\Roblox\\mcp.bat",
+            ],
+            "env": {
+                "WINEPREFIX": "/home/fitrah/.var/app/org.vinegarhq.Vinegar/data/vinegar/prefixes/studio",
+            },
+        },
+    },
     "show_edit_predictions": false,
     "edit_predictions": {
         "provider": "none",
     },
     "agent": {
-        "default_profile": "ask",
-        "default_model": {
+        "dock": "right",
+        "tool_permissions": {
+            "tools": {
+                "mcp:Roblox_Studio:list_roblox_studios": {
+                    "default": "allow",
+                },
+            },
+        },
+        "inline_assistant_model": {
             "provider": "copilot_chat",
-            "model": "gpt-5.1-codex",
+            "model": "gpt-5.4-mini",
+            "enable_thinking": false,
+        },
+        "default_profile": "write",
+        "default_model": {
+            "enable_thinking": true,
+            "provider": "copilot_chat",
+            "model": "claude-haiku-4.5",
         },
         "favorite_models": [],
         "model_parameters": [],
@@ -32,8 +94,8 @@
     },
     "session": { "trust_all_worktrees": true },
     "title_bar": {
+        "button_layout": "platform_default",
         "show_sign_in": true,
-        "show_branch_icon": false,
         "show_branch_name": false,
         "show_menus": false,
         "show_onboarding_banner": false,
@@ -43,24 +105,31 @@
     },
     "tab_bar": {
         "show": true,
-        "show_nav_history_buttons": false,
+        "show_nav_history_buttons": true,
     },
     "vim": {
         "use_system_clipboard": "on_yank",
     },
-    "vim_mode": false,
+    "vim_mode": true,
     "disable_ai": false,
     // "autosave": { "after_delay": { "milliseconds": 60000 } },
     "auto_install_extensions": { "html": true },
     "allow_rewrap": "anywhere",
     "bottom_dock_layout": "contained",
-    "icon_theme": "Material Icon Theme",
-    "ui_font_size": 16,
-    "buffer_font_size": 14,
+    "icon_theme": {
+        "mode": "dark",
+        "light": "Material Icon Theme",
+        "dark": "Material Icon Theme",
+    },
+    "jsx_tag_auto_close": {
+        "enabled": true,
+    },
+    "ui_font_size": 21,
+    "buffer_font_size": 16,
     "theme": {
         "mode": "dark",
-        "light": "GitHub Light High Contrast",
-        "dark": "Aura Dark",
+        "light": "GitHub Light",
+        "dark": "GitHub Dark Default",
     },
     "theme_overrides": {
         "Aura Dark": {
@@ -90,6 +159,25 @@
             "scrollbar.thumb.border": "#ffffff44",
             "scrollbar.track.border": "#ffffff55",
         },
+        "GitHub Dark": {
+            "background": "#1a172095",
+            "status_bar.background": "#1a172095",
+            "editor.background": "#1a172095",
+            "surface.background": "#1a172030",
+            "panel.background": "#1a172095",
+            "title_bar.background": "#1a172095",
+            "tab_bar.background": "#1a172000",
+            "tab.active_background": "#1a172095",
+            "tab.inactive_background": "#1a172000",
+            "toolbar.background": "#1a172000",
+            "terminal.background": "#1a172095",
+            "editor.gutter.background": "#1a172095",
+            "scrollbar.track.background": "#1a172000",
+            "border": "#adadad40",
+            "border.variant": "#adadad30",
+            "scrollbar.thumb.border": "#ffffff44",
+            "scrollbar.track.border": "#ffffff55",
+        },
     },
     "drag_and_drop_selection": {
         "enabled": false,
@@ -97,7 +185,7 @@
     "show_whitespaces": "none",
     "autoscroll_on_clicks": true,
     "auto_signature_help": true,
-    "seed_search_query_from_cursor": "never",
+    "seed_search_query_from_cursor": "selection",
     "base_keymap": "VSCode",
     "buffer_line_height": "comfortable",
     "current_line_highlight": "none",
@@ -106,7 +194,7 @@
         "active_language_button": true,
         "cursor_position_button": true,
         "line_endings_button": false,
-        "active_encoding_button": "enabled",
+        "active_encoding_button": "disabled",
         "experimental.show": true,
     },
     "indent_guides": {
@@ -118,10 +206,10 @@
     },
     "project_panel": {
         "dock": "left",
-        "default_width": 250,
+        "default_width": 200,
         "hide_root": true,
-        "auto_fold_dirs": false,
-        "sticky_scroll": false,
+        // "auto_fold_dirs": false,
+        // "sticky_scroll": false,
         "scrollbar": {
             "show": "never",
         },
@@ -130,13 +218,14 @@
         },
     },
     "outline_panel": {
-        "default_width": 300,
+        "dock": "left",
+        "default_width": 200,
         "indent_guides": {
             "show": "never",
         },
     },
     "file_finder": {
-        "modal_max_width": "large",
+        "modal_max_width": "small",
     },
     "scrollbar": {
         "show": "never",
@@ -144,17 +233,31 @@
     "tab_size": 4,
     "scroll_beyond_last_line": "vertical_scroll_margin",
     "terminal": {
+        "cursor_shape": "underline",
+        "font_family": ".ZedMono",
         "working_directory": "current_project_directory",
     },
     "gutter": {
         "min_line_number_digits": 0,
-        "folds": false,
+        "folds": true,
         "runnables": false,
     },
     "agent_ui_font_size": 18,
     "agent_buffer_font_size": 15,
     "profiles": {},
     "lsp": {
+        "json-language-server": {
+            "settings": {
+                "json": {
+                    "schemas": [
+                        {
+                            "fileMatch": ["*.project.json"],
+                            "url": "https://raw.githubusercontent.com/rojo-rbx/vscode-rojo/refs/heads/master/schemas/project.template.schema.json",
+                        },
+                    ],
+                },
+            },
+        },
         "tailwindcss-language-server": {
             "settings": {
                 "tailwindCSS": {
@@ -184,6 +287,118 @@
                         ["clx\\s*\\(\\s*\\{([^}]*)\\}\\s*\\)"],
                         ["cn\\s*\\(\\s*\\{([^}]*)\\}\\s*\\)"],
                     ],
+                },
+            },
+        },
+        "luau-lsp": {
+            "settings": {
+                "roblox": {
+                    // Whether or not Roblox-specific features should be enabled.
+                    "enabled": true,
+                    // The security level of scripts.
+                    // Must be "roblox_script", "local_user", "plugin" or "none".
+                    "security_level": "plugin",
+                    // Whether or not API documentation should be downloaded and added to luau-lsp.
+                    "download_api_documentation": true,
+                    // Whether or not definitions should be downloaded and added to luau-lsp.
+                    "download_definitions": true,
+                },
+                "plugin": {
+                    // Whether or not Roblox Studio Plugin support should be enabled. If false, the
+                    // extension will use the regular language server binary only, whereas if true,
+                    // it will use, thereby starting an HTTP server, and potentially install
+                    // 4teapo/luau-lsp-proxy as well. This is necessary for plugin support
+                    // to be possible.
+                    "enabled": false,
+                    // The port number to connect the Roblox Studio Plugin to.
+                    "port": 3667,
+                    // The path to the luau-lsp-proxy binary you want to force the extension
+                    // to use. If null, the extension tries to install it itself.
+                    "proxy_path": null,
+                },
+                "luau-lsp": {
+                    "ignoreGlobs": [],
+                    "sourcemap": {
+                        "enabled": true,
+                        "autogenerate": true,
+                        // The project file to generate a sourcemap for
+                        "rojoProjectFile": "default.project.json",
+                        // Whether non script instances should be included in the generated sourcemap
+                        "includeNonScripts": true,
+                        // The sourcemap file name
+                        "sourcemapFile": "sourcemap.json",
+                    },
+                    "inlayHints": {
+                        // Show inlay hints for function parameter names
+                        // "none" | "literals" | "all"
+                        "parameterNames": "all",
+                        // Show inlay hints for variable types
+                        "variableTypes": false,
+                        // Show inlay hints for parameter types
+                        "parameterTypes": false,
+                        // Show inlay hints for function return types
+                        "functionReturnTypes": false,
+                        // "Whether type hints should be hidden if they resolve to an error type
+                        "hideHintsForErrorTypes": false,
+                        // Whether type hints should be hidden if the resolved variable name matches the parameter name
+                        "hideHintsForMatchingParameterNames": true,
+                        // The maximum length a type hint should be before being truncated
+                        "typeHintMaxLength": 50,
+                        // Whether type annotation inlay hints can be made insertable by clicking
+                        "makeInsertable": true,
+                    },
+                    "hover": {
+                        // Enable hover
+                        "enabled": true,
+                        // Show table kinds
+                        "showTableKinds": false,
+                        // Show function definitions on multiple lines
+                        "multilineFunctionDefinitions": false,
+                        // Use strict DataModel types in hover display. When on, this is equivalent to autocompletion types. When off, this is equivalent to diagnostic types
+                        "strictDatamodelTypes": true,
+                        // Show string length when hovering over a string literal
+                        "includeStringLength": true,
+                    },
+                    "plugins": {
+                        // Whteher plugins are enabled
+                        "enabled": false,
+                        // Paths to plugin Luau scripts
+                        "paths": [],
+                        // Timeout for plugin execution in milliseconds
+                        "timeoutMs": 5000,
+                        // Configuration for plugin filesystem access
+                        "fileSystem": {
+                            // Whether filesystem access is enabled for plugins
+                            "enabled": false,
+                        },
+                    },
+                },
+            },
+        },
+        "discord_presence": {
+            "initialization_options": {
+                "application_id": "1263505205522337886",
+                // Base URL for all language icons
+                "base_icons_url": "https://raw.githubusercontent.com/xhyrom/zed-discord-presence/main/assets/icons/",
+
+                "state": "Working on {filename}",
+                "details": "In {workspace}",
+                // URL for the large image
+                "large_image": "{base_icons_url}/{language:lo}.png", // :lo lowercase the language name
+                "large_text": "{language:u}", // :u capitalizes the first letter
+                // URL for the small image
+                "small_image": "{base_icons_url}/zed.png",
+                "small_text": "Zed",
+                // Idle settings - when you're inactive
+                "idle": {
+                    "timeout": 360, // Idle timeout in seconds (300 seconds = 5 minutes)
+                    "action": "change_activity",
+                    "state": "Idling",
+                    "details": "In Zed",
+                    "large_image": "{base_icons_url}/zed.png",
+                    "large_text": "Zed",
+                    "small_image": "{base_icons_url}/idle.png",
+                    "small_text": "Idle",
                 },
             },
         },
@@ -230,6 +445,14 @@
         },
         "HTML": {
             "formatter": "language_server",
+        },
+        "Luau": {
+            "formatter": {
+                "external": {
+                    "command": "stylua",
+                    "arguments": ["-"],
+                },
+            },
         },
     },
 }
