@@ -45,6 +45,9 @@ alias ltree="eza --tree --level=2 --icons --git"
 # Docker
 alias dc="docker compose" # Docker v2 menggunakan 'docker compose' (spasi), bukan docker-compose (dash)
 
+# yazi
+alias y="yazi"
+
 # NPM / Dev
 alias dev="npm run dev"
 
