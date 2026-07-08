@@ -1,0 +1,23 @@
+[opener]
+pdf = [
+	{ run = "zathura %s", orphan = true, for = "unix", desc = "Zathura" },
+]
+play = [
+	{ run = "mpv %s", orphan = true, for = "unix" },
+]
+edit = [
+	{ run = "zeditor %s", block = true, for = "unix" },
+]
+open = [
+	{ run = "xdg-open %s1", desc = "Open" },
+]
+
+[open]
+prepend_rules = [
+	{ mime = "application/pdf", use = "pdf" },
+	{ url = "*.html", use = [ "open", "edit" ] },
+	{ mime = "text/*", use = "edit" },
+	{ mime = "video/*", use = "play" },
+	{ url = "*.json", use = "edit" },
+	{ url = "*.html", use = [ "open", "edit" ] },
+]

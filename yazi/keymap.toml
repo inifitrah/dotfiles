@@ -1,0 +1,5 @@
+[mgr]
+prepend_keymap = [
+	{ on = [ "g", "p" ], run = "cd ~/Developments",  desc = "Go dev",    for = "unix" },
+	{ on = [ "g", "o" ], run = "cd ~/Documents/ObsidianVault",  desc = "Go obsidian vault",    for = "unix" },
+]
