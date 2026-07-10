@@ -1,73 +1,464 @@
+# Get editor completions based on the config schema
 "$schema" = 'https://starship.rs/config-schema.json'
 
 add_newline = false
-format = """$directory$fill$git_branch$git_status$cmd_duration$package$nodejs$python$docker_context
-$character"""
-command_timeout = 10000
+palette = "catppuccin_mocha"
+command_timeout = 5000
 
-[fill]
-symbol = ' '
+# left prompt
+format = """$battery$hostname$container$os$directory$character"""
+# move the rest of the prompt to the right
+right_format = """$all${custom.jj_branch}${custom.jj_op}${custom.jj_git_notinsync}"""
 
-[character]
-success_symbol = '[❯](bold green)'
-error_symbol = '[❯](bold red)'
-vimcmd_symbol = '[❮](bold purple)'
+[aws]
+disabled = true
+symbol = "  "
+
+[azure]
+disabled = true
+format = "[$symbol($username)]($style) "
+symbol = "󰠅 "
+style = "blue bold"
+
+[battery]
+charging_symbol = "🔌 "
+discharging_symbol = "🔋 "
+unknown_symbol = "⚠️  "
+
+[[battery.display]]
+threshold = 10
+style = "bold red"
+discharging_symbol = "󰁺 "
+charging_symbol = "󰢜 "
+
+[[battery.display]]
+threshold = 20
+style = "bold red"
+discharging_symbol = "󰁻 "
+charging_symbol = "󰂆 "
+
+[[battery.display]]
+threshold = 30
+style = "bold maroon"
+discharging_symbol = "󰁼 "
+charging_symbol = "󰂇 "
+
+[[battery.display]]
+threshold = 40
+style = "bold peach"
+discharging_symbol = "󰁽 "
+charging_symbol = "󰂈 "
+
+[[battery.display]]
+threshold = 50
+style = "bold yellow"
+discharging_symbol = "󰁾 "
+charging_symbol = "󰢝 "
+
+[buf]
+symbol = " "
+
+[c]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[cmake]
+symbol = " "
+format = "[$symbol($version)]($style) "
 
 [cmd_duration]
-min_time = 2_000
-format = "[\uf252 $duration]($style)"
-style = 'bold purple'
+min_time = 1000
+format = "took [$duration]($style) "
+
+[conda]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[container]
+symbol = ""
+format = "[$symbol]($style) "
+
+[crystal]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[dart]
+symbol = " "
+format = "[$symbol($version)]($style) "
 
 [directory]
-style = 'bold blue'
-format = "[$path]($style)[$read_only]($read_only_style)"
-read_only_style = 'bold red'
-read_only = "\uf023 "
+truncate_to_repo = true
+truncation_symbol = '…/'
+style = "bold lavender"
+read_only = " 󰌾"
 
-[git_branch]
-format = '[$symbol$branch(:$remote_branch)]($style) '
-style = 'bold cyan'
-symbol = "\ue0a0 "
-
-[git_status]
-format = '[$all_status$ahead_behind]($style)'
-style = 'bold cyan'
-conflicted = "\uf0e7 "
-ahead = '⇡${count} '
-behind = '⇣${count} '
-diverged = '⇕⇡${ahead_count}⇣${behind_count} '
-untracked = "\uf128 "
-stashed = "\uf01c "
-modified = "\uf044 "
-staged = "\uf067 "
-renamed = '󰑕 '
-deleted = "\uf014 "
-
-[gcloud]
-disabled = true
-
-[nodejs]
-format = '[ $symbol($version)]($style)'
-symbol = "\ue718 "
-style = 'green'
-
-[python]
-format = '[ $symbol$version]($style)'
-symbol = "\ue73c "
-style = 'purple'
-
-[rust]
-disabled = true
-
-[golang]
-disabled = true
+[directory.substitutions]
+"/Code" = "/"
+"/Developer" = "/"
+"/workspaces" = "/"
 
 [docker_context]
-format = '[ $symbol$context]($style)'
-symbol = "\uf308 "
-style = 'blue'
+symbol = " "
+
+[elixir]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[elm]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[fennel]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[fossil_branch]
+symbol = " "
+
+[git_branch]
+style = "bold mauve"
+symbol = " "
+format = "[$symbol$branch(:$remote_branch)]($style) "
+
+[git_commit]
+tag_symbol = '  '
+
+[git_metrics]
+disabled = false
+
+[git_status]
+format = '([$all_status$ahead_behind]($style) )'
+
+# Custom Nerd Font / glyph mappings
+ahead = "⇡${count} "          # commits ahead
+behind = "⇣${count} "         # commits behind
+diverged = "⇕ "              # diverged
+conflicted = "⚔ ${count}"            # merge conflicts
+stashed = " "               # stashed changes
+staged = "✔ "                # staged changes
+modified = " "             # modified files
+deleted = " "              # deleted files
+renamed = " "              # renamed files
+untracked = " "            # untracked files
+
+[golang]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[guix_shell]
+symbol = " "
+
+[haskell]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[haxe]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+
+[hg_branch]
+symbol = " "
+
+[hostname]
+ssh_symbol = " "
+format = "[$ssh_symbol](status)"
+
+[java]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[julia]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[kotlin]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[lua]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[memory_usage]
+symbol = "󰍛 "
+
+[meson]
+symbol = "󰔷 "
+format = "[$symbol($version)]($style) "
+
+[nim]
+symbol = "󰆥 "
+format = "[$symbol($version)]($style) "
+
+[nix_shell]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[nodejs]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[ocaml]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[os]
+format = "$symbol($style) "
+style = "bold blue"
+disabled = false
 
 [package]
-format = '[ $symbol$version]($style)'
-symbol = '󰏗 '
-style = 'blue'
+symbol = "󰏗 "
+
+[perl]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[php]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[pijul_channel]
+symbol = " "
+
+[python]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[rlang]
+symbol = "󰟔 "
+format = "[$symbol($version)]($style) "
+
+[ruby]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[rust]
+symbol = "󱘗 "
+format = "[$symbol($version)]($style) "
+
+[scala]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[swift]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[username]
+disabled = true
+
+[zig]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[gradle]
+symbol = " "
+format = "[$symbol($version)]($style) "
+
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
+
+
+[os.symbols]
+Alpaquita = " "
+Alpine = " "
+AlmaLinux = " "
+Amazon = " "
+Android = " "
+Arch = " "
+Artix = " "
+CachyOS = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+Gentoo = " "
+HardenedBSD = "󰞌 "
+Illumos = "󰈸 "
+Kali = " "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+Nobara = " "
+OpenBSD = "󰈺 "
+openSUSE = " "
+OracleLinux = "󰌷 "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+RockyLinux = " "
+Redox = "󰀘 "
+Solus = "󰠳 "
+SUSE = " "
+Ubuntu = " "
+Unknown = " "
+Void = " "
+Windows = "󰍲 "
+
+[palettes.catppuccin_frappe]
+rosewater = "#f2d5cf"
+flamingo = "#eebebe"
+pink = "#f4b8e4"
+mauve = "#ca9ee6"
+red = "#e78284"
+maroon = "#ea999c"
+peach = "#ef9f76"
+yellow = "#e5c890"
+green = "#a6d189"
+teal = "#81c8be"
+sky = "#99d1db"
+sapphire = "#85c1dc"
+blue = "#8caaee"
+lavender = "#babbf1"
+text = "#c6d0f5"
+subtext1 = "#b5bfe2"
+subtext0 = "#a5adce"
+overlay2 = "#949cbb"
+overlay1 = "#838ba7"
+overlay0 = "#737994"
+surface2 = "#626880"
+surface1 = "#51576d"
+surface0 = "#414559"
+base = "#303446"
+mantle = "#292c3c"
+crust = "#232634"
+
+[palettes.catppuccin_latte]
+rosewater = "#dc8a78"
+flamingo = "#dd7878"
+pink = "#ea76cb"
+mauve = "#8839ef"
+red = "#d20f39"
+maroon = "#e64553"
+peach = "#fe640b"
+yellow = "#df8e1d"
+green = "#40a02b"
+teal = "#179299"
+sky = "#04a5e5"
+sapphire = "#209fb5"
+blue = "#1e66f5"
+lavender = "#7287fd"
+text = "#4c4f69"
+subtext1 = "#5c5f77"
+subtext0 = "#6c6f85"
+overlay2 = "#7c7f93"
+overlay1 = "#8c8fa1"
+overlay0 = "#9ca0b0"
+surface2 = "#acb0be"
+surface1 = "#bcc0cc"
+surface0 = "#ccd0da"
+base = "#eff1f5"
+mantle = "#e6e9ef"
+crust = "#dce0e8"
+
+[palettes.catppuccin_macchiato]
+rosewater = "#f4dbd6"
+flamingo = "#f0c6c6"
+pink = "#f5bde6"
+mauve = "#c6a0f6"
+red = "#ed8796"
+maroon = "#ee99a0"
+peach = "#f5a97f"
+yellow = "#eed49f"
+green = "#a6da95"
+teal = "#8bd5ca"
+sky = "#91d7e3"
+sapphire = "#7dc4e4"
+blue = "#8aadf4"
+lavender = "#b7bdf8"
+text = "#cad3f5"
+subtext1 = "#b8c0e0"
+subtext0 = "#a5adcb"
+overlay2 = "#939ab7"
+overlay1 = "#8087a2"
+overlay0 = "#6e738d"
+surface2 = "#5b6078"
+surface1 = "#494d64"
+surface0 = "#363a4f"
+base = "#24273a"
+mantle = "#1e2030"
+crust = "#181926"
+
+[custom.jj_branch]
+shell = "sh"
+when = '''
+dir="$PWD"
+while [ "$dir" != "/" ]; do
+  [ -d "$dir/.jj" ] && exit 0
+  dir="$(dirname "$dir")"
+done
+exit 1
+'''
+command = '''
+jj log -r "(immutable_heads()..@):: & branches()" -T 'local_branches.join(\"\n\") ++ \"\n\"' --no-graph --ignore-working-copy | head -n 1
+'''
+style = 'yellow'
+
+[custom.jj_op]
+shell = "sh"
+when = '''
+dir="$PWD"
+while [ "$dir" != "/" ]; do
+  [ -d "$dir/.jj" ] && exit 0
+  dir="$(dirname "$dir")"
+done
+exit 1
+'''
+command = 'jj op log -n 1 -T "id.short()" --no-graph --ignore-working-copy'
+symbol = 'op:'
+style = "bright-yellow"
+
+[custom.jj_git_notinsync]
+shell = "sh"
+when = '''
+dir="$PWD"
+while [ "$dir" != "/" ]; do
+  [ -d "$dir/.jj" ] && break
+  dir="$(dirname "$dir")"
+done
+[ "$dir" = "/" ] && exit 1
+[ -n "${jj_git_head:=$(jj log -T commit_id --no-graph --ignore-working-copy -r HEAD@git)}" ] \
+&& [ -n "${git_head:=$(git rev-parse HEAD)}" ] \
+&& [ "$git_head" != "$jj_git_head" ]
+'''
+command = 'jj log -T "commit_id.short()" --no-graph --ignore-working-copy -r HEAD@git'
+symbol = 'jj:git≠'
+style = 'bold red'
