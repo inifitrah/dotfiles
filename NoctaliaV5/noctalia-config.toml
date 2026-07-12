@@ -1,0 +1,395 @@
+[bar]
+order = [ "default", "bar-blur" ]
+
+    [bar.bar-blur]
+    enabled = false
+
+    [bar.default]
+    capsule = true
+    capsule_groups = [ "LEFT" ]
+    center = [ "clock", "media" ]
+    contact_shadow = true
+    end = [ "group:g1", "temp", "recorder", "volume", "brightness", "network", "tray", "notifications" ]
+    margin_edge = 0
+    margin_ends = 134
+    padding = 0
+    panel_overlap = 0
+    radius = 79
+    radius_bottom_left = 80
+    radius_bottom_right = 80
+    start = [ "picker", "workspaces", "cat", "active_window" ]
+    widget_spacing = 0
+
+        [[bar.default.capsule_group]]
+        enabled = true
+        fill = "on_primary"
+        id = "g1"
+        members = [ "screenshot", "Hyprpicker", "clipboard" ]
+        opacity = 0.64999997615814209
+        padding = 11.0
+
+[calendar]
+refresh_minutes = 50
+
+[control_center]
+sidebar = "full"
+
+    [control_center.calendar]
+    show_events_card = false
+
+    [[control_center.shortcuts]]
+    type = "wifi"
+
+    [[control_center.shortcuts]]
+    type = "nightlight"
+
+    [[control_center.shortcuts]]
+    type = "notification"
+
+    [[control_center.shortcuts]]
+    type = "power_profile"
+
+    [[control_center.shortcuts]]
+    type = "dark_mode"
+
+    [[control_center.shortcuts]]
+    type = "session"
+
+[desktop_widgets]
+schema_version = 1
+widget_order = [
+    "desktop-widget-0000000000000002",
+    "desktop-widget-0000000000000003",
+    "desktop-widget-0000000000000004",
+    "desktop-widget-0000000000000005"
+]
+
+    [desktop_widgets.grid]
+    cell_size = 8
+    major_interval = 4
+    visible = true
+
+    [desktop_widgets.widget.desktop-widget-0000000000000002]
+    box_height = 64.0
+    box_width = 256.0
+    cx = 160.5
+    cy = 1088.0
+    output = "eDP-1"
+    rotation = 0.0
+    type = "label"
+
+        [desktop_widgets.widget.desktop-widget-0000000000000002.settings]
+        background = false
+        font_family = "Ark Pixel 10px M ja"
+        opacity = 1.0
+        title = "Keep Learning,"
+
+    [desktop_widgets.widget.desktop-widget-0000000000000003]
+    box_height = 64.0
+    box_width = 256.0
+    cx = 160.5
+    cy = 1120.0
+    output = "eDP-1"
+    rotation = -0.0
+    type = "label"
+
+        [desktop_widgets.widget.desktop-widget-0000000000000003.settings]
+        background = false
+        font_family = "Ark Pixel 10px M ja"
+        opacity = 0.77000000000000002
+        title = "Keep Building,"
+
+    [desktop_widgets.widget.desktop-widget-0000000000000004]
+    box_height = 56.0
+    box_width = 248.0
+    cx = 156.5
+    cy = 1152.0
+    output = "eDP-1"
+    rotation = 0.0
+    type = "label"
+
+        [desktop_widgets.widget.desktop-widget-0000000000000004.settings]
+        background = false
+        description = ""
+        font_family = "Ark Pixel 10px M ja"
+        opacity = 0.59999999999999998
+        shadow = true
+        title = "Keep Growing."
+
+    [desktop_widgets.widget.desktop-widget-0000000000000005]
+    box_height = 64.0
+    box_width = 56.0
+    cx = 336.0
+    cy = 1124.0
+    output = "eDP-1"
+    rotation = -0.0
+    type = "label"
+
+        [desktop_widgets.widget.desktop-widget-0000000000000005.settings]
+        background = false
+        font_family = "Ark Pixel 10px M ja"
+        opacity = 1.0
+        title = "Z"
+
+[dock]
+auto_hide = true
+background_opacity = 0.99999997764825821
+enabled = false
+show_dots = true
+
+[idle]
+pre_action_fade_seconds = 0.0
+
+[lockscreen]
+blur_intensity = 0.76999998278915882
+blurred_desktop = true
+
+[lockscreen_widgets]
+enabled = true
+schema_version = 1
+widget_order = [ "lockscreen-login-box@eDP-1", "lockscreen-widget-0000000000000001", "lockscreen-widget-0000000000000004" ]
+
+    [lockscreen_widgets.grid]
+    cell_size = 8
+    major_interval = 4
+    visible = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@eDP-1"]
+    box_height = 64.0
+    box_width = 344.0
+    cx = 976.0
+    cy = 600.0
+    output = "eDP-1"
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@eDP-1".settings]
+        background_color = "on_secondary"
+        background_opacity = 0.0
+        background_radius = 0.0
+        input_opacity = 1.0
+        input_radius = 32.0
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = false
+        show_password_hint = true
+
+    [lockscreen_widgets.widget.lockscreen-widget-0000000000000001]
+    box_height = 96.0
+    box_width = 200.0
+    cx = 960.0
+    cy = 216.0
+    output = "eDP-1"
+    rotation = 0.0
+    type = "clock"
+
+        [lockscreen_widgets.widget.lockscreen-widget-0000000000000001.settings]
+        background = false
+        background_opacity = 0.0
+        background_padding = 0.0
+        background_radius = 0.0
+        color = "primary"
+        font_family = "Ark Pixel 10px M ja"
+        shadow = true
+
+    [lockscreen_widgets.widget.lockscreen-widget-0000000000000004]
+    box_height = 104.0
+    box_width = 336.0
+    cx = 968.0
+    cy = 292.0
+    output = "eDP-1"
+    rotation = 0.0
+    type = "label"
+
+        [lockscreen_widgets.widget.lockscreen-widget-0000000000000004.settings]
+        background = false
+        description = ""
+        font_family = "Ark Pixel 10px M ja"
+        title = "Hello World"
+
+[notification]
+background_opacity = 0.99999997764825821
+
+[osd]
+background_opacity = 0.99999997764825821
+keyboard_layout = false
+
+[plugin_settings."noctalia/mpvpaper"]
+picker_placement = "floating"
+video_directory = ""
+
+[plugin_settings."noctalia/screen_recorder"]
+directory = ""
+video_source = "portal"
+
+[plugin_settings."noctalia/translator"]
+target_lang = "id"
+
+[plugin_settings."noctalia/wallhaven"]
+browser_placement = "attached"
+
+[plugins]
+enabled = [ "noctalia/screen_recorder", "noctalia/kaomoji", "noctalia/translator", "yogaeru/mango_layout", "noctalia/bongocat" ]
+
+    [[plugins.source]]
+    kind = "git"
+    location = "https://github.com/noctalia-dev/official-plugins"
+    name = "official"
+
+    [[plugins.source]]
+    kind = "git"
+    location = "https://github.com/noctalia-dev/community-plugins"
+    name = "community"
+
+    [[plugins.source]]
+    kind = "git"
+    location = "https://github.com/yogaeru/noctalia-plugins"
+    name = "yogaeru"
+
+    [[plugins.source]]
+    kind = "path"
+    location = "/home/fitrah/Developments/PluginNoctalia"
+    name = "my-plugin"
+
+[shell]
+avatar_path = "/home/fitrah/Pictures/hunter-×-hunter-killua-gif-pfp-1.gif"
+font_family = "Noto Sans"
+offline_mode = true
+polkit_agent = true
+screen_time_enabled = true
+telemetry_enabled = true
+ui_scale = 1.1499999999999999
+
+    [shell.launcher]
+    compact = true
+    session_search = true
+
+    [shell.panel]
+    transparency_mode = "glass"
+
+    [shell.screen_corners]
+    enabled = true
+    size = 15
+
+[theme]
+builtin = "Ayu"
+community_palette = "Everforest"
+mode = "dark"
+source = "wallpaper"
+wallpaper_scheme = "m3-content"
+
+    [theme.templates]
+    builtin_ids = [ "btop", "cava", "gtk3", "gtk4", "kitty", "mango", "niri", "qt" ]
+    community_ids = [ "spicetify", "neovim", "zed", "rofi", "papirus-icons", "yazi", "zathura" ]
+
+[wallpaper]
+directory = "/home/fitrah/Pictures/Wallpapers"
+
+    [wallpaper.default]
+    path = "/home/fitrah/Pictures/Wallpapers/Refraction-Z17Pro.jpg"
+
+    [wallpaper.last]
+    path = "/home/fitrah/Pictures/Wallpapers/Refraction-Z17Pro.jpg"
+
+    [wallpaper.monitors.eDP-1]
+    path = "/home/fitrah/Pictures/Wallpapers/Refraction-Z17Pro.jpg"
+
+    [[wallpaper.favorite]]
+    palette_source = "wallpaper"
+    path = "/home/fitrah/Pictures/Wallpapers/pawel-czerwinski-yI4I3OrpB0I-unsplash.jpg"
+    theme_mode = "dark"
+    wallpaper_scheme = "m3-rainbow"
+
+    [[wallpaper.favorite]]
+    palette_source = "wallpaper"
+    path = "/home/fitrah/Pictures/Wallpapers/Refraction-Z17Pro.jpg"
+    theme_mode = "dark"
+    wallpaper_scheme = "m3-content"
+
+[weather]
+enabled = false
+
+[widget.AutoHide]
+glyph = "eye-filled"
+tooltip = "Auto Hide "
+type = "custom_button"
+
+[widget.FIle]
+glyph = ""
+label = "Finder"
+type = "custom_button"
+
+[widget.Hyprpicker]
+command = "hyprpicker -a"
+glyph = "color-picker"
+type = "custom_button"
+
+[widget.bongocat]
+capsule = true
+capsule_group = "LEFT"
+input_device = ""
+script = "scripts/bongocat.lua"
+type = "scripted"
+
+[widget.cat]
+type = "noctalia/bongocat:cat"
+
+[widget.clock]
+scale = 1.1000000000000001
+
+[widget.control-center]
+glyph = "brand-apple-filled"
+scale = 1.3
+
+[widget.cpu]
+stat = "cpu_temp"
+
+[widget.media]
+capsule = true
+hide_when_no_media = true
+
+[widget.mpvpaper]
+type = "noctalia/mpvpaper:mpvpaper"
+
+[widget.msnapgui]
+glyph = "brand-apple-filled"
+scale = 1.3
+tooltip = "i use Arch btw XD"
+type = "custom_button"
+
+[widget.notes]
+type = "noctalia/notes:notes"
+
+[widget.picker]
+icon = "brand-apple-filled"
+scale = 1.3500000000000001
+type = "yogaeru/mango_layout:picker"
+
+[widget.recorder]
+type = "noctalia/screen_recorder:recorder"
+
+[widget.screen_recorder]
+script = "scripts/screen_recorder.lua"
+type = "scripted"
+
+[widget.spacer_2]
+type = "spacer"
+
+[widget.sysmon]
+display = "graph"
+
+[widget.temp]
+display = "graph"
+
+[widget.wallhaven]
+type = "noctalia/wallhaven:wallhaven"
+
+[widget.workspaces]
+active_pill_size = 2.75
+capsule = true
+capsule_group = "LEFT"
+capsule_padding = 1
+hide_when_empty = true
+inactive_pill_size = 1.25
+pill_scale = 0.80000000000000004
+scale = 1.1500000000000001
