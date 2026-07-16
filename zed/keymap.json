@@ -65,6 +65,16 @@
         },
     },
 
+    // MD spesific sc
+    {
+        "context": "VimControl && !menu && extension == md",
+        "use_key_equivalents": true,
+        "bindings": {
+            "j": [ "vim::Down", {"display_lines": true} ],
+            "k": [ "vim::Up", {"display_lines": true} ]
+        }
+    },
+
     // *** VIM Editor ***
     {
         "context": "Editor && VimControl && !menu",
@@ -193,8 +203,8 @@
     {
         "context": "Editor && vim_mode == insert",
         "bindings": {
-            "j j": ["workspace::SendKeystrokes", "escape : w enter"],
             "j k": "vim::NormalBefore",
+            "k j": "vim::NormalBefore",
         },
     },
     {
