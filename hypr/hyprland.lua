@@ -233,6 +233,11 @@ hl.config({
 hl.config({
     scrolling = {
         fullscreen_on_one_column = true,
+        column_width = 0.8,
+        focus_fit_method = 1,
+        follow_focus = true,
+        follow_min_visible = 0.1,
+        explicit_column_widths  =  0.333, 0.5, 0.667, 1.0
     },
 })
 
@@ -293,7 +298,8 @@ local ipc = "noctalia msg "
 -- Noctalia
 -- Core binds
 hl.bind(mainMod .. "+Space", hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
-hl.bind(mainMod .. "+comma", hl.dsp.exec_cmd(ipc .. "settings-toggle"))
+hl.bind(mainMod .. "+ SHIFT + comma", hl.dsp.exec_cmd(ipc .. "settings-toggle"))
+hl.bind(mainMod .. "+ SHIFT + Escape", hl.dsp.exec_cmd(ipc .. "panel-toggle session"))
 
 -- Media keys
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc .. "volume-up"))
@@ -319,6 +325,8 @@ hl.bind(mainMod .. " + L", hl.dsp.focus({ direction = "right" }))
 hl.bind(mainMod .. " + K",    hl.dsp.focus({ direction = "up" }))
 hl.bind(mainMod .. " + J",  hl.dsp.focus({ direction = "down" }))
 
+hl.bind("ALT + A", hl.dsp.window.fullscreen({ mode= "maximized", action="toggle", layout_aware=true  }) )
+hl.bind("ALT + F", hl.dsp.window.fullscreen({ mode= "fullscreen", action="toggle", layout_aware=true  }) )
 
 -- Switch workspaces with mainMod + [0-9]
 -- Move active window to a workspace with mainMod + SHIFT + [0-9]
@@ -354,6 +362,15 @@ hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tr
 hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
 
+-- Scrolling
+hl.bind(mainMod .. "+ comma", hl.dsp.layout("move +100"))
+hl.bind(mainMod .. "+ period", hl.dsp.layout("move -100"))
+hl.bind(mainMod .. "+ SHIFT + H", hl.dsp.layout("swapcol l"))
+hl.bind(mainMod .. "+ SHIFT + L", hl.dsp.layout("swapcol r"))
+hl.bind(mainMod .. "+ equal", hl.dsp.layout("colresize +0.5"))
+hl.bind(mainMod .. "+ minus", hl.dsp.layout("colresize -0.1"))
+hl.bind(mainMod .. "+ R", hl.dsp.layout("fit all"))
+hl.bind(mainMod .. "+ F", hl.dsp.layout("fit active"))
 
 --------------------------------
 ---- WINDOWS AND WORKSPACES ----
