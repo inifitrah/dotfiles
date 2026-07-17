@@ -55,8 +55,8 @@ local menu        = "hyprlauncher"
 
 hl.on("hyprland.start", function ()
     hl.exec_cmd("noctalia")
+    hl.exec_cmd("hyprpm reload")
 end)
-
 
 -------------------------------
 ---- ENVIRONMENT VARIABLES ----
@@ -105,6 +105,7 @@ hl.config({
     },
 })
 
+hl.permission("/usr/(bin|local/bin)/hyprpm", "plugin", "allow")
 -- hl.permission("/usr/(bin|local/bin)/grim", "screencopy", "allow")
 -- hl.permission("/usr/(lib|libexec|lib64)/xdg-desktop-portal-hyprland", "screencopy", "allow")
 -- hl.permission("/usr/(bin|local/bin)/hyprpm", "plugin", "allow")
@@ -191,7 +192,6 @@ hl.animation({ leaf = "workspaces",    enabled = true,  speed = 1.94, bezier = "
 hl.animation({ leaf = "workspacesIn",  enabled = true,  speed = 1.21, bezier = "almostLinear", style = "fade" })
 hl.animation({ leaf = "workspacesOut", enabled = true,  speed = 1.94, bezier = "almostLinear", style = "fade" })
 hl.animation({ leaf = "zoomFactor",    enabled = true,  speed = 7,    bezier = "quick" })
-
 -- Ref https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
 -- "Smart gaps" / "No gaps when only"
 -- uncomment all if you wish to use that.
@@ -372,6 +372,10 @@ hl.bind(mainMod .. "+ minus", hl.dsp.layout("colresize -0.1"))
 hl.bind(mainMod .. "+ R", hl.dsp.layout("fit all"))
 hl.bind(mainMod .. "+ F", hl.dsp.layout("fit active"))
 
+hl.bind(mainMod .. "+ o", function ()
+    hl.plugin.scrolloverview.overview("toggle")
+end)
+
 --------------------------------
 ---- WINDOWS AND WORKSPACES ----
 --------------------------------
@@ -443,49 +447,7 @@ hl.window_rule({
 -----------------
 ---- PLUGINS  ---
 -----------------
-hl.config({
-    plugin = {
-        hyprbars = {
-                  bar_height                 = 32,
-                  bar_part_of_window         = true,
-                  bar_buttons_alignment      = "left",
-                  bar_button_padding         = 10,
-                  bar_blur                   = false,
-                  bar_padding                = 12	,
-                  bar_text_font              = "",
-                  bar_text_size			   = 14,
-                  bar_precedence_over_border = true,
-                  bar_color                  = "rgba(00000000)",
-                  col                        = {
-                      text = "rgb(ffffff)",
-                  },
-                  icon_on_hover              = true,
-                  inactive_button_color      = "rgb(c2c2c2)",
-                  on_double_click            = "hyprctl dispatch 'hl.dsp.window.fullscreen_state({internal = 1, client = 0})'"
-              },
-    }
-})
-hl.plugin.hyprbars.add_button({
-    bg_color = "rgb(fe5154)",
-    fg_color = "rgb(000000)",
-    size = 16,
-    icon = "󰖭",
-    action = "hyprctl dispatch 'hl.dsp.window.close()'",
-})
-hl.plugin.hyprbars.add_button({
-    bg_color = "rgb(f7c000)",
-    fg_color = "rgb(000000)",
-    size = 16,
-    icon = "",
-    action = "hyprctl dispatch 'hl.dsp.window.float()'",
-})
-hl.plugin.hyprbars.add_button({
-    bg_color = "rgb(2dbf4d)",
-    fg_color = "rgb(000000)",
-    size = 16,
-    icon = "󰘖",
-    action = "hyprctl dispatch 'hl.dsp.window.fullscreen_state({internal = 1, client = 0})'"
-})
+require("plugins")
 
 -- For Noctalia Color templates
 require("noctalia").apply_theme()
