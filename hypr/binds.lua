@@ -13,6 +13,27 @@ local menu        = "hyprlauncher"
 
 local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 local ipc = "noctalia msg "
+
+-- Per-layout binds: same key, different action depending on the active layout
+local function layout_bind(bind_table)
+    return function ()
+        local workspace = hl.get_active_special_workspace() or
+                          hl.get_active_workspace()
+
+        if not workspace then
+            return
+        end
+
+        local layout = workspace.tiled_layout
+
+        if bind_table[layout] then
+            hl.dispatch(bind_table[layout])
+        elseif bind_table.default then
+            hl.dispatch(bind_table.default)
+        end
+    end
+end
+
 -- Noctalia
 -- Core binds
 hl.bind(mainMod .. "+Space", hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
@@ -38,10 +59,10 @@ hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 -- hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))    -- dwindle only
 
 -- Move focus with mainMod + arrow keys
-hl.bind(mainMod .. " + H",  hl.dsp.focus({ direction = "left" }))
-hl.bind(mainMod .. " + L", hl.dsp.focus({ direction = "right" }))
-hl.bind(mainMod .. " + K",    hl.dsp.focus({ direction = "up" }))
+hl.bind(mainMod .. " + H",    hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + J",  hl.dsp.focus({ direction = "down" }))
+hl.bind(mainMod .. " + K",    hl.dsp.focus({ direction = "up" }))
+hl.bind(mainMod .. " + L",  hl.dsp.focus({ direction = "right" }))
 
 hl.bind("ALT + A", hl.dsp.window.fullscreen({ mode= "maximized", action="toggle", layout_aware=true  }) )
 hl.bind("ALT + F", hl.dsp.window.fullscreen({ mode= "fullscreen", action="toggle", layout_aware=true  }) )
@@ -83,22 +104,47 @@ hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tr
 hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
 
--- Scrolling
-hl.bind(mainMod .. "+ comma", hl.dsp.layout("move +100"))
-hl.bind(mainMod .. "+ period", hl.dsp.layout("move -100"))
-hl.bind(mainMod .. "+ SHIFT + H", hl.dsp.layout("swapcol l"))
-hl.bind(mainMod .. "+ SHIFT + L", hl.dsp.layout("swapcol r"))
-hl.bind(mainMod .. "+ equal", hl.dsp.layout("colresize +0.5"))
-hl.bind(mainMod .. "+ minus", hl.dsp.layout("colresize -0.1"))
-hl.bind(mainMod .. "+ R", hl.dsp.layout("fit all"))
-hl.bind(mainMod .. "+ F", hl.dsp.layout("fit active"))
+-- Scrolling (per-layout: only active on the scrolling layout)
+hl.bind(mainMod .. "+ comma", layout_bind({
+    scrolling = hl.dsp.layout("move +100"),
+}))
+hl.bind(mainMod .. "+ period", layout_bind({
+    scrolling = hl.dsp.layout("move -100"),
+}))
+hl.bind(mainMod .. "+ equal", layout_bind({
+    scrolling = hl.dsp.layout("colresize +0.5"),
+}))
+hl.bind(mainMod .. "+ minus", layout_bind({
+    scrolling = hl.dsp.layout("colresize -0.1"),
+}))
+hl.bind(mainMod .. "+ R", layout_bind({
+    scrolling = hl.dsp.layout("fit all"),
+}))
+hl.bind(mainMod .. "+ F", layout_bind({
+    scrolling = hl.dsp.layout("fit active"),
+}))
 
 hl.bind(mainMod .. "+ o", function ()
     hl.plugin.scrolloverview.overview("toggle")
 end)
 
-hl.bind(" ALT + H", hl.dsp.layout("cycleprev"))
-hl.bind(" ALT + L", hl.dsp.layout("cyclenext"))
+
+hl.bind(mainMod .. " + SHIFT + H", layout_bind({
+    scrolling = hl.dsp.layout("swapcol l"),  -- Scrolling: swap column with left one
+    dwindle   = hl.dsp.layout("swapsplit"),  -- Dwindle: swap window split
+}))
+
+hl.bind(mainMod .. " + SHIFT + L", layout_bind({
+    scrolling = hl.dsp.layout("swapcol r"),  -- Scrolling: swap column with right one
+    dwindle   = hl.dsp.layout("togglesplit"), -- Dwindle: toggle window split
+}))
+
+hl.bind(mainMod .. " + L", layout_bind({
+    monocle = hl.dsp.layout("cyclenext"),            -- Monocle: cycle next window
+}))
+hl.bind(mainMod .. " + H", layout_bind({
+    monocle = hl.dsp.layout("cycleprev"),           -- Monocle: cycle prev window
+}))
 
 hl.bind("SUPER + X", function ()
     if hl.get_workspace("special:minimized") then

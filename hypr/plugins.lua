@@ -6,20 +6,23 @@ hl.config({
     plugin = {
         scrolloverview = {
                    gesture_distance = 300, -- how far is the "max" for the gesture
-                   scale = 0.5, -- preferred overview scale
+                   scale = 0.6, -- preferred overview scale
                    workspace_gap = 100,
                    layout = "vertical", -- vertical or horizontal
-                   wallpaper = 2, -- 0: global only, 1: per-workspace only, 2: both
+                   wallpaper = 1, -- 0: global only, 1: per-workspace only, 2: both
                    blur = false, -- blur only the main overview wallpaper
+            input = {
 
+                   },
                    shadow = {
-                       enabled = true,
+                       enabled = false,
                        range = 50,
                        render_power = 3,
                        color = 0xee1a1a1a,
                    },
                },
         hyprbars = {
+                  enabled = true,
                   bar_height                 = 32,
                   bar_part_of_window         = true,
                   bar_buttons_alignment      = "left",
