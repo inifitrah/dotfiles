@@ -148,7 +148,7 @@ hl.config({
         inactive_opacity = 1.0,
 
         shadow = {
-            enabled      = true,
+            enabled      = false,
             range        = 4,
             render_power = 3,
             color        = 0xee1a1a1a,
@@ -489,6 +489,28 @@ hl.window_rule({
     size = { 1080, 920 },
 })
 
+hl.window_rule({
+    name              = "scrcpy",
+    match             = { class = "scrcpy" },
+    keep_aspect_ratio = true,
+    float             = true,
+    ["hyprbars:no_bar"] = true}
+)
+hl.window_rule({
+    name              = "zed",
+    match             = { class = "dev.zed.Zed" },
+    ["hyprbars:bar_color"] = "rgba(000000A6)",
+})
+hl.window_rule({
+    name              = "kitty",
+    match             = { class = "kitty" },
+    ["hyprbars:bar_color"] = "rgba(000000D4)",
+})
+hl.window_rule({
+    name              = "zen",
+    match             = { class = "zen" },
+    ["hyprbars:bar_color"] = "rgb(131313)"}
+)
 -- Example window rules that are useful
 
 local suppressMaximizeRule = hl.window_rule({
