@@ -65,7 +65,9 @@ end)
 -- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
 
 hl.env("XCURSOR_SIZE", "24")
+hl.env("XCURSOR_THEME", "Afterglow-cursors")
 hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("HYPRCURSOR_THEME", "Afterglow-cursors")
 
 
 -----------------------
@@ -197,11 +199,8 @@ hl.animation({ leaf = "zoomFactor",    enabled = true,  speed = 7,    bezier = "
 -- uncomment all if you wish to use that.
 -- hl.workspace_rule({ workspace = "w[tv1]", gaps_out = 0, gaps_in = 0 })
 -- hl.workspace_rule({ workspace = "f[1]",   gaps_out = 0, gaps_in = 0 })
-hl.workspace_rule({ workspace = "1", monitor = "DP-1", persistent = true })
-hl.workspace_rule({ workspace = "2", monitor = "DP-1", persistent = true })
-hl.workspace_rule({ workspace = "3", monitor = "DP-1", persistent = true })
-hl.workspace_rule({ workspace = "4", monitor = "DP-1", persistent = true })
-hl.workspace_rule({ workspace = "5", monitor = "DP-1", persistent = true })
+hl.workspace_rule({ workspace = "1", monitor = "eDP-1", persistent = true })
+
 -- hl.window_rule({
 --     name  = "no-gaps-wtv1",
 --     match = { float = false, workspace = "w[tv1]" },
@@ -342,7 +341,10 @@ hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:mag
 
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
-hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
+hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
+
+hl.bind(mainMod .. "+ ALT + L", hl.dsp.focus({ workspace = "e+1" }))
+hl.bind(mainMod .. "+ ALT + H",   hl.dsp.focus({ workspace = "e-1" }))
 
 -- Move/resize windows with mainMod + LMB/RMB and dragging
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
@@ -374,6 +376,103 @@ hl.bind(mainMod .. "+ F", hl.dsp.layout("fit active"))
 
 hl.bind(mainMod .. "+ o", function ()
     hl.plugin.scrolloverview.overview("toggle")
+end)
+
+hl.bind(" ALT + H", hl.dsp.layout("cycleprev"))
+hl.bind(" ALT + L", hl.dsp.layout("cyclenext"))
+
+hl.bind("SUPER + X", function ()
+    if hl.get_workspace("special:minimized") then
+        hl.dispatch(hl.dsp.window.move({ workspace = hl.get_active_workspace(), window = "tag:minimized" }))
+        hl.dispatch(hl.dsp.window.clear_tags({ window = "tag:minimized" }))
+    else
+        hl.dispatch(hl.dsp.window.tag({ tag = "minimized", window = hl.get_active_window() }))
+        hl.dispatch(hl.dsp.window.move({ workspace = "special:minimized", follow = false }))
+    end
+end)
+
+-- game mode
+hl.bind("F1", function ()
+    local game_mode = (hl.get_config("animations.enabled") == false)
+
+    if game_mode then
+        hl.exec_cmd(ipc .. "bar-auto-hide-set off bar-blur")
+        hl.exec_cmd(ipc .. "bar-reserve-toggle bar-blur")
+        hl.exec_cmd("hyprctl reload")
+        hl.exec_cmd(ipc .. [[notification-show '{
+            "app_name":"🎮 Noctalia",
+            "summary":"GAME MODE DISABLED",
+            "body":"Desktop effects restored",
+            "urgency":"normal",
+            "timeout_ms":3000,
+            "icon":"monitor"
+        }']])
+        return
+    end
+
+    -- auto hide bar ( Noctalia )
+    hl.exec_cmd(ipc .. "bar-auto-hide-set on bar-blur")
+    hl.exec_cmd(ipc .. "bar-reserve-toggle bar-blur")
+
+    -- disable plugin
+    hl.config({
+        plugin = {
+            hyprbars = {
+                enabled = false
+            }
+        },
+        general = {
+            gaps_in = 0, gaps_out = 0, -- Disable gaps
+            border_size = 0,
+        },
+
+        animations = {
+            enabled = false, -- Disable animations
+        },
+
+        -- Disable blur, shadow and window rounding
+        decoration = {
+            shadow = { enabled = false },
+            blur = { enabled = false },
+            rounding = 0,
+        }
+    })
+    hl.exec_cmd(ipc .. [[notification-show '{
+        "app_name":"🎮 Noctalia",
+        "summary":"GAME MODE ENABLED",
+        "body":"Performance profile activated\n• Animations OFF\n• Blur OFF\n• Borders OFF",
+        "urgency":"critical",
+        "timeout_ms":3500,
+        "icon":"gamepad-2"
+    }']])
+end)
+
+hl.bind("SUPER + N", function ()
+    local layouts     = { "scrolling", "dwindle", "monocle" }
+    local workspace   = hl.get_active_workspace()
+	if hl.get_active_special_workspace() then
+		workspace = hl.get_active_special_workspace()
+	end
+
+    local next_layout = "dwindle"
+
+    if not workspace then
+        return
+    end
+
+    for i = 1, #layouts do
+        if layouts[i] == workspace.tiled_layout then
+            local next_layout_idx = (i % #layouts) + 1
+            next_layout = layouts[next_layout_idx]
+            break
+        end
+    end
+
+	if workspace.special then
+		hl.workspace_rule({ workspace = tostring(workspace.name), layout = next_layout })
+	else
+		hl.workspace_rule({ workspace = tostring(workspace.id), layout = next_layout })
+	end
 end)
 
 --------------------------------
