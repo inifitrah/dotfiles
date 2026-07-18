@@ -57,6 +57,9 @@ alias dc="docker compose" # Docker v2 menggunakan 'docker compose' (spasi), buka
 # yazi
 alias y="yazi"
 
+# fastfetch
+alias ff="fastfetch"
+
 # NPM / Dev
 alias dev="npm run dev"
 
@@ -102,7 +105,8 @@ done
 # Cargo
 export PATH="$HOME/.cargo/bin:$PATH"
 
-# NPM Global
+# bunk
+export PATH="$HOME/.bun/bin:$PATH"
 
 # Pipx
 export PATH="$PATH:$HOME/.local/bin"
@@ -132,10 +136,7 @@ if [[ ! -f ~/.zshrc.zwc || ~/.zshrc -nt ~/.zshrc.zwc ]]; then
     zcompile ~/.zshrc
 fi
 
-# OpenClaw Completion
-source "/home/fitrah/.openclaw/completions/openclaw.zsh"
-
-export PATH=$PATH:/home/fitrah/.spicetify
+export PATH="$PATH:$HOME/go/bin"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
