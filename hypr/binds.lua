@@ -193,4 +193,6 @@ hl.bind("SUPER + N", function ()
 	else
 		hl.workspace_rule({ workspace = tostring(workspace.id), layout = next_layout })
 	end
+
+	hl.notification.create({ text = "Layout: " .. next_layout, timeout = 1500, icon = "info" })
 end)
