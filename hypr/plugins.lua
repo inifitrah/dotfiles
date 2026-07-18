@@ -1,3 +1,7 @@
+-----------------
+---- PLUGINS  ---
+-----------------
+
 hl.config({
     plugin = {
         scrolloverview = {
