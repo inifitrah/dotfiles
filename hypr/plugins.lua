@@ -12,7 +12,6 @@ hl.config({
                    wallpaper = 1, -- 0: global only, 1: per-workspace only, 2: both
                    blur = false, -- blur only the main overview wallpaper
             input = {
-
                    },
                    shadow = {
                        enabled = false,

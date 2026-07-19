@@ -115,12 +115,45 @@ hl.bind(mainMod .. "+ equal", layout_bind({
 hl.bind(mainMod .. "+ minus", layout_bind({
     scrolling = hl.dsp.layout("colresize -conf"),
 }))
-hl.bind(mainMod .. "+ R", layout_bind({
-    scrolling = hl.dsp.layout("fit all"),
-}))
+-- Direction toggle per-workspace (right ↔ down)
+local scroll_directions = {}
+
+-- hl.bind(mainMod .. "+ R", function()
+--     local workspace = hl.get_active_workspace()
+--     if hl.get_active_special_workspace() then
+--         workspace = hl.get_active_special_workspace()
+--     end
+--     if not workspace then return end
+
+--     local id = tostring(workspace.id)
+--     local current = scroll_directions[id] or "right"
+--     local new_dir = current == "right" and "down" or "right"
+--     scroll_directions[id] = new_dir
+
+--     hl.workspace_rule({ workspace = id, layout_opts = { direction = "right" } })
+--     hl.notification.create({ text = "Scrolling: " .. new_dir, timeout = 1500, icon = "info" })
+-- end)
+
 -- hl.bind(mainMod .. "+ F", layout_bind({
---     scrolling = hl.dsp.layout("fit active"),
+--     scrolling = hl.dsp.layout("fit expand"),
 -- }))
+
+hl.bind(mainMod .. "+ bracketright", layout_bind({
+    scrolling = hl.dsp.layout("consume_or_expel next"),
+}))
+
+hl.bind(mainMod .. "+ bracketleft", layout_bind({
+    scrolling = hl.dsp.layout("consume_or_expel prev"),
+}))
+
+-- hl.bind(mainMod .. "+ slash", layout_bind({
+--     scrolling = hl.dsp.layout("inhibit_scroll"),
+-- }))
+
+-- hl.bind(mainMod .. "+ C", layout_bind({
+--     scrolling = hl.dsp.layout("fit_into_view"),
+-- }))
+
 hl.bind(mainMod .. "+ H", layout_bind({
     scrolling = hl.dsp.layout("focus left"),
     default = hl.dsp.focus({direction = "left"})
@@ -139,6 +172,10 @@ hl.bind(mainMod .. "+ L", layout_bind({
 }))
 
 hl.bind(mainMod .. "+ o", function ()
+    hl.plugin.scrolloverview.overview("toggle")
+end)
+
+hl.bind(mainMod .. "+ Tab", function ()
     hl.plugin.scrolloverview.overview("toggle")
 end)
 
