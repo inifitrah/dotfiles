@@ -25,10 +25,16 @@ hl.window_rule({
     ["hyprbars:bar_color"] = "rgba(000000A6)",
 })
 hl.window_rule({
+    name              = "sober",
+    match             = { class = "sober_services" },
+    ["hyprbars:no_bar"] = true,
+})
+hl.window_rule({
     name              = "kitty",
     match             = { class = "kitty" },
     ["hyprbars:bar_color"] = "rgba(000000D4)",
 })
+
 hl.window_rule({
     name              = "zen",
     match             = { class = "zen" },

@@ -4,7 +4,6 @@
 
 local terminal    = "kitty"
 local fileManager = "kitty -T yazi -e yazi"
-local menu        = "hyprlauncher"
 
 
 ---------------------
@@ -39,7 +38,6 @@ end
 hl.bind(mainMod .. "+Space", hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
 hl.bind(mainMod .. "+ SHIFT + comma", hl.dsp.exec_cmd(ipc .. "settings-toggle"))
 hl.bind(mainMod .. "+ SHIFT + Escape", hl.dsp.exec_cmd(ipc .. "panel-toggle session"))
-
 -- Media keys
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc .. "volume-up"))
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(ipc .. "volume-down"))
@@ -59,10 +57,10 @@ hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 -- hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))    -- dwindle only
 
 -- Move focus with mainMod + arrow keys
-hl.bind(mainMod .. " + H",    hl.dsp.focus({ direction = "left" }))
-hl.bind(mainMod .. " + J",  hl.dsp.focus({ direction = "down" }))
-hl.bind(mainMod .. " + K",    hl.dsp.focus({ direction = "up" }))
-hl.bind(mainMod .. " + L",  hl.dsp.focus({ direction = "right" }))
+-- hl.bind(mainMod .. " + H",    hl.dsp.focus({ direction = "left" }))
+-- hl.bind(mainMod .. " + J",  hl.dsp.focus({ direction = "down" }))
+-- hl.bind(mainMod .. " + K",    hl.dsp.focus({ direction = "up" }))
+-- hl.bind(mainMod .. " + L",  hl.dsp.focus({ direction = "right" }))
 
 hl.bind("ALT + A", hl.dsp.window.fullscreen({ mode= "maximized", action="toggle", layout_aware=true  }) )
 hl.bind("ALT + F", hl.dsp.window.fullscreen({ mode= "fullscreen", action="toggle", layout_aware=true  }) )
@@ -104,7 +102,7 @@ hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tr
 hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
 
--- Scrolling (per-layout: only active on the scrolling layout)
+-- Binds per-layout
 hl.bind(mainMod .. "+ comma", layout_bind({
     scrolling = hl.dsp.layout("move +100"),
 }))
@@ -112,22 +110,37 @@ hl.bind(mainMod .. "+ period", layout_bind({
     scrolling = hl.dsp.layout("move -100"),
 }))
 hl.bind(mainMod .. "+ equal", layout_bind({
-    scrolling = hl.dsp.layout("colresize +0.5"),
+    scrolling = hl.dsp.layout("colresize +conf"),
 }))
 hl.bind(mainMod .. "+ minus", layout_bind({
-    scrolling = hl.dsp.layout("colresize -0.1"),
+    scrolling = hl.dsp.layout("colresize -conf"),
 }))
 hl.bind(mainMod .. "+ R", layout_bind({
     scrolling = hl.dsp.layout("fit all"),
 }))
-hl.bind(mainMod .. "+ F", layout_bind({
-    scrolling = hl.dsp.layout("fit active"),
+-- hl.bind(mainMod .. "+ F", layout_bind({
+--     scrolling = hl.dsp.layout("fit active"),
+-- }))
+hl.bind(mainMod .. "+ H", layout_bind({
+    scrolling = hl.dsp.layout("focus left"),
+    default = hl.dsp.focus({direction = "left"})
+}))
+hl.bind(mainMod .. "+ J", layout_bind({
+    scrolling = hl.dsp.layout("focus down"),
+    default = hl.dsp.focus({direction = "down"})
+}))
+hl.bind(mainMod .. "+ K", layout_bind({
+    scrolling = hl.dsp.layout("focus top"),
+    default = hl.dsp.focus({direction = "up"})
+}))
+hl.bind(mainMod .. "+ L", layout_bind({
+    scrolling = hl.dsp.layout("focus right"),
+    default = hl.dsp.focus({direction = "right"})
 }))
 
 hl.bind(mainMod .. "+ o", function ()
     hl.plugin.scrolloverview.overview("toggle")
 end)
-
 
 hl.bind(mainMod .. " + SHIFT + H", layout_bind({
     scrolling = hl.dsp.layout("swapcol l"),  -- Scrolling: swap column with left one
