@@ -20,6 +20,20 @@ hl.window_rule({
     ["hyprbars:no_bar"] = true}
 )
 hl.window_rule({
+    name = "Discord Updater",
+    match = {
+        title = "Discord Updater"
+    },
+    ["hyprbars:no_bar"] = true
+})
+hl.window_rule({
+    name = "hyprland-dialog",
+    match = {
+        initial_class = "hyprland-dialog"
+    },
+    ["hyprbars:no_bar"] = true
+})
+hl.window_rule({
     name              = "zed",
     match             = { class = "dev.zed.Zed" },
     ["hyprbars:bar_color"] = "rgba(000000A6)",
@@ -92,4 +106,25 @@ hl.window_rule({
 
     move  = "20 monitor_h-120",
     float = true,
+})
+
+-- XWayland
+hl.window_rule({
+    name = "xwayland-video-bridge-fixes",
+    match =  {
+        class = "xwaylandvideobridge"
+    },
+    no_initial_focus = true,
+    no_focus = true,
+    no_anim = true,
+    no_blur = true,
+    max_size = { 1, 1 },
+    opacity = 0.0,
+})
+hl.window_rule({
+    name = "vinegar-roblox-studio",
+    match =  {
+       xwayland = 1
+    },
+    no_initial_focus = true,
 })

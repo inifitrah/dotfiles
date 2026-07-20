@@ -17,6 +17,7 @@ hl.config({
         touchpad = {
             natural_scroll = false,
         },
+        mouse_refocus = false
     },
 })
 
