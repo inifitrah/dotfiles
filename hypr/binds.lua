@@ -1,10 +1,9 @@
+local scratchpads = require("utils.scratchpads")
 ------------------
 -- MY PROGRAMS  --
 ------------------
-
 local terminal    = "kitty"
 local fileManager = "kitty -T yazi -e yazi"
-
 
 ---------------------
 ---- KEYBINDINGS ----
@@ -48,19 +47,34 @@ hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(ipc .. "brightness-down"))
 
 -- Example binds, see https://wiki.hypr.land/Configuring/Basics/Binds/ for more
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
-local closeWindowBind = hl.bind("ALT" .. " + Q", hl.dsp.window.close())
--- closeWindowBind:set_enabled(false)
+hl.bind("ALT" .. " + Q", hl.dsp.window.close())
+hl.bind("ALT + SHIFT + Q", hl.dsp.window.kill())
 hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
-hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
-hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
--- hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))    -- dwindle only
 
--- Move focus with mainMod + arrow keys
--- hl.bind(mainMod .. " + H",    hl.dsp.focus({ direction = "left" }))
--- hl.bind(mainMod .. " + J",  hl.dsp.focus({ direction = "down" }))
--- hl.bind(mainMod .. " + K",    hl.dsp.focus({ direction = "up" }))
--- hl.bind(mainMod .. " + L",  hl.dsp.focus({ direction = "right" }))
+-- Toggle applications like MangoWM named scratchpads.
+hl.bind(mainMod .. " + E", function ()
+    scratchpads.toggle_specific_app(hl.dsp.exec_cmd(fileManager, {
+        float = true,
+        size = {1200, 700}
+    }), {
+      title = "yazi"
+    })
+end)
+hl.bind(mainMod .. " + return", function ()
+    scratchpads.toggle_specific_app(hl.dsp.exec_cmd("kitty -T term sh -c 'fastfetch --logo-type kitty; exec $SHELL'", {
+        float = true,
+        size = { 1200, 900 },
+        -- ["hyprbars:no_bar"] = true
+    }), {
+      title = "term"
+    })
+end)
+hl.bind("SUPER + X", function ()
+    scratchpads.minimize_app()
+end)
+
+hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }), {long_press = true})
+hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 
 hl.bind("ALT + A", hl.dsp.window.fullscreen({ mode= "maximized", action="toggle", layout_aware=true  }) )
 hl.bind("ALT + F", hl.dsp.window.fullscreen({ mode= "fullscreen", action="toggle", layout_aware=true  }) )
@@ -175,9 +189,13 @@ hl.bind(mainMod .. "+ o", function ()
     hl.plugin.scrolloverview.overview("toggle")
 end)
 
-hl.bind(mainMod .. "+ Tab", function ()
-    hl.plugin.scrolloverview.overview("toggle")
-end)
+-- hl.bind(mainMod .. "+ Tab", function ()
+--     hl.plugin.scrolloverview.overview("toggle")
+-- end)
+
+-- Snappy Switcher
+hl.bind("ALT + Tab", hl.dsp.exec_cmd("snappy-switcher next --mod alt"))
+hl.bind(mainMod .. "+ Tab", hl.dsp.exec_cmd("snappy-switcher next --workspace --mod super"))
 
 hl.bind(mainMod .. " + SHIFT + H", layout_bind({
     scrolling = hl.dsp.layout("swapcol l"),  -- Scrolling: swap column with left one
@@ -196,15 +214,6 @@ hl.bind(mainMod .. " + H", layout_bind({
     monocle = hl.dsp.layout("cycleprev"),           -- Monocle: cycle prev window
 }))
 
-hl.bind("SUPER + X", function ()
-    if hl.get_workspace("special:minimized") then
-        hl.dispatch(hl.dsp.window.move({ workspace = hl.get_active_workspace(), window = "tag:minimized" }))
-        hl.dispatch(hl.dsp.window.clear_tags({ window = "tag:minimized" }))
-    else
-        hl.dispatch(hl.dsp.window.tag({ tag = "minimized", window = hl.get_active_window() }))
-        hl.dispatch(hl.dsp.window.move({ workspace = "special:minimized", follow = false }))
-    end
-end)
 
 -- game mode
 hl.bind("F1", function ()
@@ -319,4 +328,12 @@ hl.bind("SUPER + SHIFT + Up", function()
 end)
 hl.bind("SUPER + SHIFT + Down", function()
     zoom(-0.5)
+end)
+
+hl.on("window.open_early", function()
+
+end)
+
+hl.on("window.active", function(w)
+  -- hl.notification.create({ text = "Window focused: " .. w.title, timeout = 5000, icon = "ok" })
 end)
