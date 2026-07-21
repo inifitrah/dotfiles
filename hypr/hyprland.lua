@@ -1,0 +1,15 @@
+require("monitors")
+require("autostart")
+require("env")
+require("permissions")
+require("settings")
+require("animations")
+require("layouts")
+require("misc")
+require("input")
+require("binds")
+require("window_rules")
+require("plugins")
+
+-- For Noctalia Color templates
+require("noctalia").apply_theme()
