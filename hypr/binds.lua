@@ -53,7 +53,7 @@ hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd("command -v hyprshutdown >/de
 
 -- Toggle applications like MangoWM named scratchpads.
 hl.bind(mainMod .. " + E", function ()
-    scratchpads.toggle_specific_app(hl.dsp.exec_cmd(fileManager, {
+    scratchpads.show_or_hide_app(hl.dsp.exec_cmd(fileManager, {
         float = true,
         size = {1200, 700}
     }), {
@@ -61,7 +61,7 @@ hl.bind(mainMod .. " + E", function ()
     })
 end)
 hl.bind(mainMod .. " + return", function ()
-    scratchpads.toggle_specific_app(hl.dsp.exec_cmd("kitty -T term sh -c 'fastfetch --logo-type kitty; exec $SHELL'", {
+    scratchpads.show_or_hide_app(hl.dsp.exec_cmd("kitty -T term sh -c 'fastfetch --logo-type kitty; exec $SHELL'", {
         float = true,
         size = { 1200, 900 },
         -- ["hyprbars:no_bar"] = true
@@ -330,10 +330,6 @@ hl.bind("SUPER + SHIFT + Down", function()
     zoom(-0.5)
 end)
 
-hl.on("window.open_early", function()
-
-end)
-
-hl.on("window.active", function(w)
-  -- hl.notification.create({ text = "Window focused: " .. w.title, timeout = 5000, icon = "ok" })
-end)
+hl.bind(mainMod .. "+ SHIFT + P", function ()
+    hl.dispatch(hl.dsp.window.tag({ tag = "sensitive", window = hl.get_active_window() }))
+end )

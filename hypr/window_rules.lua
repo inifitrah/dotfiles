@@ -96,7 +96,9 @@ hl.layer_rule({
   no_anim = true,
   ignore_alpha = 0.5,
   blur = true,
-  blur_popups = true,
+    blur_popups = true,
+    order = -99,
+
 })
 
 -- Hyprland-run windowrule
@@ -127,4 +129,21 @@ hl.window_rule({
        xwayland = 1
     },
     no_initial_focus = true,
+})
+
+hl.window_rule({
+    name = "sensitive-app",
+    match = {
+        tag = "sensitive"
+    },
+    no_screen_share = true,
+    ["hyprbars:no_bar"] = true
+})
+
+hl.layer_rule({
+    name = "tide-island",
+    match = {
+        title = "tide-island"
+    },
+    order = 999
 })
