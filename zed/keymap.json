@@ -1,225 +1,459 @@
-// Zed keymap
-//
-//
-// To see the default key bindings run `zed: open default keymap`
-// from the command palette.
 [
-    {
-        "unbind": {
-            "ctrl-shift-up": "editor::SelectToStartOfParagraph",
-            "ctrl-shift-down": "editor::SelectToEndOfParagraph",
-            "ctrl-shift-left": "editor::SelectSmallerSyntaxNode",
-            "ctrl-shift-right": "editor::SelectLargerSyntaxNode",
-            "ctrl-shift-l": "editor::SelectAllMatches",
-            "ctrl-shift-h": ["pane::DeploySearch", { "replace_enabled": true }],
-            "ctrl-shift-j": "editor::JoinLines",
-            "ctrl-q": "zed::Quit",
-        },
-    },
-    {
-        "context": "VimControl && !menu",
-        "unbind": {
-            "ctrl-q": "vim::ToggleVisualBlock",
-        },
-    },
-    {
-        "context": "Workspace",
-        "bindings": {
-            "ctrl-s": "workspace::SaveAll",
-            "ctrl-shift-h": "workspace::ActivatePaneLeft",
-            "ctrl-shift-l": "workspace::ActivatePaneRight",
-            "ctrl-shift-k": "workspace::ActivatePaneUp",
-            "ctrl-shift-j": "workspace::ActivatePaneDown",
-            "ctrl-q e": "workspace::FocusCenterPane",
-            "ctrl-q t": "terminal_panel::ToggleFocus",
-            "ctrl-q p": "project_panel::ToggleFocus",
-            "ctrl-q w": "multi_workspace::FocusWorkspaceSidebar",
-            "ctrl-q o": "outline_panel::ToggleFocus",
-            "ctrl-q g": "git_panel::ToggleFocus",
-            "ctrl-q a": "agent::ToggleFocus",
-            "ctrl-q c": "collab_panel::ToggleFocus",
-            "ctrl-q b": "debug_panel::ToggleFocus",
-            "ctrl-q d": "diagnostics::Deploy",
-        },
-    },
-    {
-        "context": "Workspace || Editor",
-        "bindings": {
-            "ctrl-t": "terminal_panel::Toggle",
-        },
-    },
-    {
-        "context": "ThreadSwitcher",
-        // TODO: These bindings suck, Remember to recheck once feature is finished.
-        "bindings": {
-            "j": "agents_sidebar::ToggleThreadSwitcher",
-            "down": "agents_sidebar::ToggleThreadSwitcher",
-            "k": [
-                "agents_sidebar::ToggleThreadSwitcher",
-                { "select_last": true },
-            ],
-            "up": [
-                "agents_sidebar::ToggleThreadSwitcher",
-                { "select_last": true },
-            ],
-        },
-    },
+  // =========================
+  // GLOBAL KEYBINDINGS
+  // =========================
+  {
+    "bindings": {
+      "ctrl-alt-\\": "theme_selector::Toggle",
+      // pane navigation
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown",
+      // toggle terminal
+      "ctrl-\\": "workspace::ToggleBottomDock"
+    }
+  },
 
-    // MD spesific sc
-    {
-        "context": "VimControl && !menu && extension == md",
-        "use_key_equivalents": true,
-        "bindings": {
-            "j": [ "vim::Down", {"display_lines": true} ],
-            "k": [ "vim::Up", {"display_lines": true} ]
+  // =========================
+  // EDITOR KEYBINDINGS
+  // =========================
+  {
+    "context": "Editor && VimControl",
+    "bindings": {
+      "ctrl-c": ["workspace::SendKeystrokes", "escape"]
+    }
+  },
+  {
+    "context": "Editor && VimControl && !VimWaiting && !menu",
+    "bindings": {
+      "space z": "workspace::ToggleCenteredLayout",
+
+      "alt-shift-k": "editor::AddSelectionAbove",
+      "alt-shift-j": "editor::AddSelectionBelow",
+
+      // navigate wrapped lines
+      "j": ["vim::Down", { "display_lines": true }],
+      "k": ["vim::Up", { "display_lines": true }],
+
+      // save file
+      "ctrl-s": "workspace::Save",
+      "ctrl-shift-s": "workspace::SaveWithoutFormat",
+
+      // split pane
+      "space |": "pane::SplitRight",
+      "space _": "pane::SplitDown",
+      "space x w": "pane::CloseActiveItem",
+
+      // LSP related
+      "shift-k": "editor::Hover",
+      "space f": "editor::Format",
+      "space c a": "editor::ToggleCodeActions",
+      "space r n": "editor::Rename",
+      "g r": "editor::FindAllReferences",
+      "] d": "editor::GoToDiagnostic",
+      "[ d": "editor::GoToPreviousDiagnostic",
+
+      // git hunk navigation
+      "] h": "editor::GoToHunk",
+      "[ h": "editor::GoToPreviousHunk",
+      "space g s": "git::ToggleStaged",
+      "space g d": "git::Diff",
+      "space g r": "git::Restore",
+
+      // left dock
+      "space e": "pane::RevealInProjectPanel",
+      "\\": "pane::RevealInProjectPanel",
+      "space g p": "git_panel::ToggleFocus",
+
+      // lazyGit
+      "space g g": [
+        "task::Spawn",
+        {
+          "task_name": "Lazygit",
+          "reveal_target": "center"
         }
-    },
+      ],
 
-    // *** VIM Editor ***
-    {
-        "context": "Editor && VimControl && !menu",
-        "bindings": {
-            "ctrl-w L": [
-                "workspace::MoveItemToPaneInDirection",
-                { "direction": "right" },
-            ],
-            "ctrl-w H": [
-                "workspace::MoveItemToPaneInDirection",
-                { "direction": "left" },
-            ],
-            "ctrl-w J": [
-                "workspace::MoveItemToPaneInDirection",
-                { "direction": "down" },
-            ],
-            "ctrl-w K": [
-                "workspace::MoveItemToPaneInDirection",
-                { "direction": "up" },
-            ],
+      // github dash
+      "space g h": [
+        "task::Spawn",
+        {
+          "task_name": "dash",
+          "reveal_target": "center"
+        }
+      ],
 
-            "cmd-alt-1": [
-                "workspace::MoveItemToPane",
-                { "destination": 0, "focus": true, "clone": false },
-            ],
-            "cmd-alt-2": [
-                "workspace::MoveItemToPane",
-                { "destination": 1, "focus": true, "clone": false },
-            ],
-            "cmd-alt-3": [
-                "workspace::MoveItemToPane",
-                { "destination": 2, "focus": true, "clone": false },
-            ],
-            "cmd-alt-4": [
-                "workspace::MoveItemToPane",
-                { "destination": 3, "focus": true, "clone": false },
-            ],
-            "cmd-alt-5": [
-                "workspace::MoveItemToPane",
-                { "destination": 4, "focus": true, "clone": false },
-            ],
-            "cmd-alt-6": [
-                "workspace::MoveItemToPane",
-                { "destination": 5, "focus": true, "clone": false },
-            ],
-            "cmd-alt-7": [
-                "workspace::MoveItemToPane",
-                { "destination": 6, "focus": true, "clone": false },
-            ],
-            "cmd-alt-8": [
-                "workspace::MoveItemToPane",
-                { "destination": 7, "focus": true, "clone": false },
-            ],
-            "cmd-alt-9": [
-                "workspace::MoveItemToPane",
-                { "destination": 8, "focus": true, "clone": false },
-            ],
+      // move between tabs
+      "space o": "tab_switcher::Toggle",
+      "shift-h": "pane::ActivatePreviousItem",
+      "shift-l": "pane::ActivateNextItem",
+      "shift-q": "pane::CloseActiveItem",
 
-            "alt-s": "editor::UnwrapSyntaxNode",
-            "alt-k": "editor::MoveLineUp",
-            "alt-j": "editor::MoveLineDown",
-            "alt-w": "vim::NextSubwordStart",
-            "alt-b": "vim::PreviousSubwordStart",
-            "alt-e": "vim::NextSubwordEnd",
-            "cmd-alt-k": "editor::AddSelectionAbove",
-            "cmd-alt-j": "editor::AddSelectionBelow", // Insert cursor below
-        },
-    },
-    {
-        "context": "(Workspace && !Editor && !Terminal) || (Editor && VimControl)",
-        "bindings": {
-            // Global Leader key
-            "space b n": "workspace::NewFile",
-            "space y y": [
-                "task::Spawn",
-                { "task_name": "yazi", "reveal_target": "center" },
-            ],
-            "space s a": "agents_sidebar::ToggleThreadSwitcher",
-            "space s p": [
-                "projects::OpenRecent",
-                { "create_new_window": false },
-            ],
-            "space s f": "file_finder::Toggle",
-            "space b b": "pane::AlternateFile",
-            "space b d": ["pane::CloseActiveItem", { "close_pinned": false }],
-            "space b q": ["pane::CloseOtherItems", { "close_pinned": false }],
-            "space b p": "pane::TogglePinTab",
-            "space i h": "editor::ToggleInlayHints",
-            "space g '": "editor::GoToHunk",
-            "space g ;": "editor::GoToPreviousHunk",
-            "space g h": "editor::ToggleSelectedDiffHunks",
-            "space g S": "git::ToggleStaged",
-            "space g r": "git::Restore",
-            "space g s": "git::StageAndNext",
-            "space g u": "git::UnstageAndNext",
-            "space g b": "git::Blame",
-            "space g d": "git::Diff",
-            "space g c": "git::Commit",
-            "space p": "editor::GoToDiagnostic",
-            "space shift-p": "editor::GoToPreviousDiagnostic",
-            "space h": "editor::Hover",
-            "space space": "tab_switcher::OpenInActivePane",
-            // Open markdown preview
-            "space m p": "markdown::OpenPreview",
-            "space m P": "markdown::OpenPreviewToTheSide",
-            "space z": "workspace::ToggleCenteredLayout",
-            "space d": "editor::DuplicateLineDown",
-        },
-    },
-    // Which key, refer to https://github.com/zed-industries/zed/pull/43618
-    {
-        "context": "(VimControl && !menu)",
-        "bindings": {
-            "space": null, // Disable the default action vim::WrappingRight
-        },
-    },
-    {
-        "context": "vim_mode == visual",
-        "bindings": {
-            "v": "editor::SelectLargerSyntaxNode",
-            "V": "editor::SelectSmallerSyntaxNode",
-            "ctrl-s": "vim::PushAddSurrounds",
-            "shift-x": "vim::Exchange",
-        },
-    },
-    {
-        "context": "Editor && vim_mode == insert",
-        "bindings": {
-            "j k": "vim::NormalBefore",
-            "k j": "vim::NormalBefore",
-        },
-    },
-    {
-        "context": "GitPanel > Editor && vim_mode==normal",
-        "bindings": {
-            "escape": "git_panel::FocusChanges",
-        },
-    },
-    {
-        "context": "GitGraph",
-        "bindings": {
-            "j": "menu::SelectNext",
-            "k": "menu::SelectPrevious",
-            "g g": "menu::SelectFirst",
-            "G": "menu::SelectLast",
-        },
-    },
+      // AI related
+      "space a a": "agent::ToggleFocus",
+      "space a i": "assistant::InlineAssist",
+      // disable default inline assist keybinding
+      "ctrl-enter": null,
+
+      // searches
+      "space s f": "file_finder::Toggle",
+      "space s g": "pane::DeploySearch",
+      "space space": "outline::Toggle",
+      "space s s": "project_symbols::Toggle",
+
+      // open recent project
+      "space s p": [
+        "projects::OpenRecent",
+        {
+          "create_new_window": false
+        }
+      ],
+
+      // auto center on scrolls
+      "ctrl-shift-u": "vim::ScrollUp",
+      "ctrl-shift-d": "vim::ScrollDown",
+      "ctrl-u": ["workspace::SendKeystrokes", "ctrl-shift-u z z"],
+      "ctrl-d": ["workspace::SendKeystrokes", "ctrl-shift-d z z"],
+      "n": ["workspace::SendKeystrokes", "n z z"],
+      "shift-n": ["workspace::SendKeystrokes", "shift-n z z"],
+      "shift-g": ["workspace::SendKeystrokes", "shift-g z z"]
+    }
+  },
+
+  // disable default ctrl+enter
+  {
+    "context": "!ContextEditor > (Editor && mode == full)",
+    "bindings": {
+      "ctrl-enter": "editor::AcceptEditPrediction" // this disable inline assist and overrides with accept edit prediction (copilot)
+    }
+  },
+
+  // refactor rename
+  {
+    "context": "(Editor && mode == full) && renaming",
+    "bindings": {
+      "enter": "editor::ConfirmRename",
+      "ctrl+enter": "editor::ConfirmRename"
+    }
+  },
+
+  // =========================
+  // EMPTY PANE / SHARED SCREEN / KEY CONTEXT VIEW
+  // =========================
+  {
+    "context": "SharedScreen || KeyContextView || MarkdownPreview",
+    "bindings": {
+      "shift-q": "pane::CloseActiveItem"
+    }
+  },
+
+  // enable essentials on empty/shared/context view
+  {
+    "context": "EmptyPane || SharedScreen || KeyContextView",
+    "bindings": {
+      // searches
+      "space s f": "file_finder::Toggle",
+      "space s g": "pane::DeploySearch",
+
+      // Open recent project
+      "space s p": [
+        "projects::OpenRecent",
+        {
+          "create_new_window": false
+        }
+      ],
+
+      // Tabs
+      "space o": "tab_switcher::Toggle",
+      "shift-h": "pane::ActivatePreviousItem",
+      "shift-l": "pane::ActivateNextItem",
+      // "shift-q": "pane::CloseActiveItem",
+
+      // Left Dock
+      "space e": "project_panel::ToggleFocus",
+      "\\": "project_panel::ToggleFocus",
+      "space g p": "git_panel::ToggleFocus",
+      "space g g": [
+        "task::Spawn",
+        {
+          "task_name": "lazygit",
+          "reveal_target": "center"
+        }
+      ]
+    }
+  },
+
+  // =========================
+  // PANEL KEYBINDINGS
+  // =========================
+
+  // agent panel toggle
+  {
+    "context": "AgentPanel > Markdown",
+    "bindings": {
+      "space a a": "workspace::ToggleRightDock"
+    }
+  },
+  {
+    "context": "( AgentPanel > MessageEditor && MessageEditor > Editor ) || AgentPanel",
+    "bindings": {
+      "escape": "workspace::ToggleRightDock"
+    }
+  },
+
+  // close inline assist on ctrl+c
+  {
+    "context": "InlineAssistEditor",
+    "bindings": {
+      "ctrl-c": "editor::Cancel"
+    }
+  },
+
+  // Project Panel
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "a": "project_panel::NewFile",
+      "A": "project_panel::NewDirectory",
+      "r": "project_panel::Rename",
+      "d": "project_panel::Delete",
+      "x": "project_panel::Cut",
+      "c": "project_panel::Copy",
+      "p": "project_panel::Paste",
+      "z": "project_panel::CollapseSelectedEntry",
+      "Z": "project_panel::CollapseAllEntries",
+
+      // close project panel as project file panel on the right
+      "q": "workspace::ToggleLeftDock",
+      "\\": "workspace::ToggleLeftDock",
+      "space e": "workspace::ToggleLeftDock",
+      "escape": "workspace::ToggleLeftDock",
+      "shift-g": "menu::SelectLast",
+      "g g": "menu::SelectFirst",
+
+      // searches
+      "space s f": "file_finder::Toggle",
+      "space s g": "pane::DeploySearch",
+
+      // Open recent project
+      "space s p": [
+        "projects::OpenRecent",
+        {
+          "create_new_window": false
+        }
+      ],
+
+      // git
+      "space g p": "git_panel::ToggleFocus",
+      "space g g": [
+        "task::Spawn",
+        {
+          "task_name": "lazygit",
+          "reveal_target": "center"
+        }
+      ]
+    }
+  },
+
+  // git panel
+  {
+    "context": "GitPanel && !CommitEditor",
+    "bindings": {
+      "q": "workspace::ToggleLeftDock",
+      "escape": "workspace::ToggleLeftDock"
+    }
+  },
+  {
+    "context": "GitPanel && CommitEditor",
+    "bindings": {
+      "escape": "workspace::ToggleLeftDock"
+    }
+  },
+
+  // terminal panel
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-shift-h": "pane::ActivatePreviousItem",
+      "ctrl-shift-l": "pane::ActivateNextItem",
+      "ctrl-shift-q": "pane::CloseActiveItem",
+      "ctrl-shift-x": "pane::CloseActiveItem",
+      "ctrl-shift-o": "workspace::NewTerminal",
+      "ctrl-shift-r": "terminal::RerunTask",
+
+      // disable
+      "ctrl-enter": null
+    }
+  },
+
+  // close project panel on ctrl+c / esc
+  {
+    "context": "ProjectSearchBar > Editor",
+    "bindings": {
+      "ctrl-c": "pane::CloseActiveItem",
+      "escape": "pane::CloseActiveItem"
+    }
+  },
+
+  // =========================
+  // VIM/EDITOR MODE KEYBINDINGS
+  // =========================
+
+  // code action (vim operator)
+  {
+    "context": "Editor && vim_operator == c",
+    "bindings": {
+      "c": "vim::CurrentLine",
+      "a": "editor::ToggleCodeActions" // zed specific
+    }
+  },
+
+  // completions toggle
+  {
+    "context": "Editor && showing_completions",
+    "bindings": {
+      "tab": "editor::Tab", // override tab to actually tab!
+      "enter": "editor::Newline", // override enter to actually enter!
+      "ctrl-enter": "editor::ConfirmCompletion",
+      "shift-enter": "editor::ConfirmCompletion",
+      "ctrl-y": "editor::ConfirmCompletion"
+    }
+  },
+
+  // code Actions
+  {
+    "context": "Editor && showing_code_actions",
+    "bindings": {
+      "tab": "editor::Tab", // override tab to actually tab!
+      "enter": "editor::Newline", // override enter to actually enter!
+      "ctrl-enter": "editor::ConfirmCodeAction",
+      "shift-enter": "editor::ConfirmCodeAction",
+      "ctrl-y": "editor::ConfirmCodeAction"
+    }
+  },
+
+  // edit prediction
+  {
+    "context": "Editor && edit_prediction && !showing_completions",
+    "bindings": {
+      "tab": "editor::Tab", // override tab to actually tab!
+      "enter": "editor::Newline", // override enter to actually enter!
+      // "ctrl-enter": "editor::AcceptEditPrediction", // issue: https://github.com/zed-industries/zed/issues/52559
+      "shift-enter": "editor::AcceptEditPrediction"
+      // "ctrl-y": "editor::AcceptEditPrediction", // issue: https://github.com/zed-industries/zed/issues/40161#issuecomment-3499689366
+    }
+  },
+
+  // move line (visual mode)
+  {
+    "context": "Editor && vim_mode == visual && !VimWaiting && !VimObject",
+    "bindings": {
+      "shift-j": "editor::MoveLineDown",
+      "shift-k": "editor::MoveLineUp"
+    }
+  },
+
+  // surround like mini.surround
+  {
+    "context": "Editor && ( vim_mode == normal || vim_mode == visual ) && !VimWaiting && !VimObject",
+    "bindings": {
+      "g s a": "vim::PushAddSurrounds",
+      "g s d": "vim::PushDeleteSurrounds",
+      "g s r": "vim::PushChangeSurrounds"
+    }
+  },
+
+  // system clipboard
+  {
+    "context": "Editor && ( vim_mode == normal || vim_mode == visual ) && !VimWaiting && !VimObject",
+    "bindings": {
+      "g y": ["workspace::SendKeystrokes", "\" + y"]
+    }
+  },
+  {
+    "context": "Editor && vim_mode == normal && !VimWaiting && !VimObject",
+    "bindings": {
+      "g P": ["workspace::SendKeystrokes", "\" + P"],
+      "g p": ["workspace::SendKeystrokes", "\" + p"]
+    }
+  },
+  {
+    "context": "Editor && vim_mode == visual && !VimWaiting && !VimObject",
+    "bindings": {
+      "g p": ["workspace::SendKeystrokes", "\" + p"],
+      "g P": ["workspace::SendKeystrokes", "\" + p"]
+    }
+  },
+
+  // indent/unindent (visual mode)
+  {
+    "context": "Editor && vim_mode == visual && !VimWaiting && !VimObject",
+    "bindings": {
+      ">": ["workspace::SendKeystrokes", "> g v"],
+      "<": ["workspace::SendKeystrokes", "< g v"]
+    }
+  },
+
+  // various insert mode keymaps
+  {
+    "context": "vim_mode == insert",
+    "bindings": {
+      // exit out of insert mode
+      "ctrl-c": "vim::NormalBefore",
+      "ctrl-[": "vim::NormalBefore",
+      "escape": "vim::NormalBefore",
+      "j k": "vim::NormalBefore",
+
+      "ctrl-x": null, // disable
+      "ctrl-x ctrl-o": "editor::ShowCompletions",
+
+      // "ctrl-x ctrl-a": "assistant::InlineAssist", // zed specific
+      "ctrl-x ctrl-a": null, // disabled
+      "ctrl-x ctrl-c": "editor::ShowEditPrediction", // zed specific
+      "ctrl-x ctrl-l": "editor::ToggleCodeActions", // zed specific
+      "ctrl-x ctrl-z": "editor::Cancel",
+      "ctrl-w": "editor::DeleteToPreviousWordStart",
+      "ctrl-u": "editor::DeleteToBeginningOfLine",
+      "ctrl-t": "vim::Indent",
+      "ctrl-d": "vim::Outdent",
+      "ctrl-k": ["vim::PushDigraph", {}],
+      "ctrl-v": ["vim::PushLiteral", {}],
+      "ctrl-shift-v": "editor::Paste", // note: this is *very* similar to ctrl-v in vim, but ctrl-shift-v on linux is the typical shortcut for paste when ctrl-v is already in use.
+      "ctrl-q": ["vim::PushLiteral", {}],
+      "ctrl-shift-q": ["vim::PushLiteral", {}],
+      "ctrl-r": "vim::PushRegister",
+      "insert": "vim::ToggleReplace",
+      "ctrl-o": "vim::TemporaryNormal",
+      "ctrl-s": "editor::ShowSignatureHelp"
+    }
+  },
+
+  // escape insert mode
+  // {
+  //   "context": "Editor && vim_mode == insert && !menu",
+  //   "bindings": {
+  //     "j j": "vim::NormalBefore", // remap jj in insert mode to escape
+  //     "j k": "vim::NormalBefore" // remap jk in insert mode to escape
+  //   }
+  // },
+
+  // enables sneak motion (subpar alternative to flash.nvim)
+  // flash-style feature is coming ! see: https://github.com/zed-industries/zed/issues/14801
+  {
+    "context": "vim_mode == normal || vim_mode == visual",
+    "bindings": {
+      "s": ["vim::PushSneak", {}],
+      "S": ["vim::PushSneakBackward", {}]
+    }
+  },
+
+  // bracket text objects (prefers mini style)
+  {
+    "context": "vim_operator == a || vim_operator == i || vim_operator == cs || vim_operator == sa",
+    "bindings": {
+      "b": "vim::MiniBrackets",
+      "q": "vim::MiniQuotes"
+    }
+  }
 ]
