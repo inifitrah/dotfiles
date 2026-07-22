@@ -17,14 +17,6 @@ hl.window_rule({
     match             = { class = "scrcpy" },
     keep_aspect_ratio = true,
     float             = true,
-    ["hyprbars:no_bar"] = true}
-)
-hl.window_rule({
-    name = "Discord Updater",
-    match = {
-        title = "Discord Updater"
-    },
-    ["hyprbars:no_bar"] = true
 })
 hl.window_rule({
     name = "hyprland-dialog",
@@ -34,32 +26,30 @@ hl.window_rule({
     ["hyprbars:no_bar"] = true
 })
 hl.window_rule({
-    name              = "zed",
-    match             = { class = "dev.zed.Zed" },
+    name                   = "zed",
+    match                  = {
+        class = "dev.zed.Zed",
+    },
     ["hyprbars:bar_color"] = "rgba(000000A6)",
 })
 hl.window_rule({
-    name              = "sober",
-    match             = { class = "sober_services" },
-    ["hyprbars:no_bar"] = true,
-})
-hl.window_rule({
-    name              = "kitty",
-    match             = { class = "kitty" },
+    name                   = "kitty",
+    match                  = { class = "kitty" },
     ["hyprbars:bar_color"] = "rgba(000000D4)",
 })
 
 hl.window_rule({
-    name              = "zen",
-    match             = { class = "zen" },
-    ["hyprbars:bar_color"] = "rgb(131313)"}
+    name                   = "zen",
+    match                  = { class = "zen" },
+    ["hyprbars:bar_color"] = "rgb(131313)"
+}
 )
 -- Example window rules that are useful
 
 local suppressMaximizeRule = hl.window_rule({
     -- Ignore maximize requests from all apps. You'll probably like this.
-    name  = "suppress-maximize-events",
-    match = { class = ".*" },
+    name           = "suppress-maximize-events",
+    match          = { class = ".*" },
 
     suppress_event = "maximize",
 })
@@ -67,8 +57,8 @@ local suppressMaximizeRule = hl.window_rule({
 
 hl.window_rule({
     -- Fix some dragging issues with XWayland
-    name  = "fix-xwayland-drags",
-    match = {
+    name     = "fix-xwayland-drags",
+    match    = {
         class      = "^$",
         title      = "^$",
         xwayland   = true,
@@ -89,16 +79,14 @@ hl.window_rule({
 -- overlayLayerRule:set_enabled(false)
 
 hl.layer_rule({
-  name = "noctalia",
-  match = {
-    namespace = "^noctalia-(bar-.+|notification|dock|panel|attached-panel|osd)$",
-  },
-  no_anim = true,
-  ignore_alpha = 0.5,
-  blur = true,
+    name = "noctalia",
+    match = {
+        namespace = "^noctalia-(bar-.+|notification|dock|panel|attached-panel|osd)$",
+    },
+    no_anim = true,
+    ignore_alpha = 0.5,
+    blur = true,
     blur_popups = true,
-    order = -99,
-
 })
 
 -- Hyprland-run windowrule
@@ -113,7 +101,7 @@ hl.window_rule({
 -- XWayland
 hl.window_rule({
     name = "xwayland-video-bridge-fixes",
-    match =  {
+    match = {
         class = "xwaylandvideobridge"
     },
     no_initial_focus = true,
@@ -125,8 +113,8 @@ hl.window_rule({
 })
 hl.window_rule({
     name = "vinegar-roblox-studio",
-    match =  {
-       xwayland = 1
+    match = {
+        xwayland = 1
     },
     no_initial_focus = true,
 })
@@ -140,10 +128,14 @@ hl.window_rule({
     ["hyprbars:no_bar"] = true
 })
 
-hl.layer_rule({
-    name = "tide-island",
+hl.window_rule({
+    name = "hide-hyprbars",
     match = {
-        title = "tide-island"
+        float = true
     },
-    order = 999
+    rounding = 17,
+    border_size = 1,
+    border_color = "rgb(606570)",
+    no_shadow = true,
+    ["hyprbars:no_bar"] = true
 })

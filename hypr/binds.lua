@@ -160,9 +160,9 @@ hl.bind(mainMod .. "+ bracketleft", layout_bind({
     scrolling = hl.dsp.layout("consume_or_expel prev"),
 }))
 
--- hl.bind(mainMod .. "+ slash", layout_bind({
---     scrolling = hl.dsp.layout("inhibit_scroll"),
--- }))
+hl.bind(mainMod .. "+ slash", layout_bind({
+    scrolling = hl.dsp.layout("inhibit_scroll"),
+}))
 
 -- hl.bind(mainMod .. "+ C", layout_bind({
 --     scrolling = hl.dsp.layout("fit_into_view"),
