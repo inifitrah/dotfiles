@@ -1,4 +1,4 @@
-local scratchpads = require("utils.scratchpads")
+local scratchpads = require("modules.scratchpads")
 ------------------
 -- MY PROGRAMS  --
 ------------------
@@ -238,13 +238,9 @@ hl.bind("F1", function ()
     hl.exec_cmd(ipc .. "bar-auto-hide-set on bar-blur")
     hl.exec_cmd(ipc .. "bar-reserve-toggle bar-blur")
 
-    -- disable plugin
+
+    require("modules.hyprbars").disable()
     hl.config({
-        plugin = {
-            hyprbars = {
-                enabled = false
-            }
-        },
         general = {
             gaps_in = 0, gaps_out = 0, -- Disable gaps
             border_size = 0,

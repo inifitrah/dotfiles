@@ -18,32 +18,6 @@ hl.window_rule({
     keep_aspect_ratio = true,
     float             = true,
 })
-hl.window_rule({
-    name = "hyprland-dialog",
-    match = {
-        initial_class = "hyprland-dialog"
-    },
-    ["hyprbars:no_bar"] = true
-})
-hl.window_rule({
-    name                   = "zed",
-    match                  = {
-        class = "dev.zed.Zed",
-    },
-    ["hyprbars:bar_color"] = "rgba(000000A6)",
-})
-hl.window_rule({
-    name                   = "kitty",
-    match                  = { class = "kitty" },
-    ["hyprbars:bar_color"] = "rgba(000000D4)",
-})
-
-hl.window_rule({
-    name                   = "zen",
-    match                  = { class = "zen" },
-    ["hyprbars:bar_color"] = "rgb(131313)"
-}
-)
 -- Example window rules that are useful
 
 local suppressMaximizeRule = hl.window_rule({
@@ -117,25 +91,4 @@ hl.window_rule({
         xwayland = 1
     },
     no_initial_focus = true,
-})
-
-hl.window_rule({
-    name = "sensitive-app",
-    match = {
-        tag = "sensitive"
-    },
-    no_screen_share = true,
-    ["hyprbars:no_bar"] = true
-})
-
-hl.window_rule({
-    name = "hide-hyprbars",
-    match = {
-        float = true
-    },
-    rounding = 17,
-    border_size = 1,
-    border_color = "rgb(606570)",
-    no_shadow = true,
-    ["hyprbars:no_bar"] = true
 })
