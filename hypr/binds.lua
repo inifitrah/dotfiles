@@ -1,4 +1,5 @@
 local scratchpads = require("modules.scratchpads")
+local modes = require("modules.modes")
 local workspaces = require("modules.workspaces")
 ------------------
 -- MY PROGRAMS  --
@@ -216,7 +217,7 @@ hl.bind(mainMod .. " + H", layout_bind({
 }))
 
 -- Game mode toggle
-hl.bind("F1", workspaces.toggle_game_mode)
+hl.bind("F1", modes.toggle_game_mode)
 -- Cycle layout: scrolling → dwindle → monocle
 hl.bind("SUPER + N", workspaces.cycle_layout)
 
