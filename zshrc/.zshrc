@@ -67,7 +67,7 @@ alias dev="npm run dev"
 alias box="distrobox"
 
 # Zed Editor
-alias ze="zeditor" # Biasanya binary zed bernama 'zed', cek dengan 'which zeditor'
+alias z="zeditor" # Biasanya binary zed bernama 'zed', cek dengan 'which zeditor'
 
 # ==============================================================================
 # 5. PROMPT & TOOLS INIT
