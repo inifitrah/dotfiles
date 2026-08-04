@@ -10,6 +10,7 @@ return {
       ensure_installed = {
         "lua_ls",       -- Lua
         "ts_ls",        -- TypeScript/JavaScript
+        "emmet_language_server"
       },
       automatic_enable = true, -- otomatis panggil vim.lsp.enable() buat server yang ke-install
     },
@@ -17,18 +18,22 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      -- capabilities tambahan dari blink.cmp berlaku ke semua server
       vim.lsp.config("*", {
         capabilities = require("blink.cmp").get_lsp_capabilities(),
       })
 
-      -- override/extend config server tertentu kalau perlu
       vim.lsp.config("lua_ls", {
         settings = {
           Lua = {
             diagnostics = { globals = { "vim" } },
           },
         },
+      })
+
+      vim.lsp.config("emmet_language_server", {
+        filetypes = {
+           "html", "css", "scss", "javascriptreact", "typescriptreact",
+        }
       })
 
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
