@@ -70,7 +70,7 @@
       "space g g": [
         "task::Spawn",
         {
-          "task_name": "Lazygit",
+          "task_name": "LazyGit",
           "reveal_target": "center"
         }
       ],

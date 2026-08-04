@@ -15,14 +15,14 @@
   "focus_follows_mouse": {
     "enabled": false
   },
-  "window_decorations": "client",
+  "window_decorations": "server",
   "git": {
     "branch_picker": {
       "show_author_name": true
     }
   },
   "proxy": "",
-  "diff_view_style": "split",
+  "diff_view_style": "unified",
   "cli_default_open_behavior": "new_window",
   "collaboration_panel": {
     "dock": "left"
@@ -86,7 +86,7 @@
     "quick_actions": false,
     "agent_review": false,
     "code_actions": false,
-    "breadcrumbs": true,
+    "breadcrumbs": false,
     "selections_menu": false
   },
   "tabs": {
@@ -125,58 +125,15 @@
     "enabled": true
   },
   "ui_font_size": 21,
-  "buffer_font_size": 16,
+  "buffer_font_size": 18.0,
   "theme": {
     "mode": "dark",
     "light": "Noctalia Light Transparent",
-    "dark": "Tokyo Night"
+    "dark": "Kanagawa Dragon"
   },
   "theme_overrides": {
-    "Aura Dark": {
-      "text": "#dce0e5ff",
-      "text.muted": "#a9afbcff",
-      "text.placeholder": "#878a98ff",
-      "text.disabled": "#878a98ff",
-      "text.accent": "#74ade8ff",
-      "background": "#15141b95",
-      "status_bar.background": "#15141b95",
-      "editor.background": "#15141b30",
-      "surface.background": "#15141b10",
-      "panel.background": "#15141b00",
-      "title_bar.background": "#15141b80",
-      "tab_bar.background": "#15141b00",
-      "tab.active_background": "#15141b50",
-      "tab.inactive_background": "#15141b00",
-      "toolbar.background": "#15141b00",
-      "terminal.background": "#15141b90",
-      "editor.gutter.background": "#15141b00",
-      "scrollbar.track.background": "#15141b00",
-      "border": "#adadad30",
-      "border.variant": "#adadad30",
-      "border.focused": "#a277ff90",
-      "pane.focused_border": "#a277ff90",
-      "panel.focused_border": "#a277ff90",
-      "scrollbar.thumb.border": "#ffffff44",
-      "scrollbar.track.border": "#ffffff55"
-    },
-    "GitHub Dark": {
-      "background": "#1a172095",
-      "status_bar.background": "#1a172095",
-      "editor.background": "#1a172095",
-      "surface.background": "#1a172030",
-      "panel.background": "#1a172095",
-      "title_bar.background": "#1a172095",
-      "tab_bar.background": "#1a172000",
-      "tab.active_background": "#1a172095",
-      "tab.inactive_background": "#1a172000",
-      "toolbar.background": "#1a172000",
-      "terminal.background": "#1a172095",
-      "editor.gutter.background": "#1a172095",
-      "scrollbar.track.background": "#1a172000",
-      "border": "#adadad40",
-      "border.variant": "#adadad30",
-      "scrollbar.thumb.border": "#ffffff44",
-      "scrollbar.track.border": "#ffffff55"
+    "Vesper Blur": {
+      "panel.focused_border": "#fbc496"
     }
   },
   "drag_and_drop_selection": {
@@ -229,6 +186,7 @@
     "modal_max_width": "small"
   },
   "scrollbar": {
+    "selected_symbol": true,
     "show": "never"
   },
   "tab_size": 4,
@@ -380,18 +338,18 @@
         "large_text": "{language:u}",
         "small_image": "{base_icons_url}/zed.png",
         "small_text": "Zed",
-        "git_integration": false
+        "git_integration": false,
         // Idle settings - when you're inactive
-        // "idle": {
-        //     "timeout": 0, // Idle timeout in seconds (300 seconds = 5 minutes)
-        //     "action": "change_activity",
-        //     "state": "Idling",
-        //     "details": "In Zed",
-        //     "large_image": "{base_icons_url}/zed.png",
-        //     "large_text": "Zed",
-        //     "small_image": "{base_icons_url}/idle.png",
-        //     "small_text": "Idle",
-        // },
+        "idle": {
+          "timeout": 30000, // Idle timeout in seconds (300 seconds = 5 minutes)
+          "action": "change_activity",
+          "state": "Idling",
+          "details": "In Zed",
+          "large_image": "{base_icons_url}/zed.png",
+          "large_text": "Zed",
+          "small_image": "{base_icons_url}/idle.png",
+          "small_text": "Idle"
+        }
       }
     }
   },
@@ -463,17 +421,14 @@
       ]
     },
     "JavaScript": {
+      "format_on_save": "on",
       "formatter": {
         "external": {
           "command": "bunx",
           "arguments": ["prettier", "--stdin-filepath", "{buffer_path}"]
         }
       },
-      "language_servers": [
-        "eslint",
-        "javascript-language-server",
-        "tailwindcss-language-server"
-      ]
+      "language_servers": ["eslint", "typescript-language-server"]
     },
     "HTML": {
       "formatter": "language_server"
