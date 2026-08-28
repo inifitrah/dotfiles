@@ -1,6 +1,6 @@
 local scratchpads = require("modules.scratchpads")
-local modes = require("modules.modes")
-local workspaces = require("modules.workspaces")
+local modes       = require("modules.modes")
+local workspaces  = require("modules.workspaces")
 ------------------
 -- MY PROGRAMS  --
 ------------------
@@ -11,14 +11,14 @@ local fileManager = "kitty -T yazi -e yazi"
 ---- KEYBINDINGS ----
 ---------------------
 
-local mainMod = "SUPER" -- Sets "Windows" key as main modifier
-local ipc = "noctalia msg "
+local mainMod     = "SUPER" -- Sets "Windows" key as main modifier
+local ipc         = "noctalia msg "
 
 -- Per-layout binds: same key, different action depending on the active layout
 local function layout_bind(bind_table)
-    return function ()
+    return function()
         local workspace = hl.get_active_special_workspace() or
-                          hl.get_active_workspace()
+            hl.get_active_workspace()
 
         if not workspace then
             return
@@ -39,6 +39,7 @@ end
 hl.bind(mainMod .. "+Space", hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
 hl.bind(mainMod .. "+ SHIFT + comma", hl.dsp.exec_cmd(ipc .. "settings-toggle"))
 hl.bind(mainMod .. "+ SHIFT + Escape", hl.dsp.exec_cmd(ipc .. "panel-toggle session"))
+hl.bind(mainMod .. "+ o", hl.dsp.exec_cmd(ipc .. "window-switcher"))
 -- Media keys
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc .. "volume-up"))
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(ipc .. "volume-down"))
@@ -51,72 +52,118 @@ hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(ipc .. "brightness-down"))
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
 hl.bind("ALT" .. " + Q", hl.dsp.window.close())
 hl.bind("ALT + SHIFT + Q", hl.dsp.window.kill())
-hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
+hl.bind(mainMod .. " + SHIFT + M",
+    hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
 
 -- Toggle applications like MangoWM named scratchpads.
-hl.bind(mainMod .. " + E", function ()
+hl.bind(mainMod .. " + E", function()
     scratchpads.show_or_hide_app(hl.dsp.exec_cmd(fileManager, {
         float = true,
-        size = {1200, 700}
+        size = { 1200, 700 }
     }), {
-      title = "yazi"
+        title = "yazi"
     })
 end)
-hl.bind(mainMod .. " + return", function ()
+hl.bind(mainMod .. " + return", function()
     scratchpads.show_or_hide_app(hl.dsp.exec_cmd("kitty -T term sh -c 'fastfetch --logo-type kitty; exec $SHELL'", {
         float = true,
         size = { 1200, 900 },
         -- ["hyprbars:no_bar"] = true
     }), {
-      title = "term"
+        title = "term"
     })
 end)
-hl.bind("SUPER + X", function ()
+hl.bind("SUPER + X", function()
     scratchpads.minimize_app()
 end)
 
-hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }), {long_press = true})
+-- Toggle gaps_in between 0 and 3 (equivalent to  {3, 3, 3, 3} )
+hl.bind(mainMod .. " + SHIFT + G", function()
+    local gapsInValueTable = hl.get_config("general.gaps_in")
+
+    if gapsInValueTable.top == 5 then
+        hl.config({
+            general = { gaps_in = 0, gaps_out = 0 }
+        })
+    else
+        hl.config({
+            general = { gaps_in = 5, gaps_out = 5 }
+        })
+    end
+end)
+
+hl.bind("SUPER + SHIFT + F", function()
+    local dimInactiveStatus = hl.get_config("decoration.dim_inactive")
+    if dimInactiveStatus == false then
+        hl.config({
+            general = {
+                border_size = 0
+            },
+            decoration = {
+                dim_inactive = true,
+            }
+        })
+    else
+        hl.config({
+            general = {
+                border_size = 3
+            },
+            decoration = {
+                dim_inactive = false,
+            }
+        })
+    end
+end)
+
+hl.bind("ALT + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 
-hl.bind("ALT + A", hl.dsp.window.fullscreen({ mode= "maximized", action="toggle", layout_aware=true  }) )
-hl.bind("ALT + F", hl.dsp.window.fullscreen({ mode= "fullscreen", action="toggle", layout_aware=true  }) )
+hl.bind("ALT + A", hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle", layout_aware = true }))
+hl.bind("ALT + F", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle", layout_aware = true }))
 
 -- Switch workspaces with mainMod + [0-9]
 -- Move active window to a workspace with mainMod + SHIFT + [0-9]
 for i = 1, 10 do
     local key = i % 10 -- 10 maps to key 0
-    hl.bind(mainMod .. " + " .. key,             hl.dsp.focus({ workspace = i}))
-    hl.bind(mainMod .. " + SHIFT + " .. key,     hl.dsp.window.move({ workspace = i }))
+    hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
+    hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
 
 -- Example special workspace (scratchpad)
-hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special("magic"))
+hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("magic"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
+
+hl.bind(mainMod .. " + W", hl.dsp.workspace.toggle_special("work"))
+hl.bind(mainMod .. " + SHIFT + W", hl.dsp.window.move({ workspace = "special:work" }))
 
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
 
 hl.bind(mainMod .. "+ ALT + L", hl.dsp.focus({ workspace = "e+1" }))
-hl.bind(mainMod .. "+ ALT + H",   hl.dsp.focus({ workspace = "e-1" }))
+hl.bind(mainMod .. "+ ALT + H", hl.dsp.focus({ workspace = "e-1" }))
 
 -- Move/resize windows with mainMod + LMB/RMB and dragging
-hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
+hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- Laptop multimedia keys for volume and LCD brightness
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),      { locked = true, repeating = true })
-hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),     { locked = true, repeating = true })
-hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),   { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessUp",  hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"),                  { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown",hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"),                  { locked = true, repeating = true })
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"),
+    { locked = true, repeating = true })
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),
+    { locked = true, repeating = true })
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),
+    { locked = true, repeating = true })
+hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
+    { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"), { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"), { locked = true, repeating = true })
 
 -- Requires playerctl
-hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = true })
+hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
+hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
+hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 
 -- Binds per-layout
 hl.bind(mainMod .. "+ comma", layout_bind({
@@ -128,31 +175,12 @@ hl.bind(mainMod .. "+ period", layout_bind({
 hl.bind(mainMod .. "+ equal", layout_bind({
     scrolling = hl.dsp.layout("colresize +conf"),
 }))
+hl.bind(mainMod .. "+ c", layout_bind({
+    scrolling = hl.dsp.layout(""),
+}))
 hl.bind(mainMod .. "+ minus", layout_bind({
     scrolling = hl.dsp.layout("colresize -conf"),
 }))
--- Direction toggle per-workspace (right ↔ down)
-local scroll_directions = {}
-
--- hl.bind(mainMod .. "+ R", function()
---     local workspace = hl.get_active_workspace()
---     if hl.get_active_special_workspace() then
---         workspace = hl.get_active_special_workspace()
---     end
---     if not workspace then return end
-
---     local id = tostring(workspace.id)
---     local current = scroll_directions[id] or "right"
---     local new_dir = current == "right" and "down" or "right"
---     scroll_directions[id] = new_dir
-
---     hl.workspace_rule({ workspace = id, layout_opts = { direction = "right" } })
---     hl.notification.create({ text = "Scrolling: " .. new_dir, timeout = 1500, icon = "info" })
--- end)
-
--- hl.bind(mainMod .. "+ F", layout_bind({
---     scrolling = hl.dsp.layout("fit expand"),
--- }))
 
 hl.bind(mainMod .. "+ bracketright", layout_bind({
     scrolling = hl.dsp.layout("consume_or_expel next"),
@@ -166,54 +194,46 @@ hl.bind(mainMod .. "+ slash", layout_bind({
     scrolling = hl.dsp.layout("inhibit_scroll"),
 }))
 
--- hl.bind(mainMod .. "+ C", layout_bind({
---     scrolling = hl.dsp.layout("fit_into_view"),
--- }))
+hl.bind(mainMod .. "+ A", layout_bind({
+    master = hl.dsp.layout("swapwithmaster"),
+}))
+
+hl.bind(mainMod .. "+ R", layout_bind({
+    master = hl.dsp.layout("orientationcycle"),
+}))
 
 hl.bind(mainMod .. "+ H", layout_bind({
     scrolling = hl.dsp.layout("focus left"),
-    default = hl.dsp.focus({direction = "left"})
+    default = hl.dsp.focus({ direction = "left" })
 }))
 hl.bind(mainMod .. "+ J", layout_bind({
     scrolling = hl.dsp.layout("focus down"),
-    default = hl.dsp.focus({direction = "down"})
+    default = hl.dsp.focus({ direction = "down" })
 }))
 hl.bind(mainMod .. "+ K", layout_bind({
     scrolling = hl.dsp.layout("focus top"),
-    default = hl.dsp.focus({direction = "up"})
+    default = hl.dsp.focus({ direction = "up" })
 }))
 hl.bind(mainMod .. "+ L", layout_bind({
     scrolling = hl.dsp.layout("focus right"),
-    default = hl.dsp.focus({direction = "right"})
+    default = hl.dsp.focus({ direction = "right" })
 }))
 
-hl.bind(mainMod .. "+ o", function ()
-    hl.plugin.scrolloverview.overview("toggle")
-end)
-
--- hl.bind(mainMod .. "+ Tab", function ()
---     hl.plugin.scrolloverview.overview("toggle")
--- end)
-
--- Snappy Switcher
-hl.bind("ALT + Tab", hl.dsp.exec_cmd("snappy-switcher next --mod alt"))
-hl.bind(mainMod .. "+ Tab", hl.dsp.exec_cmd("snappy-switcher next --workspace --mod super"))
-
 hl.bind(mainMod .. " + SHIFT + H", layout_bind({
-    scrolling = hl.dsp.layout("swapcol l"),  -- Scrolling: swap column with left one
-    dwindle   = hl.dsp.layout("swapsplit"),  -- Dwindle: swap window split
+    scrolling = hl.dsp.layout("swapcol l"), -- Scrolling: swap column with left one
+    dwindle   = hl.dsp.layout("swapsplit"), -- Dwindle: swap window split
 }))
 
 hl.bind(mainMod .. " + SHIFT + L", layout_bind({
-    scrolling = hl.dsp.layout("swapcol r"),  -- Scrolling: swap column with right one
+    scrolling = hl.dsp.layout("swapcol r"),   -- Scrolling: swap column with right one
     dwindle   = hl.dsp.layout("togglesplit"), -- Dwindle: toggle window split
 }))
 
 hl.bind(mainMod .. " + L", layout_bind({
-    monocle = hl.dsp.layout("cyclenext"),            -- Monocle: cycle next window
+    monocle = hl.dsp.layout("cyclenext"), -- Monocle: cycle next window
 }))
 hl.bind(mainMod .. " + H", layout_bind({
-    monocle = hl.dsp.layout("cycleprev"),           -- Monocle: cycle prev window
+    monocle = hl.dsp.layout("cycleprev"), -- Monocle: cycle prev window
 }))
 
 -- Game mode toggle
@@ -249,6 +269,6 @@ hl.bind("SUPER + SHIFT + Down", function()
     zoom(-0.5)
 end)
 
-hl.bind(mainMod .. "+ SHIFT + P", function ()
+hl.bind(mainMod .. "+ SHIFT + P", function()
     hl.dispatch(hl.dsp.window.tag({ tag = "sensitive", window = hl.get_active_window() }))
-end )
+end)
