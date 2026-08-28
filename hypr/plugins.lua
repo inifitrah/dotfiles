@@ -4,6 +4,7 @@
 
 require("modules.hyprbars").setup()
 
+if hl.plugin.scrolloverview ~= nil then
 hl.config({
     plugin = {
         scrolloverview = {
@@ -24,3 +25,4 @@ hl.config({
         },
     }
 })
+end

@@ -54,19 +54,26 @@ function M.setup()
             match = {
                 initial_class = "hyprland-dialog"
             },
-            ["hyprbars:no_bar"] = true
+            ["hyprbars:no_bar"] = true,
+        })
+        hl.window_rule({
+            name = "spotify",
+            match = {
+                initial_class = "Spotify"
+            },
+            ["hyprbars:bar_color"] = "rgb(000000)",
         })
         hl.window_rule({
             name                   = "zed",
             match                  = {
                 class = "dev.zed.Zed",
             },
-            ["hyprbars:bar_color"] = "rgb(202324)",
+            ["hyprbars:bar_color"] = "rgb(1e1d1b)",
         })
         hl.window_rule({
             name                   = "kitty",
             match                  = { class = "kitty" },
-            ["hyprbars:bar_color"] = "rgba(000000D4)",
+            ["hyprbars:bar_color"] = "rgb(1e1d1b)",
         })
         hl.window_rule({
             name                   = "zen",
@@ -81,17 +88,17 @@ function M.setup()
             no_screen_share = true,
             ["hyprbars:no_bar"] = true
         })
-        hl.window_rule({
-            name = "hide-hyprbars",
-            match = {
-                float = true
-            },
-            rounding = 17,
-            border_size = 1,
-            border_color = "rgb(606570)",
-            -- no_shadow = true,
-            ["hyprbars:no_bar"] = true
-        })
+        -- hl.window_rule({
+        --     name = "hide-hyprbars",
+        --     match = {
+        --         float = true
+        --     },
+        --     rounding = 17,
+        --     border_size = 1,
+        --     border_color = "rgb(606570)",
+        --     -- no_shadow = true,
+        --     ["hyprbars:no_bar"] = true
+        -- })
     end
 end
 

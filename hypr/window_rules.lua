@@ -5,12 +5,16 @@
 -- See https://wiki.hypr.land/Configuring/Basics/Window-Rules/
 -- and https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
 
+-- work
+hl.workspace_rule({ workspace = "special:work", no_rounding = true, decorate =false , gaps_in = 3, gaps_out = 3, no_border = true, monitor = "eDP-1", persistent = true, no_shadow=true, animation="slidevert" })
+
 -- Noctalia Settings
 hl.window_rule({
     match = { class = "dev.noctalia.Noctalia" },
     float = true,
     size = { 1080, 920 },
 })
+
 
 hl.window_rule({
     name              = "scrcpy",
@@ -92,3 +96,13 @@ hl.window_rule({
     },
     no_initial_focus = true,
 })
+
+hl.window_rule({
+    name = "shadow_only_when_float",
+    match = {
+        float = false
+    },
+    size = {900, 800},
+    no_shadow= true
+})
+hl.window_rule({ name = "kitty_starting_width", match = { class = "kitty" }, scrolling_width = 0.5})
