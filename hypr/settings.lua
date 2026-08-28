@@ -29,7 +29,7 @@ hl.config({
     decoration = {
         rounding       = 20,
         rounding_power = 2,
-        dim_special = 0.6,
+        dim_special = 0.1,
         active_opacity   = 1.0,
         inactive_opacity = 1.0,
 
@@ -41,7 +41,7 @@ hl.config({
         },
 
         blur = {
-            enabled   = true,
+            enabled   = false,
             size      = 4,
             passes    = 4,
             vibrancy  = 0.1700,
@@ -54,6 +54,12 @@ hl.config({
     },
 
     cursor = {
-        no_warps = true
-    }
+        no_warps = false
+    },
+    debug = {
+       -- enable_stdout_logs = true,
+       disable_logs = false,       -- opsional, kalau mau logging ke file juga tetap nyala
+       -- colored_stdout_logs = true, -- opsional, biar ada warna
+     }
+
 })

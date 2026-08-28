@@ -6,7 +6,7 @@
 -- and https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
 
 -- work
-hl.workspace_rule({ workspace = "special:work", no_rounding = true, decorate =false , gaps_in = 3, gaps_out = 3, no_border = true, monitor = "eDP-1", persistent = true, no_shadow=true, animation="slidevert" })
+-- hl.workspace_rule({ workspace = "special:work", no_rounding = true, decorate =false , gaps_in = 3, gaps_out = 3, no_border = true, monitor = "eDP-1", persistent = true, no_shadow=true, animation="slidevert" })
 
 -- Noctalia Settings
 hl.window_rule({
@@ -47,14 +47,6 @@ hl.window_rule({
 
     no_focus = true,
 })
-
--- Layer rules also return a handle.
--- local overlayLayerRule = hl.layer_rule({
---     name  = "no-anim-overlay",
---     match = { namespace = "^my-overlay$" },
---     no_anim = true,
--- })
--- overlayLayerRule:set_enabled(false)
 
 hl.layer_rule({
     name = "noctalia",
@@ -97,12 +89,13 @@ hl.window_rule({
     no_initial_focus = true,
 })
 
-hl.window_rule({
-    name = "shadow_only_when_float",
-    match = {
-        float = false
-    },
-    size = {900, 800},
-    no_shadow= true
-})
+-- hl.window_rule({
+--     name = "shadow_only_when_float",
+--     match = {
+--         float = false
+--     },
+--     size = {900, 800},
+--     no_shadow= true
+-- })
 hl.window_rule({ name = "kitty_starting_width", match = { class = "kitty" }, scrolling_width = 0.5})
+hl.window_rule({ name = "zen_starting_width", match = { class = "zen" }, scrolling_width = 1})

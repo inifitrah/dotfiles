@@ -3,7 +3,7 @@ local ipc = "noctalia msg "
 local M = {}
 
 function M.toggle_game_mode()
-    local game_mode = (hl.get_config("decoration.blur.enabled") == false)
+    local game_mode = (hl.get_config("decoration.shadow.enabled") == false)
 
     if game_mode then
         hl.exec_cmd("hyprctl reload")
@@ -23,7 +23,6 @@ function M.toggle_game_mode()
     hl.config({
         general = {
             gaps_in = 3, gaps_out = 0, -- Disable gaps
-            border_size = 0,
         },
 
         -- animations = {

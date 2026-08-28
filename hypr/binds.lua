@@ -34,12 +34,18 @@ local function layout_bind(bind_table)
     end
 end
 
+hl.bind(mainMod .. "+ SHIFT + R", function()
+    hl.dispatch(hl.dsp.exec_cmd("hyprctl reload"))
+end)
+
 -- Noctalia
 -- Core binds
-hl.bind(mainMod .. "+Space", hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
+hl.bind(mainMod .. "+ Space", hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
 hl.bind(mainMod .. "+ SHIFT + comma", hl.dsp.exec_cmd(ipc .. "settings-toggle"))
 hl.bind(mainMod .. "+ SHIFT + Escape", hl.dsp.exec_cmd(ipc .. "panel-toggle session"))
 hl.bind(mainMod .. "+ o", hl.dsp.exec_cmd(ipc .. "window-switcher"))
+-- screenshot
+hl.bind(mainMod .. "+ CTRL + S", hl.dsp.exec_cmd(ipc .. "screenshot-region"))
 -- Media keys
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc .. "volume-up"))
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(ipc .. "volume-down"))
@@ -92,7 +98,7 @@ hl.bind(mainMod .. " + SHIFT + G", function()
     end
 end)
 
-hl.bind("SUPER + SHIFT + F", function()
+hl.bind("SUPER + CTRL + F", function()
     local dimInactiveStatus = hl.get_config("decoration.dim_inactive")
     if dimInactiveStatus == false then
         hl.config({
@@ -116,7 +122,11 @@ hl.bind("SUPER + SHIFT + F", function()
 end)
 
 hl.bind("ALT + V", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
+hl.bind(mainMod .. "+ SHIFT + P", hl.dsp.window.pseudo())
+
+hl.bind("SUPER + P", function()
+    hl.dispatch(hl.dsp.focus({ last = true }))
+end)
 
 hl.bind("ALT + A", hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle", layout_aware = true }))
 hl.bind("ALT + F", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle", layout_aware = true }))
@@ -140,8 +150,8 @@ hl.bind(mainMod .. " + SHIFT + W", hl.dsp.window.move({ workspace = "special:wor
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
 
-hl.bind(mainMod .. "+ ALT + L", hl.dsp.focus({ workspace = "e+1" }))
-hl.bind(mainMod .. "+ ALT + H", hl.dsp.focus({ workspace = "e-1" }))
+hl.bind(mainMod .. "+ ALT + L", hl.dsp.focus({ workspace = "+1" }))
+hl.bind(mainMod .. "+ ALT + H", hl.dsp.focus({ workspace = "-1" }))
 
 -- Move/resize windows with mainMod + LMB/RMB and dragging
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
@@ -202,7 +212,7 @@ hl.bind(mainMod .. "+ R", layout_bind({
     master = hl.dsp.layout("orientationcycle"),
 }))
 
-hl.bind(mainMod .. "+ H", layout_bind({
+hl.bind(mainMod .. "+ CTRL + H", layout_bind({
     scrolling = hl.dsp.layout("focus left"),
     default = hl.dsp.focus({ direction = "left" })
 }))
@@ -214,7 +224,7 @@ hl.bind(mainMod .. "+ K", layout_bind({
     scrolling = hl.dsp.layout("focus top"),
     default = hl.dsp.focus({ direction = "up" })
 }))
-hl.bind(mainMod .. "+ L", layout_bind({
+hl.bind(mainMod .. "+ CTRL + L", layout_bind({
     scrolling = hl.dsp.layout("focus right"),
     default = hl.dsp.focus({ direction = "right" })
 }))
@@ -229,12 +239,16 @@ hl.bind(mainMod .. " + SHIFT + L", layout_bind({
     dwindle   = hl.dsp.layout("togglesplit"), -- Dwindle: toggle window split
 }))
 
-hl.bind(mainMod .. " + L", layout_bind({
+hl.bind("ALT + TAB", layout_bind({
     monocle = hl.dsp.layout("cyclenext"), -- Monocle: cycle next window
 }))
-hl.bind(mainMod .. " + H", layout_bind({
-    monocle = hl.dsp.layout("cycleprev"), -- Monocle: cycle prev window
-}))
+
+-- hl.bind("ALT + L", layout_bind({
+--     monocle = hl.dsp.layout("cyclenext"), -- Monocle: cycle next window
+-- }))
+-- hl.bind("ALT + H", layout_bind({
+--     monocle = hl.dsp.layout("cycleprev"), -- Monocle: cycle prev window
+-- }))
 
 -- Game mode toggle
 hl.bind("F1", modes.toggle_game_mode)
@@ -269,6 +283,185 @@ hl.bind("SUPER + SHIFT + Down", function()
     zoom(-0.5)
 end)
 
-hl.bind(mainMod .. "+ SHIFT + P", function()
+hl.bind(mainMod .. "+ SHIFT + Q", function()
     hl.dispatch(hl.dsp.window.tag({ tag = "sensitive", window = hl.get_active_window() }))
 end)
+
+-- ============================================================
+-- Smart Focus & Non-Wrapping Workspace Navigation
+-- Hyprland Lua v0.56.0+
+--
+-- Mod + H  -> focus left  (window, then previous occupied workspace)
+-- Mod + L  -> focus right (window, then next occupied workspace)
+-- No wrap-around at the first/last occupied workspace.
+-- ============================================================
+
+-- Returns all *normal* workspaces (id > 0, i.e. excludes special/scratchpad
+-- workspaces which have negative ids) that currently contain at least one
+-- window, sorted ascending by id.
+local function get_occupied_workspaces()
+  local all = hl.get_workspaces()
+  local occ = {}
+  for _, ws in ipairs(all) do
+    if ws.id > 0 and ws.windows and ws.windows > 0 then
+      table.insert(occ, ws)
+    end
+  end
+  table.sort(occ, function(a, b) return a.id < b.id end)
+  return occ
+end
+
+-- Returns a workspace's windows sorted left-to-right by x position.
+local function get_sorted_workspace_windows(ws_id)
+  local wins = hl.get_workspace_windows(ws_id)
+  if not wins then
+    return {}
+  end
+  table.sort(wins, function(a, b)
+    local ax = (a.at and a.at.x) or 0
+    local bx = (b.at and b.at.x) or 0
+    return ax < bx
+  end)
+  return wins
+end
+
+-- Focuses the leftmost or rightmost window in a given workspace,
+-- based on each window's x position.
+local function focus_edge_window(ws_id, edge)
+  local wins = get_sorted_workspace_windows(ws_id)
+  if #wins == 0 then
+    return
+  end
+  local target = (edge == "leftmost") and wins[1] or wins[#wins]
+  if target then
+    hl.dispatch(hl.dsp.focus({ window = target }))
+  end
+end
+
+-- Returns the correct selector to use with hl.get_workspace_windows /
+-- hl.dsp.focus({workspace=...}) for a given workspace object. Normal
+-- workspaces use their numeric id, but special workspaces have negative
+-- ids which aren't valid numeric selectors (Hyprland only accepts 1..2^31-1
+-- as a numeric id) — for those we must use their name instead (e.g.
+-- "special:magic").
+local function workspace_selector(ws)
+  if ws.id and ws.id > 0 then
+    return ws.id
+  end
+  return ws.name
+end
+
+-- direction: "l" or "r"
+local function smart_nav(direction)
+  local active_win = hl.get_active_window()
+
+  -- IMPORTANT: hl.get_active_workspace() returns the monitor's underlying
+  -- *normal* workspace, NOT a special (scratchpad) workspace, even while a
+  -- special workspace is open and focused on top of it. So to correctly
+  -- detect "am I currently in a special workspace", we must look at the
+  -- focused window's own `.workspace` field instead, which does reflect
+  -- special workspaces (e.g. id -97 / name "special:magic").
+  local current_ws = (active_win and active_win.workspace) or hl.get_active_workspace()
+  if not current_ws then
+    print("[smart_nav] dir=" .. direction .. " no current workspace found, aborting")
+    return
+  end
+
+  print("[smart_nav] dir=" .. direction ..
+        " active_win=" .. tostring(active_win and active_win.title) ..
+        " ws_id=" .. tostring(current_ws.id) ..
+        " ws_name=" .. tostring(current_ws.name))
+
+  -- Special workspaces (scratchpads) are left alone: just use plain
+  -- native directional focus there, no smart edge/workspace-jump logic.
+  if current_ws.id and current_ws.id < 0 then
+    print("[smart_nav] on SPECIAL workspace '" .. tostring(current_ws.name) ..
+          "' (id=" .. tostring(current_ws.id) .. ") -> plain directional focus")
+    hl.dispatch(hl.dsp.focus({ direction = direction }))
+    return
+  end
+
+  local current_id = current_ws.id
+  local wins = get_sorted_workspace_windows(workspace_selector(current_ws))
+  print("[smart_nav] normal workspace id=" .. tostring(current_id) ..
+        " window_count=" .. tostring(#wins))
+
+  -- Find the active window's position within the sorted list.
+  local idx = nil
+  if active_win then
+    for i, w in ipairs(wins) do
+      if w.address == active_win.address then
+        idx = i
+        break
+      end
+    end
+  end
+
+  local at_edge
+  if direction == "r" then
+    at_edge = (idx == nil) or (idx == #wins)
+  else
+    at_edge = (idx == nil) or (idx == 1)
+  end
+
+  print("[smart_nav] idx=" .. tostring(idx) .. " at_edge=" .. tostring(at_edge))
+
+  if not at_edge then
+    -- There is a neighboring window in this workspace in the requested
+    -- direction. Focus it directly by window object (rather than via the
+    -- native focus(direction) dispatcher) since that dispatcher can get
+    -- blocked or behave inconsistently when the active window is
+    -- maximized/fullscreen (especially under layouts with their own
+    -- fullscreen handling, like `scrolling`).
+    local target = (direction == "r") and wins[idx + 1] or wins[idx - 1]
+    print("[smart_nav] focusing neighbor window: " .. tostring(target and target.title))
+    if target then
+      hl.dispatch(hl.dsp.focus({ window = target }))
+    end
+    return
+  end
+
+  -- Already at the edge of the workspace (or no window focused at all).
+  -- Do NOT call the native focus(direction) dispatcher here: under layouts
+  -- like `scrolling`, it will auto-create/jump into a brand new empty
+  -- workspace on its own, which breaks our own boundary logic below.
+  -- Instead, jump straight to the next/previous *occupied* normal workspace
+  -- ourselves.
+  local occupied = get_occupied_workspaces()
+  local target_ws = nil
+
+  if direction == "r" then
+    for _, ws in ipairs(occupied) do
+      if ws.id > current_id then
+        target_ws = ws
+        break
+      end
+    end
+  else
+    for i = #occupied, 1, -1 do
+      if occupied[i].id < current_id then
+        target_ws = occupied[i]
+        break
+      end
+    end
+  end
+
+  if target_ws then
+    print("[smart_nav] jumping to occupied workspace id=" .. tostring(target_ws.id))
+    hl.dispatch(hl.dsp.focus({ workspace = target_ws.id }))
+    focus_edge_window(target_ws.id, direction == "r" and "leftmost" or "rightmost")
+  else
+    -- No further workspace with windows exists in this direction anymore.
+    -- Instead of stopping dead, keep progressing linearly into the next
+    -- workspace by id (empty, or newly created if it doesn't exist yet).
+    local rel = (direction == "r") and "+1" or "-1"
+    print("[smart_nav] no more occupied workspace, falling back to relative jump " .. rel)
+    hl.dispatch(hl.dsp.focus({ workspace = rel }))
+  end
+end
+
+hl.bind("SUPER + H", function() smart_nav("l") end,
+  { description = "Smart focus/workspace navigation left (no wrap)" })
+
+hl.bind("SUPER + L", function() smart_nav("r") end,
+  { description = "Smart focus/workspace navigation right (no wrap)" })
