@@ -26,15 +26,16 @@ debug {
     honor-xdg-activation-with-invalid-serial
 }
 
-// blur {
-//   passes 3       // more passes = stronger blur (default: 3)
-//   offset 2.0      // sample distance per pass (default: 3.0)
-//   noise 0.03      // grain overlay (default: 0.02)
-//   saturation 1.0  // color saturation boost (default: 1.5)
-// }
+blur {
+  off
+  passes 3       // more passes = stronger blur (default: 3)
+  offset 2.0      // sample distance per pass (default: 3.0)
+  noise 0.03      // grain overlay (default: 0.02)
+  saturation 1.0  // color saturation boost (default: 1.5)
+}
 
 layout {
-    gaps 8
+    gaps 4
     struts {}
     center-focused-column "never"
     preset-column-widths {
@@ -174,8 +175,8 @@ window-rule {
 window-rule {
     match app-id="dev.zed.Zed"
     background-effect {
-        blur false
-        xray true
+        blur true
+        xray false
         }
 }
 
@@ -201,7 +202,7 @@ window-rule {
 
 // Apply rounded corners to all windows.
 window-rule {
-    geometry-corner-radius 23
+    geometry-corner-radius 0
     clip-to-geometry true
 }
 
