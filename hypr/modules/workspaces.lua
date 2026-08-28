@@ -1,7 +1,7 @@
 local M = {}
 
 function M.cycle_layout()
-    local layouts     = { "scrolling", "dwindle", "monocle" }
+    local layouts     = { "scrolling", "master", "monocle" }
     local workspace   = hl.get_active_workspace()
     if hl.get_active_special_workspace() then
         workspace = hl.get_active_special_workspace()

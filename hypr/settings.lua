@@ -8,7 +8,7 @@ hl.config({
         gaps_in  = 5,
         gaps_out = 5,
 
-        border_size = 1,
+        border_size = 3,
 
         col = {
             active_border   = { colors = {"rgba(33ccffee)", "rgba(00ff99ee)"}, angle = 45 },
@@ -22,32 +22,38 @@ hl.config({
         allow_tearing = false,
 
         layout = "scrolling",
+
+        no_focus_fallback = true
     },
 
     decoration = {
-        rounding       = 10,
+        rounding       = 20,
         rounding_power = 2,
-
-        -- Change transparency of focused and unfocused windows
+        dim_special = 0.6,
         active_opacity   = 1.0,
         inactive_opacity = 1.0,
 
         shadow = {
             enabled      = true,
-            range        = 20,
-            render_power = 20,
+            range        = 30,
+            render_power = 30,
             color        = 0xee1a1a1a,
         },
 
         blur = {
             enabled   = true,
-            size      = 3,
-            passes    = 3,
-            vibrancy  = 0.1696,
+            size      = 4,
+            passes    = 4,
+            vibrancy  = 0.1700,
+            brightness = 0.4
         },
     },
 
     animations = {
         enabled = true,
     },
+
+    cursor = {
+        no_warps = true
+    }
 })
