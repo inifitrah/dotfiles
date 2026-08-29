@@ -138,6 +138,10 @@ for i = 1, 10 do
     hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
     hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
+hl.bind(mainMod .. "+ bracketright", hl.dsp.focus({ workspace = "+1" }))
+hl.bind(mainMod .. "+ SHIFT + bracketright", hl.dsp.window.move({ workspace = "+1" }))
+hl.bind(mainMod .. "+ bracketleft", hl.dsp.focus({ workspace = "-1" }))
+hl.bind(mainMod .. "+ SHIFT + bracketleft", hl.dsp.window.move({ workspace = "-1" }))
 
 -- Example special workspace (scratchpad)
 hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("magic"))
@@ -163,8 +167,6 @@ hl.bind(mainMod .. " + SHIFT + W", hl.dsp.window.move({ workspace = "special:wor
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
 
-hl.bind(mainMod .. "+ ALT + L", hl.dsp.focus({ workspace = "+1" }))
-hl.bind(mainMod .. "+ ALT + H", hl.dsp.focus({ workspace = "-1" }))
 
 -- Move/resize windows with mainMod + LMB/RMB and dragging
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
@@ -204,30 +206,20 @@ hl.bind(mainMod .. "+ c", layout_bind({
 hl.bind(mainMod .. "+ minus", layout_bind({
     scrolling = hl.dsp.layout("colresize -conf"),
 }))
-
-hl.bind(mainMod .. "+ bracketright", layout_bind({
+hl.bind(mainMod .. "+ CTRL + L", layout_bind({
     scrolling = hl.dsp.layout("consume_or_expel next"),
 }))
-
-hl.bind(mainMod .. "+ bracketleft", layout_bind({
+hl.bind(mainMod .. "+ CTRL + H", layout_bind({
     scrolling = hl.dsp.layout("consume_or_expel prev"),
 }))
-
 hl.bind(mainMod .. "+ slash", layout_bind({
     scrolling = hl.dsp.layout("inhibit_scroll"),
 }))
-
 hl.bind(mainMod .. "+ A", layout_bind({
     master = hl.dsp.layout("swapwithmaster"),
 }))
-
 hl.bind(mainMod .. "+ R", layout_bind({
     master = hl.dsp.layout("orientationcycle"),
-}))
-
-hl.bind(mainMod .. "+ CTRL + H", layout_bind({
-    scrolling = hl.dsp.layout("focus left"),
-    default = hl.dsp.focus({ direction = "left" })
 }))
 hl.bind(mainMod .. "+ J", layout_bind({
     scrolling = hl.dsp.layout("focus down"),
@@ -237,31 +229,32 @@ hl.bind(mainMod .. "+ K", layout_bind({
     scrolling = hl.dsp.layout("focus top"),
     default = hl.dsp.focus({ direction = "up" })
 }))
-hl.bind(mainMod .. "+ CTRL + L", layout_bind({
+hl.bind(mainMod .. "+ up", layout_bind({
+    scrolling = hl.dsp.layout("focus up"),
+    default = hl.dsp.focus({ direction = "up" })
+}))
+hl.bind(mainMod .. "+ down", layout_bind({
+    scrolling = hl.dsp.layout("focus down"),
+    default = hl.dsp.focus({ direction = "down" })
+}))
+hl.bind(mainMod .. "+ left", layout_bind({
+    scrolling = hl.dsp.layout("focus left"),
+    monocle = hl.dsp.layout("cycleprev"), -- Monocle: cycle prev window
+    default = hl.dsp.focus({ direction = "left" })
+}))
+hl.bind(mainMod .. "+ right", layout_bind({
     scrolling = hl.dsp.layout("focus right"),
+    monocle = hl.dsp.layout("cyclenext"), -- Monocle: cycle next window
     default = hl.dsp.focus({ direction = "right" })
 }))
-
 hl.bind(mainMod .. " + SHIFT + H", layout_bind({
     scrolling = hl.dsp.layout("swapcol l"), -- Scrolling: swap column with left one
     dwindle   = hl.dsp.layout("swapsplit"), -- Dwindle: swap window split
 }))
-
 hl.bind(mainMod .. " + SHIFT + L", layout_bind({
     scrolling = hl.dsp.layout("swapcol r"),   -- Scrolling: swap column with right one
     dwindle   = hl.dsp.layout("togglesplit"), -- Dwindle: toggle window split
 }))
-
-hl.bind("ALT + TAB", layout_bind({
-    monocle = hl.dsp.layout("cyclenext"), -- Monocle: cycle next window
-}))
-
--- hl.bind("ALT + L", layout_bind({
---     monocle = hl.dsp.layout("cyclenext"), -- Monocle: cycle next window
--- }))
--- hl.bind("ALT + H", layout_bind({
---     monocle = hl.dsp.layout("cycleprev"), -- Monocle: cycle prev window
--- }))
 
 -- Game mode toggle
 hl.bind("F1", modes.toggle_game_mode)
@@ -288,11 +281,11 @@ local function zoom(offset)
     hl.config({ cursor = { zoom_factor = current } })
 end
 
-hl.bind(mainMod .. " + SHIFT + Z", zoom)
-hl.bind(mainMod .. " + SHIFT + Up", function()
+hl.bind(mainMod .. " + CTRL + Z", zoom)
+hl.bind(mainMod .. " + CTRL + Up", function()
     zoom(0.5)
 end)
-hl.bind(mainMod .. " + SHIFT + Down", function()
+hl.bind(mainMod .. " + CTRL + Down", function()
     zoom(-0.5)
 end)
 
