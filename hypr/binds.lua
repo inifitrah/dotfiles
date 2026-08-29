@@ -143,6 +143,19 @@ end
 hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("magic"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 
+-- close special workspaces
+hl.bind("Escape", function()
+    local special_wp = hl.get_active_special_workspace()
+    if special_wp then
+        local name = special_wp.name:gsub("^special:", "")
+        print("[Lua] closing special workspace: " .. name)
+        hl.dispatch(hl.dsp.workspace.toggle_special(name))
+    else
+       return { ok = false }
+    end
+end, { auto_consuming = true,  description = "Close special workspace if open, else pass Escape through" })
+
+
 hl.bind(mainMod .. " + W", hl.dsp.workspace.toggle_special("work"))
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.window.move({ workspace = "special:work" }))
 
