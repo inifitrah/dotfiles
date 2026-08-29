@@ -79,7 +79,7 @@ hl.bind(mainMod .. " + return", function()
         title = "term"
     })
 end)
-hl.bind("SUPER + X", function()
+hl.bind(mainMod .. " + X", function()
     scratchpads.minimize_app()
 end)
 
@@ -98,7 +98,7 @@ hl.bind(mainMod .. " + SHIFT + G", function()
     end
 end)
 
-hl.bind("SUPER + CTRL + F", function()
+hl.bind(mainMod .. " + CTRL + F", function()
     local dimInactiveStatus = hl.get_config("decoration.dim_inactive")
     if dimInactiveStatus == false then
         hl.config({
@@ -124,7 +124,7 @@ end)
 hl.bind("ALT + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. "+ SHIFT + P", hl.dsp.window.pseudo())
 
-hl.bind("SUPER + P", function()
+hl.bind(mainMod .. " + P", function()
     hl.dispatch(hl.dsp.focus({ last = true }))
 end)
 
@@ -266,7 +266,7 @@ hl.bind("ALT + TAB", layout_bind({
 -- Game mode toggle
 hl.bind("F1", modes.toggle_game_mode)
 -- Cycle layout: scrolling → dwindle → monocle
-hl.bind("SUPER + N", workspaces.cycle_layout)
+hl.bind(mainMod .. " + N", workspaces.cycle_layout)
 
 -- Glass magnifier zoom
 local MAX_ZOOM = 3
@@ -288,11 +288,11 @@ local function zoom(offset)
     hl.config({ cursor = { zoom_factor = current } })
 end
 
-hl.bind("SUPER + SHIFT + Z", zoom)
-hl.bind("SUPER + SHIFT + Up", function()
+hl.bind(mainMod .. " + SHIFT + Z", zoom)
+hl.bind(mainMod .. " + SHIFT + Up", function()
     zoom(0.5)
 end)
-hl.bind("SUPER + SHIFT + Down", function()
+hl.bind(mainMod .. " + SHIFT + Down", function()
     zoom(-0.5)
 end)
 
@@ -473,8 +473,8 @@ local function smart_nav(direction)
   end
 end
 
-hl.bind("SUPER + H", function() smart_nav("l") end,
+hl.bind(mainMod .. " + H", function() smart_nav("l") end,
   { description = "Smart focus/workspace navigation left (no wrap)" })
 
-hl.bind("SUPER + L", function() smart_nav("r") end,
+hl.bind(mainMod .. " + L", function() smart_nav("r") end,
   { description = "Smart focus/workspace navigation right (no wrap)" })
