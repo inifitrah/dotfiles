@@ -215,9 +215,6 @@ hl.bind(mainMod .. "+ period", layout_bind({
 hl.bind(mainMod .. "+ equal", layout_bind({
     scrolling = hl.dsp.layout("colresize +conf"),
 }))
-hl.bind(mainMod .. "+ c", layout_bind({
-    scrolling = hl.dsp.layout(""),
-}))
 hl.bind(mainMod .. "+ minus", layout_bind({
     scrolling = hl.dsp.layout("colresize -conf"),
 }))
@@ -238,28 +235,38 @@ hl.bind(mainMod .. "+ R", layout_bind({
 }))
 hl.bind(mainMod .. "+ J", layout_bind({
     scrolling = hl.dsp.layout("focus down"),
+    monocle = hl.dsp.layout("cycleprev"),
+    master = hl.dsp.layout("cycleprev"),
     default = hl.dsp.focus({ direction = "down" })
 }))
 hl.bind(mainMod .. "+ K", layout_bind({
     scrolling = hl.dsp.layout("focus top"),
+    monocle = hl.dsp.layout("cyclenext"),
+    master = hl.dsp.layout("cyclenext"),
     default = hl.dsp.focus({ direction = "up" })
 }))
 hl.bind(mainMod .. "+ up", layout_bind({
     scrolling = hl.dsp.layout("focus up"),
+    monocle = hl.dsp.no_op(),
+    master = hl.dsp.no_op(),
     default = hl.dsp.focus({ direction = "up" })
 }))
 hl.bind(mainMod .. "+ down", layout_bind({
     scrolling = hl.dsp.layout("focus down"),
+    monocle = hl.dsp.no_op(),
+    master = hl.dsp.no_op(),
     default = hl.dsp.focus({ direction = "down" })
 }))
 hl.bind(mainMod .. "+ left", layout_bind({
     scrolling = hl.dsp.layout("focus left"),
-    monocle = hl.dsp.layout("cycleprev"), -- Monocle: cycle prev window
+    monocle = hl.dsp.layout("cycleprev"),
+    master = hl.dsp.layout("cycleprev"),
     default = hl.dsp.focus({ direction = "left" })
 }))
 hl.bind(mainMod .. "+ right", layout_bind({
     scrolling = hl.dsp.layout("focus right"),
-    monocle = hl.dsp.layout("cyclenext"), -- Monocle: cycle next window
+    monocle = hl.dsp.layout("cyclenext"),
+    master = hl.dsp.layout("cyclenext"),
     default = hl.dsp.focus({ direction = "right" })
 }))
 hl.bind(mainMod .. " + SHIFT + H", layout_bind({
