@@ -172,7 +172,7 @@ hl.bind("Escape", function()
     else
        return { ok = false }
     end
-end, { auto_consuming = true,  description = "Close special workspace if open, else pass Escape through" })
+end, { auto_consuming = true, long_press = true,  description = "Close special workspace if open, else pass Escape through" })
 
 
 hl.bind(mainMod .. " + W", hl.dsp.workspace.toggle_special("work"))
