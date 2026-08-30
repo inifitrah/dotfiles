@@ -43,9 +43,24 @@ end)
 hl.bind(mainMod .. "+ Space", hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
 hl.bind(mainMod .. "+ SHIFT + comma", hl.dsp.exec_cmd(ipc .. "settings-toggle"))
 hl.bind(mainMod .. "+ SHIFT + Escape", hl.dsp.exec_cmd(ipc .. "panel-toggle session"))
+hl.bind(mainMod .. "+ CTRL + V", hl.dsp.exec_cmd(ipc .. "panel-toggle clipboard"))
 hl.bind(mainMod .. "+ o", hl.dsp.exec_cmd(ipc .. "window-switcher"))
 -- screenshot
 hl.bind(mainMod .. "+ CTRL + S", hl.dsp.exec_cmd(ipc .. "screenshot-region"))
+
+local autoHide = false
+hl.bind(mainMod .. "+ CTRL + B", function ()
+    autoHide = not autoHide
+    if autoHide then
+        hl.dispatch(hl.dsp.exec_cmd(ipc .. "bar-auto-hide-set on"))
+    else
+        hl.dispatch(hl.dsp.exec_cmd(ipc .. "bar-auto-hide-set off"))
+    end
+    hl.dispatch(hl.dsp.exec_cmd(ipc .. "bar-reserve-toggle"))
+    hl.dispatch(hl.dsp.exec_cmd(ipc .. "dock-toggle"))
+end)
+
+
 -- Media keys
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc .. "volume-up"))
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(ipc .. "volume-down"))
