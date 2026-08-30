@@ -324,7 +324,27 @@ end)
 -- Mod + H  -> focus left  (window, then previous occupied workspace)
 -- Mod + L  -> focus right (window, then next occupied workspace)
 -- No wrap-around at the first/last occupied workspace.
+--
+-- Design: geometry (window positions) is used ONLY to answer "am I
+-- already at the edge of this workspace in this direction?" — a coarse
+-- yes/no that stays correct even with window groups or a fullscreen
+-- window elsewhere (hidden group tabs share their visible sibling's
+-- position, so they don't skew the min/max; a fullscreen window's own
+-- position is self-consistent within one snapshot, as verified earlier).
+--
+-- The actual "who exactly is my neighbor" decision is NOT made by us —
+-- it's delegated to the layout itself (hl.dsp.layout(message) for layouts
+-- we know a message for, hl.dsp.focus({direction=...}) as the default),
+-- since the layout has real knowledge of groups/fullscreen/tabs that we
+-- can't reliably reconstruct from position data alone.
 -- ============================================================
+
+-- Per-layout "move focus within the workspace" messages. Add more layouts
+-- here as needed; anything not listed falls back to native
+-- hl.dsp.focus({direction=...}).
+local LAYOUT_FOCUS_MESSAGE = {
+  scrolling = { l = "focus left", r = "focus right" },
+}
 
 -- Returns all *normal* workspaces (id > 0, i.e. excludes special/scratchpad
 -- workspaces which have negative ids) that currently contain at least one
@@ -341,36 +361,11 @@ local function get_occupied_workspaces()
   return occ
 end
 
-local function is_grouped_window(w)
-  local g = w.grouped
-  if g == nil then g = w.group end
-  if g == nil or g == false or g == 0 or g == "0" or g == "" then return false end
-  if type(g) == "table" then return #g > 0 end
-  if type(g) == "string" then return g ~= "0" and g ~= "" end
-  if type(g) == "number" then return g > 0 end
-  return true
-end
-
--- Returns a workspace's windows sorted left-to-right by x position.
-local function get_sorted_workspace_windows(ws_id)
-  local wins = hl.get_workspace_windows(ws_id)
-  if not wins then
-    return {}
-  end
-  local filtered = {}
-  for _, w in ipairs(wins) do
-    local hidden = w.visible == 0 or w.visible == false
-    if hidden and is_grouped_window(w) then
-    else
-      table.insert(filtered, w)
-    end
-  end
-  table.sort(filtered, function(a, b)
-    local ax = (a.at and a.at.x) or 0
-    local bx = (b.at and b.at.x) or 0
-    return ax < bx
-  end)
-  return filtered
+-- Returns a workspace's windows (unfiltered — duplicates from hidden group
+-- tabs are harmless here since we only ever use this list for the coarse
+-- edge check below, not for picking an exact target).
+local function get_workspace_windows_list(ws_selector)
+  return hl.get_workspace_windows(ws_selector) or {}
 end
 
 -- Returns the correct selector to use with hl.get_workspace_windows /
@@ -395,69 +390,46 @@ local function get_window_rect(w)
   return x, y, width, height
 end
 
--- Finds the true geometric left/right neighbor of `active_win` among
--- `wins` (a list of windows in the same workspace). Unlike a naive
--- "previous/next item in an x-sorted array" lookup, this actually looks
--- at each candidate's position and size:
---   1. Only windows whose center is strictly to the requested side count.
---   2. Among those, windows that vertically overlap with the active
---      window (i.e. are roughly on the same "row") are preferred, picked
---      by horizontal distance — this is what "left"/"right" should mean
---      when windows are arranged in rows/columns rather than a single line.
---   3. If nothing overlaps vertically, fall back to the closest candidate
---      by combined horizontal + vertical distance.
-local function find_geometric_neighbor(active_win, wins, direction)
+-- Coarse edge check: is `active_win` already at the extreme edge (no other
+-- window's center lies further in `direction`) among ALL windows in this
+-- workspace? Deliberately does NOT try to pick a specific neighbor or
+-- filter by group/visible state — see the file header for why.
+local function at_workspace_edge(active_win, wins, direction)
   local ax, ay, aw, ah = get_window_rect(active_win)
-  local acx, acy = ax + aw / 2, ay + ah / 2
-  local a_top, a_bottom = ay, ay + ah
-
-  local best, best_score = nil, nil
+  local acx = ax + aw / 2
 
   for _, w in ipairs(wins) do
     if w.address ~= active_win.address then
-      local hidden_grouped = (w.visible == 0 or w.visible == false) and is_grouped_window(w)
-      if not hidden_grouped then
-        local wx, wy, ww, wh = get_window_rect(w)
-        local wcx, wcy = wx + ww / 2, wy + wh / 2
-        local w_top, w_bottom = wy, wy + wh
-
-      local in_direction
-      if direction == "r" then
-        in_direction = wcx > acx
-      else
-        in_direction = wcx < acx
-      end
-
-      if in_direction then
-        local overlap = math.max(0, math.min(a_bottom, w_bottom) - math.max(a_top, w_top))
-        local dx = math.abs(wcx - acx)
-        local dy = math.abs(wcy - acy)
-
-        local score
-        if overlap > 0 then
-          score = dx
-        else
-          -- Large flat penalty keeps any vertically-overlapping candidate
-          -- ranked ahead of every non-overlapping one.
-          score = 1000000 + dx + dy * 2
-        end
-
-        if best_score == nil or score < best_score then
-          best_score = score
-          best = w
-        end
-      end
+      local wx, wy, ww, wh = get_window_rect(w)
+      local wcx = wx + ww / 2
+      if direction == "r" and wcx > acx then
+        return false
+      elseif direction == "l" and wcx < acx then
+        return false
       end
     end
   end
-
-  return best
+  return true
 end
 
 -- Returns the workspace's current tiled layout name (e.g. "scrolling",
 -- "dwindle", "master", "monocle"), or nil if unknown.
 local function get_tiled_layout(ws)
   return ws.tiled_layout or ws.tiledLayout
+end
+
+-- Moves focus within the current workspace using the layout's own
+-- semantics: a per-layout message when we have one (currently just
+-- `scrolling`), otherwise the native direction dispatcher.
+local function focus_within_workspace(layout, direction)
+  local msgs = LAYOUT_FOCUS_MESSAGE[layout]
+  if msgs and msgs[direction] then
+    print("[smart_nav] layout='" .. tostring(layout) .. "' -> hl.dsp.layout('" .. msgs[direction] .. "')")
+    hl.dispatch(hl.dsp.layout(msgs[direction]))
+  else
+    print("[smart_nav] layout='" .. tostring(layout) .. "' (no message registered) -> hl.dsp.focus(direction=" .. direction .. ")")
+    hl.dispatch(hl.dsp.focus({ direction = direction }))
+  end
 end
 
 -- direction: "l" or "r"
@@ -477,47 +449,38 @@ local function smart_nav(direction)
   end
 
   local layout = get_tiled_layout(current_ws)
-  print("[smart_nav] dir=" .. direction ..
-        " active_win=" .. tostring(active_win and active_win.title) ..
-        " ws_id=" .. tostring(current_ws.id) ..
-        " ws_name=" .. tostring(current_ws.name) ..
-        " layout=" .. tostring(layout))
-
   local is_special = current_ws.id and current_ws.id < 0
   local current_id = current_ws.id
-  local wins = get_sorted_workspace_windows(workspace_selector(current_ws))
-  print("[smart_nav] workspace id=" .. tostring(current_id) ..
-        " is_special=" .. tostring(is_special) ..
-        " window_count=" .. tostring(#wins))
 
-  local target = active_win and find_geometric_neighbor(active_win, wins, direction)
-  print("[smart_nav] geometric neighbor: " .. tostring(target and target.title))
+  print("[smart_nav] dir=" .. direction ..
+        " active_win=" .. tostring(active_win and active_win.title) ..
+        " ws_id=" .. tostring(current_id) ..
+        " ws_name=" .. tostring(current_ws.name) ..
+        " layout=" .. tostring(layout) ..
+        " is_special=" .. tostring(is_special))
 
-  if target then
-    -- A real neighbor exists in this workspace in the requested direction.
-    -- Focus it directly by window object (rather than via the native
-    -- focus(direction) dispatcher) since that dispatcher can get blocked or
-    -- behave inconsistently when the active window is maximized/fullscreen
-    -- (especially under layouts with their own fullscreen handling, like
-    -- `scrolling`). This applies to special workspaces too now.
-    hl.dispatch(hl.dsp.focus({ window = target }))
+  local wins = get_workspace_windows_list(workspace_selector(current_ws))
+  local edge = (not active_win) or at_workspace_edge(active_win, wins, direction)
+  print("[smart_nav] window_count=" .. tostring(#wins) .. " at_edge=" .. tostring(edge))
+
+  if not edge then
+    focus_within_workspace(layout, direction)
     return
   end
 
   if is_special then
     -- Special workspaces (scratchpads) never escalate to jumping to
     -- another workspace when at the edge — just stay put.
-    print("[smart_nav] special workspace, no neighbor in that direction -> staying put")
+    print("[smart_nav] special workspace, at edge -> staying put")
     return
   end
 
-  -- No real geometric neighbor exists in this workspace in the requested
-  -- direction (i.e. we're at the edge, or no window is focused at all).
-  -- Do NOT call the native focus(direction) dispatcher here: under layouts
-  -- like `scrolling`, it will auto-create/jump into a brand new empty
-  -- workspace on its own, which breaks our own boundary logic below.
-  -- Instead, jump straight to the next/previous *occupied* normal workspace
-  -- ourselves.
+  -- At the edge of a normal workspace (or no window focused at all).
+  -- Do NOT call the native focus(direction)/layout message here: under
+  -- layouts like `scrolling`, it will auto-create/jump into a brand new
+  -- empty workspace on its own, which breaks our own boundary logic below.
+  -- Instead, jump straight to the next/previous *occupied* normal
+  -- workspace ourselves.
   local occupied = get_occupied_workspaces()
   local target_ws = nil
 
@@ -541,8 +504,8 @@ local function smart_nav(direction)
     print("[smart_nav] jumping to occupied workspace id=" .. tostring(target_ws.id))
     -- Just switch to the workspace: Hyprland natively restores whichever
     -- window was last focused there. We intentionally do NOT force focus
-    -- onto the leftmost/rightmost window here — this is a workspace
-    -- switch, not a "continue the linear window sequence" jump.
+    -- onto a specific window here — this is a workspace switch, not a
+    -- "continue the linear window sequence" jump.
     hl.dispatch(hl.dsp.focus({ workspace = target_ws.id }))
   else
     local rel = (direction == "r") and "+1" or "-1"
@@ -556,7 +519,6 @@ hl.bind(mainMod .. " + H", function() smart_nav("l") end,
 
 hl.bind(mainMod .. " + L", function() smart_nav("r") end,
   { description = "Smart focus/workspace navigation right (no wrap)" })
-
 --  Group
 hl.bind(mainMod .. "+ ALT + G", hl.dsp.group.toggle())
 hl.bind(mainMod .. "+ ALT + C", hl.dsp.group.lock_active({ action = "toggle" }))
