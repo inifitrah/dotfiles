@@ -353,19 +353,6 @@ local function get_sorted_workspace_windows(ws_id)
   return wins
 end
 
--- Focuses the leftmost or rightmost window in a given workspace,
--- based on each window's x position.
-local function focus_edge_window(ws_id, edge)
-  local wins = get_sorted_workspace_windows(ws_id)
-  if #wins == 0 then
-    return
-  end
-  local target = (edge == "leftmost") and wins[1] or wins[#wins]
-  if target then
-    hl.dispatch(hl.dsp.focus({ window = target }))
-  end
-end
-
 -- Returns the correct selector to use with hl.get_workspace_windows /
 -- hl.dsp.focus({workspace=...}) for a given workspace object. Normal
 -- workspaces use their numeric id, but special workspaces have negative
@@ -377,6 +364,77 @@ local function workspace_selector(ws)
     return ws.id
   end
   return ws.name
+end
+
+-- Returns a window's rect: x, y, width, height.
+local function get_window_rect(w)
+  local x = (w.at and w.at.x) or 0
+  local y = (w.at and w.at.y) or 0
+  local width = (w.size and w.size.x) or 0
+  local height = (w.size and w.size.y) or 0
+  return x, y, width, height
+end
+
+-- Finds the true geometric left/right neighbor of `active_win` among
+-- `wins` (a list of windows in the same workspace). Unlike a naive
+-- "previous/next item in an x-sorted array" lookup, this actually looks
+-- at each candidate's position and size:
+--   1. Only windows whose center is strictly to the requested side count.
+--   2. Among those, windows that vertically overlap with the active
+--      window (i.e. are roughly on the same "row") are preferred, picked
+--      by horizontal distance — this is what "left"/"right" should mean
+--      when windows are arranged in rows/columns rather than a single line.
+--   3. If nothing overlaps vertically, fall back to the closest candidate
+--      by combined horizontal + vertical distance.
+local function find_geometric_neighbor(active_win, wins, direction)
+  local ax, ay, aw, ah = get_window_rect(active_win)
+  local acx, acy = ax + aw / 2, ay + ah / 2
+  local a_top, a_bottom = ay, ay + ah
+
+  local best, best_score = nil, nil
+
+  for _, w in ipairs(wins) do
+    if w.address ~= active_win.address then
+      local wx, wy, ww, wh = get_window_rect(w)
+      local wcx, wcy = wx + ww / 2, wy + wh / 2
+      local w_top, w_bottom = wy, wy + wh
+
+      local in_direction
+      if direction == "r" then
+        in_direction = wcx > acx
+      else
+        in_direction = wcx < acx
+      end
+
+      if in_direction then
+        local overlap = math.max(0, math.min(a_bottom, w_bottom) - math.max(a_top, w_top))
+        local dx = math.abs(wcx - acx)
+        local dy = math.abs(wcy - acy)
+
+        local score
+        if overlap > 0 then
+          score = dx
+        else
+          -- Large flat penalty keeps any vertically-overlapping candidate
+          -- ranked ahead of every non-overlapping one.
+          score = 1000000 + dx + dy * 2
+        end
+
+        if best_score == nil or score < best_score then
+          best_score = score
+          best = w
+        end
+      end
+    end
+  end
+
+  return best
+end
+
+-- Returns the workspace's current tiled layout name (e.g. "scrolling",
+-- "dwindle", "master", "monocle"), or nil if unknown.
+local function get_tiled_layout(ws)
+  return ws.tiled_layout or ws.tiledLayout
 end
 
 -- direction: "l" or "r"
@@ -395,61 +453,43 @@ local function smart_nav(direction)
     return
   end
 
+  local layout = get_tiled_layout(current_ws)
   print("[smart_nav] dir=" .. direction ..
         " active_win=" .. tostring(active_win and active_win.title) ..
         " ws_id=" .. tostring(current_ws.id) ..
-        " ws_name=" .. tostring(current_ws.name))
+        " ws_name=" .. tostring(current_ws.name) ..
+        " layout=" .. tostring(layout))
 
-  -- Special workspaces (scratchpads) are left alone: just use plain
-  -- native directional focus there, no smart edge/workspace-jump logic.
-  if current_ws.id and current_ws.id < 0 then
-    print("[smart_nav] on SPECIAL workspace '" .. tostring(current_ws.name) ..
-          "' (id=" .. tostring(current_ws.id) .. ") -> plain directional focus")
-    hl.dispatch(hl.dsp.focus({ direction = direction }))
-    return
-  end
-
+  local is_special = current_ws.id and current_ws.id < 0
   local current_id = current_ws.id
   local wins = get_sorted_workspace_windows(workspace_selector(current_ws))
-  print("[smart_nav] normal workspace id=" .. tostring(current_id) ..
+  print("[smart_nav] workspace id=" .. tostring(current_id) ..
+        " is_special=" .. tostring(is_special) ..
         " window_count=" .. tostring(#wins))
 
-  -- Find the active window's position within the sorted list.
-  local idx = nil
-  if active_win then
-    for i, w in ipairs(wins) do
-      if w.address == active_win.address then
-        idx = i
-        break
-      end
-    end
-  end
+  local target = active_win and find_geometric_neighbor(active_win, wins, direction)
+  print("[smart_nav] geometric neighbor: " .. tostring(target and target.title))
 
-  local at_edge
-  if direction == "r" then
-    at_edge = (idx == nil) or (idx == #wins)
-  else
-    at_edge = (idx == nil) or (idx == 1)
-  end
-
-  print("[smart_nav] idx=" .. tostring(idx) .. " at_edge=" .. tostring(at_edge))
-
-  if not at_edge then
-    -- There is a neighboring window in this workspace in the requested
-    -- direction. Focus it directly by window object (rather than via the
-    -- native focus(direction) dispatcher) since that dispatcher can get
-    -- blocked or behave inconsistently when the active window is
-    -- maximized/fullscreen (especially under layouts with their own
-    -- fullscreen handling, like `scrolling`).
-    local target = (direction == "r") and wins[idx + 1] or wins[idx - 1]
-    print("[smart_nav] focusing neighbor window: " .. tostring(target and target.title))
-    if target then
-      hl.dispatch(hl.dsp.focus({ window = target }))
-    end
+  if target then
+    -- A real neighbor exists in this workspace in the requested direction.
+    -- Focus it directly by window object (rather than via the native
+    -- focus(direction) dispatcher) since that dispatcher can get blocked or
+    -- behave inconsistently when the active window is maximized/fullscreen
+    -- (especially under layouts with their own fullscreen handling, like
+    -- `scrolling`). This applies to special workspaces too now.
+    hl.dispatch(hl.dsp.focus({ window = target }))
     return
   end
 
-  -- Already at the edge of the workspace (or no window focused at all).
+  if is_special then
+    -- Special workspaces (scratchpads) never escalate to jumping to
+    -- another workspace when at the edge — just stay put.
+    print("[smart_nav] special workspace, no neighbor in that direction -> staying put")
+    return
+  end
+
+  -- No real geometric neighbor exists in this workspace in the requested
+  -- direction (i.e. we're at the edge, or no window is focused at all).
   -- Do NOT call the native focus(direction) dispatcher here: under layouts
   -- like `scrolling`, it will auto-create/jump into a brand new empty
   -- workspace on its own, which breaks our own boundary logic below.
@@ -476,8 +516,11 @@ local function smart_nav(direction)
 
   if target_ws then
     print("[smart_nav] jumping to occupied workspace id=" .. tostring(target_ws.id))
+    -- Just switch to the workspace: Hyprland natively restores whichever
+    -- window was last focused there. We intentionally do NOT force focus
+    -- onto the leftmost/rightmost window here — this is a workspace
+    -- switch, not a "continue the linear window sequence" jump.
     hl.dispatch(hl.dsp.focus({ workspace = target_ws.id }))
-    focus_edge_window(target_ws.id, direction == "r" and "leftmost" or "rightmost")
   else
     -- No further workspace with windows exists in this direction anymore.
     -- Instead of stopping dead, keep progressing linearly into the next
