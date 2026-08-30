@@ -234,13 +234,15 @@ hl.bind(mainMod .. "+ R", layout_bind({
     master = hl.dsp.layout("orientationcycle"),
 }))
 hl.bind(mainMod .. "+ J", layout_bind({
-    scrolling = hl.dsp.layout("focus down"),
+    -- scrolling = hl.dsp.layout("focus down"),
+    scrolling = hl.dsp.group.prev(),
     monocle = hl.dsp.layout("cycleprev"),
     master = hl.dsp.layout("cycleprev"),
     default = hl.dsp.focus({ direction = "down" })
 }))
 hl.bind(mainMod .. "+ K", layout_bind({
-    scrolling = hl.dsp.layout("focus top"),
+    -- scrolling = hl.dsp.layout("focus top"),
+    scrolling = hl.dsp.group.next(),
     monocle = hl.dsp.layout("cyclenext"),
     master = hl.dsp.layout("cyclenext"),
     default = hl.dsp.focus({ direction = "up" })
@@ -339,18 +341,36 @@ local function get_occupied_workspaces()
   return occ
 end
 
+local function is_grouped_window(w)
+  local g = w.grouped
+  if g == nil then g = w.group end
+  if g == nil or g == false or g == 0 or g == "0" or g == "" then return false end
+  if type(g) == "table" then return #g > 0 end
+  if type(g) == "string" then return g ~= "0" and g ~= "" end
+  if type(g) == "number" then return g > 0 end
+  return true
+end
+
 -- Returns a workspace's windows sorted left-to-right by x position.
 local function get_sorted_workspace_windows(ws_id)
   local wins = hl.get_workspace_windows(ws_id)
   if not wins then
     return {}
   end
-  table.sort(wins, function(a, b)
+  local filtered = {}
+  for _, w in ipairs(wins) do
+    local hidden = w.visible == 0 or w.visible == false
+    if hidden and is_grouped_window(w) then
+    else
+      table.insert(filtered, w)
+    end
+  end
+  table.sort(filtered, function(a, b)
     local ax = (a.at and a.at.x) or 0
     local bx = (b.at and b.at.x) or 0
     return ax < bx
   end)
-  return wins
+  return filtered
 end
 
 -- Returns the correct selector to use with hl.get_workspace_windows /
@@ -395,9 +415,11 @@ local function find_geometric_neighbor(active_win, wins, direction)
 
   for _, w in ipairs(wins) do
     if w.address ~= active_win.address then
-      local wx, wy, ww, wh = get_window_rect(w)
-      local wcx, wcy = wx + ww / 2, wy + wh / 2
-      local w_top, w_bottom = wy, wy + wh
+      local hidden_grouped = (w.visible == 0 or w.visible == false) and is_grouped_window(w)
+      if not hidden_grouped then
+        local wx, wy, ww, wh = get_window_rect(w)
+        local wcx, wcy = wx + ww / 2, wy + wh / 2
+        local w_top, w_bottom = wy, wy + wh
 
       local in_direction
       if direction == "r" then
@@ -424,6 +446,7 @@ local function find_geometric_neighbor(active_win, wins, direction)
           best_score = score
           best = w
         end
+      end
       end
     end
   end
@@ -522,9 +545,6 @@ local function smart_nav(direction)
     -- switch, not a "continue the linear window sequence" jump.
     hl.dispatch(hl.dsp.focus({ workspace = target_ws.id }))
   else
-    -- No further workspace with windows exists in this direction anymore.
-    -- Instead of stopping dead, keep progressing linearly into the next
-    -- workspace by id (empty, or newly created if it doesn't exist yet).
     local rel = (direction == "r") and "+1" or "-1"
     print("[smart_nav] no more occupied workspace, falling back to relative jump " .. rel)
     hl.dispatch(hl.dsp.focus({ workspace = rel }))
@@ -536,3 +556,9 @@ hl.bind(mainMod .. " + H", function() smart_nav("l") end,
 
 hl.bind(mainMod .. " + L", function() smart_nav("r") end,
   { description = "Smart focus/workspace navigation right (no wrap)" })
+
+--  Group
+hl.bind(mainMod .. "+ ALT + G", hl.dsp.group.toggle())
+hl.bind(mainMod .. "+ ALT + C", hl.dsp.group.lock_active({ action = "toggle" }))
+hl.bind(mainMod .. " + up", hl.dsp.group.next())
+hl.bind(mainMod .. " + down", hl.dsp.group.prev())
