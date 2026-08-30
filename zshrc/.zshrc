@@ -44,6 +44,7 @@ compinit -C
 # General
 alias cls="clear"
 alias v="nvim"
+alias oc="opencode"
 export EDITOR="zeditor"
 
 # Eza (Modern ls)
