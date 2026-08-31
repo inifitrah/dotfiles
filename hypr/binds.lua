@@ -137,6 +137,11 @@ hl.bind(mainMod .. " + CTRL + F", function()
 end)
 
 hl.bind("ALT + V", hl.dsp.window.float({ action = "toggle" }))
+hl.bind(mainMod .. "+ V", function()
+    hl.dispatch(hl.dsp.window.cycle_next({
+        floating = not hl.get_active_window().floating
+    }))
+end, { description = "Switch focus between tiled and floating windows" })
 hl.bind(mainMod .. "+ SHIFT + P", hl.dsp.window.pseudo())
 
 hl.bind(mainMod .. " + P", function()
