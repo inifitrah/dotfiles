@@ -1,41 +1,72 @@
-[bar]
-order = [ "default", "bar-blur" ]
+[accessibility]
+ui_scale = 1.2000000104308128
 
-    [bar.bar-blur]
-    enabled = false
+[bar]
+order = [ "default" ]
 
     [bar.default]
-    capsule = true
-    capsule_groups = [ "LEFT" ]
-    center = [ "clock", "media" ]
+    background_opacity = 0.9499999787658453
+    center = [ "audio_visualizer", "widget_3" ]
     contact_shadow = true
-    end = [ "group:g1", "temp", "recorder", "volume", "brightness", "network", "tray", "notifications" ]
-    margin_edge = 0
-    margin_ends = 134
-    padding = 0
-    panel_overlap = 0
-    radius = 79
-    radius_bottom_left = 80
-    radius_bottom_right = 80
-    start = [ "picker", "workspaces", "cat", "active_window" ]
-    widget_spacing = 0
+    end = [ "tray", "privacy", "widget", "gamermode", "group:g1", "group:g3", "network", "clock", "session" ]
+    margin_ends = 0
+    padding = 13
+    radius = 0
+    radius_bottom_left = 0
+    radius_bottom_right = 0
+    scale = 1.2000000104308128
+    show_on_workspace_switch = false
+    start = [ "control-center", "workspaces", "group:g2", "group:g4" ]
+    thickness = 40
+    widget_spacing = 10
 
         [[bar.default.capsule_group]]
+        accordion = false
+        accordion_direction = "end"
+        border = ""
         enabled = true
-        fill = "on_primary"
+        fill = "primary"
+        id = "g2"
+        members = [ "cpu", "temp", "ram", "network_rx", "network_tx" ]
+        opacity = 0.0
+        padding = 18.0
+
+        [[bar.default.capsule_group]]
+        accordion = true
+        accordion_direction = "end"
+        enabled = true
+        fill = "surface_variant"
         id = "g1"
-        members = [ "screenshot", "Hyprpicker", "clipboard" ]
-        opacity = 0.64999997615814209
-        padding = 11.0
+        members = [ "bar", "notifications", "clipboard", "bluetooth" ]
+        opacity = 1.0
+        padding = 6.0
+
+        [[bar.default.capsule_group]]
+        accordion = false
+        accordion_direction = "end"
+        enabled = true
+        fill = "surface_variant"
+        id = "g3"
+        members = [ "volume", "brightness" ]
+        opacity = 1.0
+        padding = 6.0
+
+        [[bar.default.capsule_group]]
+        accordion = false
+        accordion_direction = "end"
+        enabled = true
+        fill = "surface_variant"
+        id = "g4"
+        members = [ "widget_2", "screenshot" ]
+        opacity = 1.0
+        padding = 6.0
 
 [calendar]
 refresh_minutes = 50
 
 [control_center]
 sidebar = "full"
-
-    [control_center.calendar]
-    show_events_card = false
+width = 810
 
     [[control_center.shortcuts]]
     type = "wifi"
@@ -58,10 +89,12 @@ sidebar = "full"
 [desktop_widgets]
 schema_version = 1
 widget_order = [
+    "desktop-widget-0000000000000001",
     "desktop-widget-0000000000000002",
     "desktop-widget-0000000000000003",
     "desktop-widget-0000000000000004",
-    "desktop-widget-0000000000000005"
+    "desktop-widget-0000000000000005",
+    "desktop-widget-0000000000000006"
 ]
 
     [desktop_widgets.grid]
@@ -69,97 +102,194 @@ widget_order = [
     major_interval = 4
     visible = true
 
-    [desktop_widgets.widget.desktop-widget-0000000000000002]
-    box_height = 64.0
-    box_width = 256.0
-    cx = 160.5
-    cy = 1088.0
+    [desktop_widgets.widget.desktop-widget-0000000000000001]
+    box_height = 80.0
+    box_width = 248.0
+    cx = 1756.0
+    cy = 144.0
+    enabled = false
     output = "eDP-1"
-    rotation = 0.0
-    type = "label"
-
-        [desktop_widgets.widget.desktop-widget-0000000000000002.settings]
-        background = false
-        font_family = "Ark Pixel 10px M ja"
-        opacity = 1.0
-        title = "Keep Learning,"
-
-    [desktop_widgets.widget.desktop-widget-0000000000000003]
-    box_height = 64.0
-    box_width = 256.0
-    cx = 160.5
-    cy = 1120.0
-    output = "eDP-1"
+    placement_height = 1200.0
+    placement_width = 1920.0
     rotation = -0.0
     type = "label"
 
-        [desktop_widgets.widget.desktop-widget-0000000000000003.settings]
-        background = false
-        font_family = "Ark Pixel 10px M ja"
-        opacity = 0.77000000000000002
-        title = "Keep Building,"
+        [desktop_widgets.widget.desktop-widget-0000000000000001.settings]
+        background = true
+        description = ""
+        opacity = 1.0
+        shadow = false
+        title = "Focus."
+
+    [desktop_widgets.widget.desktop-widget-0000000000000002]
+    box_height = 144.0
+    box_width = 272.0
+    cx = 1760.0
+    cy = 264.0
+    enabled = false
+    output = "eDP-1"
+    placement_height = 1200.0
+    placement_width = 1920.0
+    rotation = 0.0
+    type = "clock"
+
+        [desktop_widgets.widget.desktop-widget-0000000000000002.settings]
+        background = true
+        clock_style = "digital"
+
+    [desktop_widgets.widget.desktop-widget-0000000000000003]
+    box_height = 264.0
+    box_width = 272.0
+    cx = 1480.0
+    cy = 236.0
+    enabled = false
+    output = "eDP-1"
+    placement_height = 1200.0
+    placement_width = 1920.0
+    rotation = 0.0
+    type = "noctalia/timer:desktop"
 
     [desktop_widgets.widget.desktop-widget-0000000000000004]
-    box_height = 56.0
-    box_width = 248.0
-    cx = 156.5
-    cy = 1152.0
+    box_height = 408.0
+    box_width = 824.0
+    cx = 1476.0
+    cy = 864.0
+    enabled = false
     output = "eDP-1"
+    placement_height = 1200.0
+    placement_width = 1920.0
     rotation = 0.0
-    type = "label"
+    type = "sticker"
 
         [desktop_widgets.widget.desktop-widget-0000000000000004.settings]
-        background = false
-        description = ""
-        font_family = "Ark Pixel 10px M ja"
-        opacity = 0.59999999999999998
-        shadow = true
-        title = "Keep Growing."
+        background_radius = 16
+        image_path = "/home/fitrah/Pictures/screenshot_20260805_150800-region.png"
+        opacity = 1.0
 
     [desktop_widgets.widget.desktop-widget-0000000000000005]
-    box_height = 64.0
-    box_width = 56.0
-    cx = 336.0
-    cy = 1124.0
+    box_height = 112.0
+    box_width = 696.0
+    cx = 1328.0
+    cy = 392.0
     output = "eDP-1"
+    placement_height = 1200.0
+    placement_width = 1920.0
     rotation = -0.0
     type = "label"
 
         [desktop_widgets.widget.desktop-widget-0000000000000005.settings]
         background = false
-        font_family = "Ark Pixel 10px M ja"
         opacity = 1.0
-        title = "Z"
+        title = "Act with conviction,"
+
+    [desktop_widgets.widget.desktop-widget-0000000000000006]
+    box_height = 112.0
+    box_width = 768.0
+    cx = 1440.0
+    cy = 456.0
+    output = "eDP-1"
+    placement_height = 1200.0
+    placement_width = 1920.0
+    rotation = 0.0
+    type = "label"
+
+        [desktop_widgets.widget.desktop-widget-0000000000000006.settings]
+        background = false
+        opacity = 1.0
+        title = " update with humility."
 
 [dock]
-auto_hide = true
 background_opacity = 0.99999997764825821
-enabled = false
+concave_edge_corners = false
+cross_axis_padding = 0
+enabled = true
+icon_size = 65
+inactive_opacity = 0.89999997988343239
+inactive_scale = 1.0
+item_spacing = 0
+launcher_custom_image = "/home/fitrah/.local/share/icons/custom/Arch_Linux_Z8FjPTQ5fS_icns-c903f957b2_512x512x32.png"
+launcher_position = "start"
+main_axis_padding = 10
+pinned = [
+    "zen",
+    "dev.zed.Zed",
+    "kitty",
+    "discord",
+    "spotify-launcher",
+    "org.vinegarhq.Sober",
+    "org.vinegarhq.Vinegar",
+    "obsidian"
+]
+radius = 0
+radius_bottom_left = 20
+radius_bottom_right = 20
+radius_top_left = 20
+radius_top_right = 20
 show_dots = true
+
+[hot_corners]
+delay_ms = 2000
 
 [idle]
 pre_action_fade_seconds = 0.0
 
+[location]
+address = "Gowa, Indonesia"
+
 [lockscreen]
-blur_intensity = 0.76999998278915882
 blurred_desktop = true
 
 [lockscreen_widgets]
-enabled = true
+enabled = false
 schema_version = 1
-widget_order = [ "lockscreen-login-box@eDP-1", "lockscreen-widget-0000000000000001", "lockscreen-widget-0000000000000004" ]
+widget_order = [
+    "lockscreen-login-box@WAYLAND-1",
+    "lockscreen-widget-0000000000000008",
+    "lockscreen-login-box@eDP-1",
+    "lockscreen-widget-0000000000000001",
+    "lockscreen-widget-0000000000000009"
+]
 
     [lockscreen_widgets.grid]
     cell_size = 8
     major_interval = 4
     visible = true
 
+    [lockscreen_widgets.widget."lockscreen-login-box@WAYLAND-1"]
+    box_height = 196.0
+    box_width = 727.0
+    cx = 379.5
+    cy = 352.0
+    output = "WAYLAND-1"
+    placement_height = 534.0
+    placement_width = 759.0
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@WAYLAND-1".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        layout = "regular"
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_media = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
+
     [lockscreen_widgets.widget."lockscreen-login-box@eDP-1"]
-    box_height = 64.0
-    box_width = 344.0
-    cx = 976.0
+    box_height = 196.0
+    box_width = 720.0
+    cx = 960.0
     cy = 600.0
     output = "eDP-1"
+    placement_height = 1200.0
+    placement_width = 1920.0
     rotation = 0.0
     type = "login_box"
 
@@ -167,59 +297,100 @@ widget_order = [ "lockscreen-login-box@eDP-1", "lockscreen-widget-00000000000000
         background_color = "on_secondary"
         background_opacity = 0.0
         background_radius = 0.0
+        center_password_text = false
         input_opacity = 1.0
         input_radius = 32.0
+        layout = "regular"
         show_caps_lock = true
         show_keyboard_layout = true
         show_login_button = false
-        show_password_hint = true
+        show_media = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
 
     [lockscreen_widgets.widget.lockscreen-widget-0000000000000001]
-    box_height = 96.0
-    box_width = 200.0
-    cx = 960.0
-    cy = 216.0
+    box_height = 64.0
+    box_width = 152.0
+    cx = 1836.0
+    cy = 1136.0
     output = "eDP-1"
+    placement_height = 1200.0
+    placement_width = 1920.0
     rotation = 0.0
     type = "clock"
 
         [lockscreen_widgets.widget.lockscreen-widget-0000000000000001.settings]
-        background = false
+        background = true
+        background_color = "surface"
         background_opacity = 0.0
-        background_padding = 0.0
-        background_radius = 0.0
-        color = "primary"
-        font_family = "Ark Pixel 10px M ja"
+        background_padding = 0
+        background_radius = 0
+        clock_style = "digital"
+        color = "on_surface"
+        font_family = ""
         shadow = true
 
-    [lockscreen_widgets.widget.lockscreen-widget-0000000000000004]
-    box_height = 104.0
-    box_width = 336.0
-    cx = 968.0
-    cy = 292.0
+    [lockscreen_widgets.widget.lockscreen-widget-0000000000000008]
+    box_height = 344.0
+    box_width = 416.0
+    cx = 960.0
+    cy = 484.0
     output = "eDP-1"
+    placement_height = 1200.0
+    placement_width = 1920.0
+    rotation = 0.0
+    type = "sticker"
+
+        [lockscreen_widgets.widget.lockscreen-widget-0000000000000008.settings]
+        background = false
+        image_path = "/home/fitrah/Downloads/kucingitem.png"
+        opacity = 1.0
+
+    [lockscreen_widgets.widget.lockscreen-widget-0000000000000009]
+    box_height = 24.0
+    box_width = 200.0
+    cx = 1800.0
+    cy = 1164.0
+    output = "eDP-1"
+    placement_height = 1200.0
+    placement_width = 1920.0
     rotation = 0.0
     type = "label"
 
-        [lockscreen_widgets.widget.lockscreen-widget-0000000000000004.settings]
+        [lockscreen_widgets.widget.lockscreen-widget-0000000000000009.settings]
         background = false
-        description = ""
-        font_family = "Ark Pixel 10px M ja"
-        title = "Hello World"
+        color = "error"
+        shadow = false
+        title = "Don't touch my laptop"
 
 [notification]
 background_opacity = 0.99999997764825821
+layer = "overlay"
 
 [osd]
 background_opacity = 0.99999997764825821
 keyboard_layout = false
+position = "bottom_center"
+position_vertical = "bottom_center"
+
+[plugin_settings."alexander/screen-toolkit"]
+record-audio-out = true
+
+[plugin_settings."blackbartblues/keymap"]
+merge_similar = true
+
+[plugin_settings."kenn/keybind-cheatsheet"]
+compositor = "mango"
+show_actions = true
 
 [plugin_settings."noctalia/mpvpaper"]
 picker_placement = "floating"
-video_directory = ""
+video_directory = "/home/fitrah/Pictures/Wallpapers"
 
 [plugin_settings."noctalia/screen_recorder"]
 directory = ""
+quality = "high"
 video_source = "portal"
 
 [plugin_settings."noctalia/translator"]
@@ -228,8 +399,21 @@ target_lang = "id"
 [plugin_settings."noctalia/wallhaven"]
 browser_placement = "attached"
 
+[plugin_settings."yuuto/calculator"]
+panel_placement = "floating"
+panel_position = "center"
+
 [plugins]
-enabled = [ "noctalia/screen_recorder", "noctalia/kaomoji", "noctalia/translator", "yogaeru/mango_layout", "noctalia/bongocat" ]
+enabled = [
+    "thepunkoff/pomodoro",
+    "yuuto/calculator",
+    "nomadcxx/gamer-mode",
+    "noctalia/timer",
+    "me/hello",
+    "me/mau-ngoding",
+    "nightwatch75/dns-switcher",
+    "alexander/screen-toolkit"
+]
 
     [[plugins.source]]
     kind = "git"
@@ -242,19 +426,12 @@ enabled = [ "noctalia/screen_recorder", "noctalia/kaomoji", "noctalia/translator
     name = "community"
 
     [[plugins.source]]
-    kind = "git"
-    location = "https://github.com/yogaeru/noctalia-plugins"
-    name = "yogaeru"
-
-    [[plugins.source]]
     kind = "path"
     location = "/home/fitrah/Developments/PluginNoctalia"
     name = "my-plugin"
 
 [shell]
-avatar_path = "/home/fitrah/Pictures/hunter-×-hunter-killua-gif-pfp-1.gif"
-font_family = "Noto Sans"
-offline_mode = true
+avatar_path = "/home/fitrah/Downloads/kingbee.jpg"
 polkit_agent = true
 screen_time_enabled = true
 telemetry_enabled = true
@@ -264,65 +441,76 @@ ui_scale = 1.1499999999999999
     compact = true
     session_search = true
 
+        [shell.launcher.providers.emoji]
+        global = true
+
+        [shell.launcher.providers.windows]
+        global = true
+
     [shell.panel]
-    transparency_mode = "glass"
+    list_item_background = true
+    open_near_click_control_center = true
 
     [shell.screen_corners]
-    enabled = true
-    size = 15
+    size = 30
+
+    [shell.screenshot]
+    confirm_region = true
 
 [theme]
-builtin = "Ayu"
-community_palette = "Everforest"
+builtin = "Kanagawa"
+community_palette = "Kemuri Susu"
+custom_palette = "custom"
 mode = "dark"
-source = "wallpaper"
+source = "community"
 wallpaper_scheme = "m3-content"
 
     [theme.templates]
-    builtin_ids = [ "btop", "cava", "gtk3", "gtk4", "kitty", "mango", "niri", "qt" ]
-    community_ids = [ "spicetify", "neovim", "zed", "rofi", "papirus-icons", "yazi", "zathura" ]
+    builtin_ids = [ "btop", "cava", "gtk3", "gtk4", "hyprland", "kitty", "mango", "niri", "qt" ]
+    community_ids = [ "spicetify", "neovim", "obsidian", "zed", "rofi", "papirus-icons", "yazi", "zathura" ]
+
+        [theme.templates.user.noctwhspr_mic_osd]
+        input_path = "/home/fitrah/.config/noctalia/templates/noctwhspr-mic-osd.css"
+        output_path = "/home/fitrah/.config/hyprwhspr/theme/mic-osd.css"
 
 [wallpaper]
 directory = "/home/fitrah/Pictures/Wallpapers"
 
     [wallpaper.default]
-    path = "/home/fitrah/Pictures/Wallpapers/Refraction-Z17Pro.jpg"
+    path = "/home/fitrah/Pictures/Wallpapers/4a6841adbaafdabc.jpg"
 
     [wallpaper.last]
-    path = "/home/fitrah/Pictures/Wallpapers/Refraction-Z17Pro.jpg"
+    path = "/home/fitrah/Pictures/Wallpapers/4a6841adbaafdabc.jpg"
 
     [wallpaper.monitors.eDP-1]
-    path = "/home/fitrah/Pictures/Wallpapers/Refraction-Z17Pro.jpg"
+    path = "/home/fitrah/Pictures/Wallpapers/4a6841adbaafdabc.jpg"
 
     [[wallpaper.favorite]]
-    palette_source = "wallpaper"
-    path = "/home/fitrah/Pictures/Wallpapers/pawel-czerwinski-yI4I3OrpB0I-unsplash.jpg"
+    community_palette = "Kemuri Susu"
+    palette_source = "community"
+    path = "/home/fitrah/Pictures/Wallpapers/4a6841adbaafdabc.jpg"
     theme_mode = "dark"
-    wallpaper_scheme = "m3-rainbow"
-
-    [[wallpaper.favorite]]
-    palette_source = "wallpaper"
-    path = "/home/fitrah/Pictures/Wallpapers/Refraction-Z17Pro.jpg"
-    theme_mode = "dark"
-    wallpaper_scheme = "m3-content"
-
-[weather]
-enabled = false
 
 [widget.AutoHide]
 glyph = "eye-filled"
 tooltip = "Auto Hide "
 type = "custom_button"
 
+    [widget.AutoHide.actions]
+    left = "exec noctalia msg bar-auto-hide-set on bar-blur"
+    right = "exec noctalia msg bar-auto-hide-set off bar-blur"
+
 [widget.FIle]
 glyph = ""
 label = "Finder"
 type = "custom_button"
 
-[widget.Hyprpicker]
-command = "hyprpicker -a"
-glyph = "color-picker"
-type = "custom_button"
+[widget.audio_visualizer]
+bands = 128
+width = 111
+
+[widget.bar]
+type = "yuuto/calculator:bar"
 
 [widget.bongocat]
 capsule = true
@@ -331,10 +519,14 @@ input_device = ""
 script = "scripts/bongocat.lua"
 type = "scripted"
 
-[widget.cat]
+[widget.brightness]
+enabled = true
+
+[widget.cat_2]
 type = "noctalia/bongocat:cat"
 
 [widget.clock]
+color = "error"
 scale = 1.1000000000000001
 
 [widget.control-center]
@@ -342,7 +534,13 @@ glyph = "brand-apple-filled"
 scale = 1.3
 
 [widget.cpu]
+capsule_border = "primary"
+capsule_fill = "on_secondary"
+capsule_opacity = 0.75
 stat = "cpu_temp"
+
+[widget.gamermode]
+type = "nomadcxx/gamer-mode:gamermode"
 
 [widget.media]
 capsule = true
@@ -351,21 +549,19 @@ hide_when_no_media = true
 [widget.mpvpaper]
 type = "noctalia/mpvpaper:mpvpaper"
 
-[widget.msnapgui]
-glyph = "brand-apple-filled"
-scale = 1.3
-tooltip = "i use Arch btw XD"
-type = "custom_button"
+[widget.mpvpaper_2]
+type = "noctalia/mpvpaper:mpvpaper"
+
+[widget.network]
+show_label = false
 
 [widget.notes]
 type = "noctalia/notes:notes"
 
-[widget.picker]
-icon = "brand-apple-filled"
-scale = 1.3500000000000001
-type = "yogaeru/mango_layout:picker"
-
 [widget.recorder]
+type = "noctalia/screen_recorder:recorder"
+
+[widget.recorder_2]
 type = "noctalia/screen_recorder:recorder"
 
 [widget.screen_recorder]
@@ -375,17 +571,33 @@ type = "scripted"
 [widget.spacer_2]
 type = "spacer"
 
+[widget.status]
+type = "goodroot/noctwhspr:status"
+
 [widget.sysmon]
-display = "graph"
+stat = "net_tx"
 
 [widget.temp]
-display = "graph"
+stat = "gpu_temp"
+
+[widget.todo]
+scale = 1.2
+type = "nightwatch75/todo:todo"
 
 [widget.wallhaven]
 type = "noctalia/wallhaven:wallhaven"
 
+[widget.widget]
+type = "thepunkoff/pomodoro:widget"
+
+[widget.widget_2]
+type = "alexander/screen-toolkit:widget"
+
+[widget.widget_3]
+type = "blackbartblues/keymap:widget"
+
 [widget.workspaces]
-active_pill_size = 2.75
+active_pill_size = 2.5
 capsule = true
 capsule_group = "LEFT"
 capsule_padding = 1
