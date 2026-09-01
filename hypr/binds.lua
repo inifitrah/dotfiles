@@ -50,6 +50,10 @@ hl.bind(mainMod .. "+ CTRL + V", hl.dsp.exec_cmd(ipc .. "panel-toggle clipboard"
 hl.bind(mainMod .. "+ o", hl.dsp.exec_cmd(ipc .. "window-switcher"))
 -- screenshot
 hl.bind(mainMod .. "+ CTRL + S", hl.dsp.exec_cmd(ipc .. "screenshot-region"))
+hl.bind(mainMod .. "+ CTRL + SHIFT + up", hl.dsp.exec_cmd(ipc .. "volume-up"))
+hl.bind(mainMod .. "+ CTRL + SHIFT + down", hl.dsp.exec_cmd(ipc .. "volume-down"))
+hl.bind(mainMod .. "+ CTRL + SHIFT + right", hl.dsp.exec_cmd(ipc .. "brightness-up"))
+hl.bind(mainMod .. "+ CTRL + SHIFT + left", hl.dsp.exec_cmd(ipc .. "brightness-down"))
 
 local function get_bar_cache_path()
     local xdg = os.getenv("XDG_CACHE_HOME")
