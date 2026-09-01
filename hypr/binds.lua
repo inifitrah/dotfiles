@@ -85,9 +85,9 @@ hl.bind(mainMod .. "+ CTRL + B", function()
     hl.dispatch(hl.dsp.exec_cmd(ipc .. "bar-reserve-toggle"))
     hl.dispatch(hl.dsp.exec_cmd(ipc .. "dock-toggle"))
     if cmd == "on" then
-        hl.dispatch(hl.dsp.exec_cmd(ipc .. "bar-layer-set overlay default"))
+        hl.dispatch(hl.dsp.exec_cmd(ipc .. "bar-layer-set overlay"))
     else
-        hl.dispatch(hl.dsp.exec_cmd(ipc .. "bar-layer-set top default"))
+        hl.dispatch(hl.dsp.exec_cmd(ipc .. "bar-layer-set top"))
     end
 end)
 
