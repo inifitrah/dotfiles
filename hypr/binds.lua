@@ -1,6 +1,9 @@
 local scratchpads = require("modules.scratchpads")
 local modes       = require("modules.modes")
 local workspaces  = require("modules.workspaces")
+
+local DEFAULT_BORDER_SIZE = hl.get_config("general.border_size")
+
 ------------------
 -- MY PROGRAMS  --
 ------------------
@@ -151,7 +154,7 @@ hl.bind(mainMod .. " + CTRL + F", function()
     else
         hl.config({
             general = {
-                border_size = 3
+                border_size = DEFAULT_BORDER_SIZE
             },
             decoration = {
                 dim_inactive = false,
@@ -313,6 +316,15 @@ hl.bind(mainMod .. " + SHIFT + L", layout_bind({
 hl.bind("F1", modes.toggle_game_mode)
 -- Cycle layout: scrolling → dwindle → monocle
 hl.bind(mainMod .. " + N", workspaces.cycle_layout)
+
+hl.bind(mainMod .. " + B", function()
+    local bs = hl.get_config("general.border_size")
+    if bs == 0 then
+        hl.config({ general = { border_size = DEFAULT_BORDER_SIZE } })
+    else
+        hl.config({ general = { border_size = 0 } })
+    end
+end, { description = "Toggle border width" })
 
 -- Glass magnifier zoom
 local MAX_ZOOM = 3
