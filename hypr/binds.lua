@@ -48,16 +48,40 @@ hl.bind(mainMod .. "+ o", hl.dsp.exec_cmd(ipc .. "window-switcher"))
 -- screenshot
 hl.bind(mainMod .. "+ CTRL + S", hl.dsp.exec_cmd(ipc .. "screenshot-region"))
 
-local autoHide = false
-hl.bind(mainMod .. "+ CTRL + B", function ()
-    autoHide = not autoHide
-    if autoHide then
-        hl.dispatch(hl.dsp.exec_cmd(ipc .. "bar-auto-hide-set on"))
-    else
-        hl.dispatch(hl.dsp.exec_cmd(ipc .. "bar-auto-hide-set off"))
+local function get_bar_cache_path()
+    local xdg = os.getenv("XDG_CACHE_HOME")
+    if xdg and xdg ~= "" then
+        return xdg .. "/noctalia/bar-autohide"
     end
+    return (os.getenv("HOME") or "") .. "/.cache/noctalia/bar-autohide"
+end
+
+hl.bind(mainMod .. "+ CTRL + B", function()
+    local path = get_bar_cache_path()
+    local dir = path:match("(.+)/[^/]+$")
+    if dir then os.execute("mkdir -p '" .. dir .. "'") end
+    local cur = "0"
+    local f = io.open(path, "r")
+    if f then
+        local c = f:read("*l")
+        f:close()
+        if c then
+            c = c:gsub("%s+", "")
+            if c == "0" or c == "1" then cur = c end
+        end
+    end
+    local nxt, cmd
+    if cur == "1" then nxt = "0"; cmd = "off" else nxt = "1"; cmd = "on" end
+    local wf = io.open(path, "w")
+    if wf then wf:write(nxt .. "\n"); wf:close() end
+    hl.dispatch(hl.dsp.exec_cmd(ipc .. "bar-auto-hide-set " .. cmd))
     hl.dispatch(hl.dsp.exec_cmd(ipc .. "bar-reserve-toggle"))
     hl.dispatch(hl.dsp.exec_cmd(ipc .. "dock-toggle"))
+    if cmd == "on" then
+        hl.dispatch(hl.dsp.exec_cmd(ipc .. "bar-layer-set overlay default"))
+    else
+        hl.dispatch(hl.dsp.exec_cmd(ipc .. "bar-layer-set top default"))
+    end
 end)
 
 
