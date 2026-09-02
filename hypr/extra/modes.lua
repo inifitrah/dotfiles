@@ -18,17 +18,10 @@ function M.toggle_game_mode()
         return
     end
 
-    -- auto hide bar ( Noctalia )
-    require("modules.hyprbars").disable()
     hl.config({
         general = {
             gaps_in = 3, gaps_out = 0, -- Disable gaps
         },
-
-        -- animations = {
-        --     enabled = false, -- Disable animations
-        -- },
-
         -- Disable blur, shadow and window rounding
         decoration = {
             shadow = { enabled = false },
@@ -40,7 +33,7 @@ function M.toggle_game_mode()
     hl.exec_cmd(ipc .. [[notification-show '{
         "app_name":"👀 Noctalia",
         "summary":"FOCUS MODE ENABLED",
-        "body":"Focus profile activated\n• Animations OFF\n• Blur OFF\n• Borders OFF",
+        "body":"Focus profile activated\n• Blur OFF\n• Borders OFF",
         "urgency":"critical",
         "timeout_ms":2000,
         "icon":"gamepad-2"
