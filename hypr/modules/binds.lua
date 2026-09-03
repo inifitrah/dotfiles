@@ -1,11 +1,24 @@
 local scratchpads = require("modules.scratchpads")
-local helpers    = require("modules.helpers")
 local toggles    = require("modules.toggles")
 local focus      = require("modules.focus_win_or_wp")
 
-local SUP           = helpers.SUP
-local Noctalia    = helpers.Noctalia
-local layout_bind = helpers.layout_bind
+local MOD = "SUPER"
+local NOCTALIA_IPC = "noctalia msg "
+local function Noctalia(cmd) return hl.dsp.exec_cmd(NOCTALIA_IPC .. cmd) end
+local function SUP(key) return MOD .. " + " .. key end
+
+local function layout_bind(bind_table)
+    return function()
+        local workspace = hl.get_active_special_workspace() or hl.get_active_workspace()
+        if not workspace then return end
+        local layout = workspace.tiled_layout
+        if bind_table[layout] then
+            hl.dispatch(bind_table[layout])
+        elseif bind_table.default then
+            hl.dispatch(bind_table.default)
+        end
+    end
+end
 
 ------------------
 -- MY PROGRAMS  --

@@ -1,10 +1,9 @@
 -- toggles.lua — bar / gaps / dim / border / zoom / game_mode / cycle_layout
-local helpers = require("modules.helpers")
-local Noctalia = helpers.Noctalia
+local NOCTALIA_IPC = "noctalia msg "
+local DEFAULT_BORDER_SIZE = hl.get_config("general.border_size")
+local function Noctalia(cmd) return hl.dsp.exec_cmd(NOCTALIA_IPC .. cmd) end
 
 local M = {}
-
-local DEFAULT_BORDER_SIZE = helpers.DEFAULT_BORDER_SIZE
 
 -- Bar auto-hide toggle (persisted to cache)
 local function get_bar_cache_path()
@@ -66,7 +65,7 @@ function M.zoom_out() M.zoom(-0.5) end
 function M.toggle_game_mode()
     if hl.get_config("decoration.shadow.enabled") == false then
         hl.exec_cmd("hyprctl reload")
-        hl.exec_cmd(helpers.NOCTALIA_IPC .. [[notification-show '{
+        hl.exec_cmd(NOCTALIA_IPC .. [[notification-show '{
             "app_name":"👀 Noctalia",
             "summary":"FOCUS MODE DISABLED",
             "body":"Desktop effects restored",
@@ -83,7 +82,7 @@ function M.toggle_game_mode()
     hl.window_rule({ name = "magnetic-open", match = { class = ".*" }, tag = "-shader_open:/home/fitrah/.config/hypr/shaders/magnetic-open.glsl" })
     hl.window_rule({ name = "magnetic-close", match = { class = ".*" }, tag = "-shader_close:/home/fitrah/.config/hypr/shaders/magnetic-close.glsl" })
     hl.window_rule({ name = "floating-smoke", match = { float = true }, tag = "-shader_floating:/home/fitrah/.config/hypr/shaders/floating-smoke.glsl" })
-    hl.exec_cmd(helpers.NOCTALIA_IPC .. [[notification-show '{
+    hl.exec_cmd(NOCTALIA_IPC .. [[notification-show '{
         "app_name":"👀 Noctalia",
         "summary":"FOCUS MODE ENABLED",
         "body":"Focus profile activated\n• Blur OFF\n• Borders OFF",
