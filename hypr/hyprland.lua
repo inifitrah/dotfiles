@@ -6,7 +6,7 @@ require("settings")
 require("animations")
 require("layouts")
 require("binds")
-require("window_rules")
+require("rules")
 require("plugins")
 
 -- For Noctalia Color templates

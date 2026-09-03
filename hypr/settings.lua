@@ -2,21 +2,15 @@ hl.config({
     general = {
         gaps_in  = 5,
         gaps_out = 5,
-
         border_size = 3,
-
         col = {
             active_border   = { colors = {"rgba(33ccffee)", "rgba(00ff99ee)"}, angle = 45 },
             inactive_border = "rgba(595959aa)",
         },
-
         -- Set to true to enable resizing windows by clicking and dragging on borders and gaps
         resize_on_border = false,
-
         allow_tearing = false,
-
         layout = "scrolling",
-
         no_focus_fallback = true
     },
     decoration = {
@@ -26,14 +20,12 @@ hl.config({
         dim_strength = 0.5,
         active_opacity   = 1.0,
         inactive_opacity = 1.0,
-
         shadow = {
             enabled      = true,
             range        = 30,
             render_power = 30,
             color        = 0xee1a1a1a,
         },
-
         blur = {
             enabled   = false,
             size      = 4,
@@ -79,5 +71,4 @@ hl.config({
        disable_logs = false,       -- opsional, kalau mau logging ke file juga tetap nyala
        -- colored_stdout_logs = true, -- opsional, biar ada warna
      }
-
 })

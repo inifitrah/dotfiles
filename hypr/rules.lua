@@ -5,8 +5,10 @@
 -- See https://wiki.hypr.land/Configuring/Basics/Window-Rules/
 -- and https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
 
--- work
--- hl.workspace_rule({ workspace = "special:work", no_rounding = true, decorate =false , gaps_in = 3, gaps_out = 3, no_border = true, monitor = "eDP-1", persistent = true, no_shadow=true, animation="slidevert" })
+-- Workspace
+hl.workspace_rule({ workspace = "w[tv1]", gaps_out = 0, gaps_in = 0 })
+hl.workspace_rule({ workspace = "f[1]",   gaps_out = 0, gaps_in = 0 })
+hl.workspace_rule({ workspace = "1", monitor = "eDP-1", persistent = true })
 
 -- Noctalia Settings
 hl.window_rule({
