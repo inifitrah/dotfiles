@@ -10,32 +10,16 @@ hl.config({
   ecosystem = {
     enforce_permissions = true,
   },
-    general = {
-      gaps_in = 5,
-      gaps_out = 10,
-    },
-
-    decoration = {
-      rounding = 20,
-      rounding_power = 2,
-
-      shadow = {
-        enabled = true,
-        range = 4,
-        render_power = 3,
-        color = 0xee1a1a1a,
-      },
-
-      blur = {
-        enabled = true,
-        size = 3,
-        passes = 2,
-        vibrancy = 0.1696,
-      },
-    },
 })
 
-hl.permission("/usr/(bin|local/bin)/hyprpm", "plugin", "allow")
--- hl.permission("/usr/(bin|local/bin)/grim", "screencopy", "allow")
--- hl.permission("/usr/(lib|libexec|lib64)/xdg-desktop-portal-hyprland", "screencopy", "allow")
--- hl.permission("/usr/(bin|local/bin)/hyprpm", "plugin", "allow")
+-- screencopy: allow trusted screen capture tools without prompt
+hl.permission({ binary = "/usr/bin/grim", type = "screencopy", mode = "allow" })
+hl.permission({ binary = "/usr/bin/noctalia", type = "screencopy", mode = "allow" })
+hl.permission({ binary = "/usr/lib/xdg-desktop-portal-hyprland", type = "screencopy", mode = "allow" })
+hl.permission({ binary = "/usr/bin/wf-recorder", type = "screencopy", mode = "allow" })
+hl.permission({ binary = "/usr/bin/wl-screenrec", type = "screencopy", mode = "allow" })
+
+-- plugin: allow hyprpm and shader plugins to load
+hl.permission({ binary = "/usr/(bin|local/bin)/hyprpm", type = "plugin", mode = "allow" })
+hl.permission({ binary = "/home/fitrah/.local/share/hyprland/plugins/HyprWindowShade.so", type = "plugin", mode = "allow" })
+hl.permission({ binary = "/home/fitrah/.local/share/hyprland/plugins/.*\\.so", type = "plugin", mode = "allow" })
