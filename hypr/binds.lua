@@ -1,6 +1,6 @@
-local scratchpads = require("extra.scratchpads")
-local modes       = require("extra.modes")
-local workspaces  = require("extra.workspaces")
+local scratchpads = require("scratchpads")
+local modes       = require("modes")
+local workspaces  = require("workspaces")
 
 local DEFAULT_BORDER_SIZE = hl.get_config("general.border_size")
 
