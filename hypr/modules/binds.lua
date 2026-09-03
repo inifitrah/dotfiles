@@ -1,7 +1,7 @@
-local scratchpads = require("scratchpads")
-local helpers    = require("helpers")
-local toggles    = require("toggles")
-local focus      = require("focus_win_or_wp")
+local scratchpads = require("modules.scratchpads")
+local helpers    = require("modules.helpers")
+local toggles    = require("modules.toggles")
+local focus      = require("modules.focus_win_or_wp")
 
 local SUP           = helpers.SUP
 local Noctalia    = helpers.Noctalia

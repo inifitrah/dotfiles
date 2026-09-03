@@ -1,5 +1,5 @@
 -- toggles.lua — bar / gaps / dim / border / zoom / game_mode / cycle_layout
-local helpers = require("helpers")
+local helpers = require("modules.helpers")
 local Noctalia = helpers.Noctalia
 
 local M = {}
