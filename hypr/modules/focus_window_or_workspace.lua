@@ -46,7 +46,7 @@ local function jump_to_workspace(current_id, direction)
     hl.dispatch(hl.dsp.focus({ workspace = direction == "r" and "+1" or "-1" }))
 end
 
-function M.smart_nav(direction)
+function M.focus_window_or_workspace(direction)
     local active_win = hl.get_active_window()
     local current_ws = (active_win and active_win.workspace) or hl.get_active_workspace()
     if not current_ws then return end
@@ -57,7 +57,7 @@ function M.smart_nav(direction)
     jump_to_workspace(current_ws.id, direction)
 end
 
-function M.smart_left() M.smart_nav("l") end
-function M.smart_right() M.smart_nav("r") end
+function M.left() M.focus_window_or_workspace("l") end
+function M.right() M.focus_window_or_workspace("r") end
 
 return M

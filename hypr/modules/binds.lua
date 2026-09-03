@@ -1,6 +1,6 @@
 local scratchpads = require("modules.scratchpads")
 local toggles    = require("modules.toggles")
-local focus      = require("modules.focus_win_or_wp")
+local focus_window_or_workspace = require("modules.focus_window_or_workspace")
 
 local MOD = "SUPER"
 local NOCTALIA_IPC = "noctalia msg "
@@ -195,5 +195,5 @@ hl.bind(SUP("down"), hl.dsp.group.prev(), { description = "Group: previous windo
 ------------------
 -- SMART NAV H/L --
 ------------------
-hl.bind(SUP("H"), focus.smart_left, { description = "Smart focus/workspace navigation left (no wrap)" })
-hl.bind(SUP("L"), focus.smart_right, { description = "Smart focus/workspace navigation right (no wrap)" })
+hl.bind(SUP("H"), focus_window_or_workspace.left, { description = "Smart focus/workspace navigation left (no wrap)" })
+hl.bind(SUP("L"), focus_window_or_workspace.right, { description = "Smart focus/workspace navigation right (no wrap)" })
