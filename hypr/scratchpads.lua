@@ -8,11 +8,13 @@ local currently_shown_address = nil
 local pending_spawn = nil -- { match = {title?, class?}, ws_name = "..." }
 
 local function matches(win, opts)
+    if not win or not opts then return false end
     return (opts.title and win.title == opts.title)
         or (opts.class and (win.class == opts.class or win.initialClass == opts.class))
 end
 
 local function find_matching_window(opts)
+    if not opts then return nil end
     for _, win in ipairs(hl.get_windows()) do
         if matches(win, opts) then
             return win
@@ -34,6 +36,7 @@ local function find_window_by_address(address)
 end
 
 local function hide_app(win)
+    if not win then return end
     print("[app_toggle] hide_app: '" .. tostring(win.title) ..
           "' (address=" .. tostring(win.address) .. ")")
     hl.dispatch(hl.dsp.window.move({
@@ -47,6 +50,7 @@ local function hide_app(win)
 end
 
 local function show_app(app_win, current_ws)
+    if not app_win or not current_ws or not current_ws.name then return end
 
     if currently_shown_address and currently_shown_address ~= app_win.address then
         local other_win = find_window_by_address(currently_shown_address)
@@ -69,6 +73,11 @@ end
 
 function M.show_or_hide_app(dsp, match)
     local current_ws = hl.get_active_special_workspace() or hl.get_active_workspace()
+    if not current_ws or not current_ws.name then
+        -- No active workspace — cannot show/hide, just spawn
+        if dsp then hl.dispatch(dsp) end
+        return
+    end
     local app_win = find_matching_window(match)
 
     if not app_win then
@@ -79,7 +88,9 @@ function M.show_or_hide_app(dsp, match)
         return
     end
 
-    local app_ws_name = app_win.workspace.name
+    local app_ws = app_win.workspace
+    if not app_ws or not app_ws.name then return end
+    local app_ws_name = app_ws.name
     local app_is_in_current_workspace = app_ws_name == current_ws.name
     local app_is_in_hidden_workspace = app_ws_name == SPECIAL_WORKSPACE.hidden
 
@@ -99,13 +110,16 @@ end
 
 function M.minimize_app()
     local current_ws = hl.get_active_special_workspace() or hl.get_active_workspace()
+    if not current_ws or not current_ws.name then return end
     local minimized_ws = hl.get_workspace(SPECIAL_WORKSPACE.minimized)
 
     if minimized_ws and minimized_ws.windows and minimized_ws.windows > 0 then
         hl.dispatch(hl.dsp.window.move({ workspace = current_ws.name, window = "tag:minimized" }))
         hl.dispatch(hl.dsp.window.clear_tags({ window = "tag:minimized" }))
     else
-        hl.dispatch(hl.dsp.window.tag({ tag = "minimized", window = hl.get_active_window() }))
+        local active_win = hl.get_active_window()
+        if not active_win then return end
+        hl.dispatch(hl.dsp.window.tag({ tag = "minimized", window = active_win }))
         hl.dispatch(hl.dsp.window.move({ workspace = SPECIAL_WORKSPACE.minimized, follow = false }))
     end
 end
@@ -114,12 +128,12 @@ hl.on("window.open", function(w)
     if not pending_spawn then
         return
     end
-
-    if not matches(w, pending_spawn.match) then
+    if not w or not matches(w, pending_spawn.match) then
         return
     end
 
-    local ws = hl.get_workspace(pending_spawn.ws_name)
+    local ws_name = pending_spawn.ws_name
+    local ws = ws_name and hl.get_workspace(ws_name) or nil
     pending_spawn = nil
 
     if ws then
