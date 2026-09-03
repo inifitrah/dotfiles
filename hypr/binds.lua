@@ -1,35 +1,17 @@
 local scratchpads = require("scratchpads")
+local helpers    = require("helpers")
+local toggles    = require("toggles")
+local focus      = require("focus_win_or_wp")
 
-local DEFAULT_BORDER_SIZE = hl.get_config("general.border_size")
+local S           = helpers.S
+local Noctalia    = helpers.Noctalia
+local layout_bind = helpers.layout_bind
 
 ------------------
 -- MY PROGRAMS  --
 ------------------
 local terminal    = "kitty"
 local fileManager = "kitty -T yazi -e yazi"
-
-------------------
---   HELPERS    --
-------------------
-local MOD = "SUPER" -- main modifier (Windows key)
-local NOCTALIA_IPC = "noctalia msg "
-
-local function Noctalia(cmd) return hl.dsp.exec_cmd(NOCTALIA_IPC .. cmd) end
-local function S(key) return MOD .. " + " .. key end
-
--- Per-layout binds: same key, different action depending on active layout
-local function layout_bind(bind_table)
-    return function()
-        local workspace = hl.get_active_special_workspace() or hl.get_active_workspace()
-        if not workspace then return end
-        local layout = workspace.tiled_layout
-        if bind_table[layout] then
-            hl.dispatch(bind_table[layout])
-        elseif bind_table.default then
-            hl.dispatch(bind_table.default)
-        end
-    end
-end
 
 ------------------
 --     CORE     --
@@ -53,42 +35,16 @@ hl.bind(S("CTRL + SHIFT + up"), Noctalia("volume-up"), { description = "Volume u
 hl.bind(S("CTRL + SHIFT + down"), Noctalia("volume-down"), { description = "Volume down (Noctalia)" })
 hl.bind(S("CTRL + SHIFT + right"), Noctalia("brightness-up"), { description = "Brightness up (Noctalia)" })
 hl.bind(S("CTRL + SHIFT + left"), Noctalia("brightness-down"), { description = "Brightness down (Noctalia)" })
-
--- Bar auto-hide toggle (persisted to cache)
-local function get_bar_cache_path()
-    local xdg = os.getenv("XDG_CACHE_HOME")
-    if xdg and xdg ~= "" then return xdg .. "/noctalia/bar-autohide" end
-    return (os.getenv("HOME") or "") .. "/.cache/noctalia/bar-autohide"
-end
-
-hl.bind(S("CTRL + B"), function()
-    local path = get_bar_cache_path()
-    local dir = path:match("(.+)/[^/]+$")
-    if dir then os.execute("mkdir -p '" .. dir .. "'") end
-    local cur = "0"
-    local f = io.open(path, "r")
-    if f then
-        local c = f:read("*l"); f:close()
-        if c then c = c:gsub("%s+", ""); if c == "0" or c == "1" then cur = c end end
-    end
-    local nxt, cmd = cur == "1" and "0" or "1", cur == "1" and "off" or "on"
-    local wf = io.open(path, "w"); if wf then wf:write(nxt .. "\n"); wf:close() end
-    hl.dispatch(Noctalia("bar-auto-hide-set " .. cmd))
-    hl.dispatch(Noctalia("bar-reserve-toggle"))
-    hl.dispatch(Noctalia("dock-toggle"))
-    hl.dispatch(Noctalia(cmd == "on" and "bar-layer-set overlay" or "bar-layer-set top"))
-end, { description = "Toggle bar auto-hide + reserve + dock" })
+hl.bind(S("CTRL + B"), toggles.toggle_bar, { description = "Toggle bar auto-hide + reserve + dock" })
 
 ------------------
 -- MEDIA / HW   --
 ------------------
--- Unified XF86 binds (noctalia, with locked/repeating). Previously duplicated with raw wpctl/brightnessctl.
 hl.bind("XF86AudioRaiseVolume", Noctalia("volume-up"), { locked = true, repeating = true, description = "Volume up" })
 hl.bind("XF86AudioLowerVolume", Noctalia("volume-down"), { locked = true, repeating = true, description = "Volume down" })
 hl.bind("XF86AudioMute", Noctalia("volume-mute"), { locked = true, repeating = true, description = "Volume mute toggle" })
 hl.bind("XF86MonBrightnessUp", Noctalia("brightness-up"), { locked = true, repeating = true, description = "Brightness up" })
 hl.bind("XF86MonBrightnessDown", Noctalia("brightness-down"), { locked = true, repeating = true, description = "Brightness down" })
--- No noctalia equivalent — keep raw
 hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true, repeating = true, description = "Mic mute toggle" })
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true, description = "Media: next track" })
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true, description = "Media: play/pause" })
@@ -111,24 +67,9 @@ hl.bind(S("X"), function() scratchpads.minimize_app() end, { description = "Mini
 ------------------
 --   TOGGLES    --
 ------------------
-hl.bind(S("SHIFT + G"), function()
-    local gaps = hl.get_config("general.gaps_in")
-    local zero = gaps.top == 5
-    hl.config({ general = { gaps_in = zero and 0 or 5, gaps_out = zero and 0 or 5 } })
-end, { description = "Toggle gaps in/out (0 ↔ 5)" })
-
-hl.bind(S("CTRL + F"), function()
-    if hl.get_config("decoration.dim_inactive") == false then
-        hl.config({ general = { border_size = 0 }, decoration = { dim_inactive = true } })
-    else
-        hl.config({ general = { border_size = DEFAULT_BORDER_SIZE }, decoration = { dim_inactive = false } })
-    end
-end, { description = "Toggle dim inactive + border" })
-
-hl.bind(S("B"), function()
-    local bs = hl.get_config("general.border_size")
-    hl.config({ general = { border_size = bs == 0 and DEFAULT_BORDER_SIZE or 0 } })
-end, { description = "Toggle border width" })
+hl.bind(S("SHIFT + G"), toggles.toggle_gaps, { description = "Toggle gaps in/out (0 ↔ 5)" })
+hl.bind(S("CTRL + F"), toggles.toggle_dim, { description = "Toggle dim inactive + border" })
+hl.bind(S("B"), toggles.toggle_border, { description = "Toggle border width" })
 
 ------------------
 --    WINDOW    --
@@ -158,8 +99,6 @@ hl.bind(S("bracketleft"), hl.dsp.focus({ workspace = "-1" }), { description = "F
 hl.bind(S("SHIFT + bracketleft"), hl.dsp.window.move({ workspace = "-1" }), { description = "Move window to previous workspace" })
 hl.bind(S("mouse_down"), hl.dsp.focus({ workspace = "e+1" }), { description = "Scroll to next workspace" })
 hl.bind(S("mouse_up"), hl.dsp.focus({ workspace = "e-1" }), { description = "Scroll to previous workspace" })
-
--- Special workspaces
 hl.bind(S("S"), hl.dsp.workspace.toggle_special("magic"), { description = "Toggle special: magic" })
 hl.bind(S("SHIFT + S"), hl.dsp.window.move({ workspace = "special:magic" }), { description = "Move window to special: magic" })
 hl.bind(S("W"), hl.dsp.workspace.toggle_special("work"), { description = "Toggle special: work" })
@@ -223,65 +162,15 @@ hl.bind(S("SHIFT + L"), layout_bind({
 ------------------
 --    MODES     --
 ------------------
-local function toggle_game_mode()
-    if hl.get_config("decoration.shadow.enabled") == false then
-        hl.exec_cmd("hyprctl reload")
-        hl.exec_cmd(NOCTALIA_IPC .. [[notification-show '{
-            "app_name":"👀 Noctalia",
-            "summary":"FOCUS MODE DISABLED",
-            "body":"Desktop effects restored",
-            "urgency":"normal",
-            "timeout_ms":1000,
-            "icon":"monitor"
-        }']])
-        return
-    end
-    hl.config({
-        general = { gaps_in = 0, gaps_out = 0 },
-        decoration = { shadow = { enabled = false }, blur = { enabled = false }, rounding = 0, dim_inactive = false },
-    })
-    hl.window_rule({ name = "magnetic-open", match = { class = ".*" }, tag = "-shader_open:/home/fitrah/.config/hypr/shaders/magnetic-open.glsl" })
-    hl.window_rule({ name = "magnetic-close", match = { class = ".*" }, tag = "-shader_close:/home/fitrah/.config/hypr/shaders/magnetic-close.glsl" })
-    hl.window_rule({ name = "floating-smoke", match = { float = true }, tag = "-shader_floating:/home/fitrah/.config/hypr/shaders/floating-smoke.glsl" })
-    hl.exec_cmd(NOCTALIA_IPC .. [[notification-show '{
-        "app_name":"👀 Noctalia",
-        "summary":"FOCUS MODE ENABLED",
-        "body":"Focus profile activated\n• Blur OFF\n• Borders OFF",
-        "urgency":"critical",
-        "timeout_ms":2000,
-        "icon":"gamepad-2"
-    }']])
-end
-hl.bind("F1", toggle_game_mode, { description = "Toggle focus/game mode (no blur/shadow)" })
-
-local function cycle_layout()
-    local layouts = { "scrolling", "master", "monocle" }
-    local workspace = hl.get_active_special_workspace() or hl.get_active_workspace()
-    if not workspace then return end
-    local next_layout = "dwindle"
-    for i = 1, #layouts do
-        if layouts[i] == workspace.tiled_layout then
-            next_layout = layouts[(i % #layouts) + 1]; break
-        end
-    end
-    local target = workspace.special and tostring(workspace.name) or tostring(workspace.id)
-    hl.workspace_rule({ workspace = target, layout = next_layout })
-    hl.notification.create({ text = "Layout: " .. next_layout, timeout = 1500, icon = "info" })
-end
-hl.bind(S("N"), cycle_layout, { description = "Cycle layout (scrolling → master → monocle)" })
+hl.bind("F1", toggles.toggle_game_mode, { description = "Toggle focus/game mode (no blur/shadow)" })
+hl.bind(S("N"), toggles.cycle_layout, { description = "Cycle layout (scrolling → master → monocle)" })
 
 ------------------
 --  ZOOM / MISC --
 ------------------
-local MAX_ZOOM, MIN_ZOOM, ZOOM_TOGGLE_FACTOR = 3, 1, 1.5
-local function zoom(offset)
-    local cur = hl.get_config("cursor.zoom_factor")
-    cur = offset ~= nil and cur + offset or cur ~= MIN_ZOOM and MIN_ZOOM or ZOOM_TOGGLE_FACTOR
-    hl.config({ cursor = { zoom_factor = math.max(MIN_ZOOM, math.min(MAX_ZOOM, cur)) } })
-end
-hl.bind(S("CTRL + Z"), zoom, { description = "Toggle zoom" })
-hl.bind(S("CTRL + Up"), function() zoom(0.5) end, { description = "Zoom in" })
-hl.bind(S("CTRL + Down"), function() zoom(-0.5) end, { description = "Zoom out" })
+hl.bind(S("CTRL + Z"), toggles.zoom, { description = "Toggle zoom" })
+hl.bind(S("CTRL + Up"), toggles.zoom_in, { description = "Zoom in" })
+hl.bind(S("CTRL + Down"), toggles.zoom_out, { description = "Zoom out" })
 hl.bind(S("SHIFT + Q"), function()
     hl.dispatch(hl.dsp.window.tag({ tag = "sensitive", window = hl.get_active_window() }))
 end, { description = "Tag window as sensitive" })
@@ -293,54 +182,5 @@ hl.bind(S("down"), hl.dsp.group.prev(), { description = "Group: previous window"
 ------------------
 -- SMART NAV H/L --
 ------------------
--- Mod+H/L: focus left/right within workspace, or jump to next occupied workspace (no wrap)
-local LAYOUT_FOCUS_MESSAGE = { scrolling = { l = "focus left", r = "focus right" } }
-
-local function get_occupied_workspaces()
-    local occ = {}
-    for _, ws in ipairs(hl.get_workspaces()) do
-        if ws.id > 0 and ws.windows and ws.windows > 0 then table.insert(occ, ws) end
-    end
-    table.sort(occ, function(a, b) return a.id < b.id end)
-    return occ
-end
-local function find_next_occupied(occupied, current_id, direction)
-    if direction == "r" then
-        for _, ws in ipairs(occupied) do if ws.id > current_id then return ws end end
-    else
-        for i = #occupied, 1, -1 do if occupied[i].id < current_id then return occupied[i] end end
-    end
-end
-local function workspace_selector(ws) return ws.id and ws.id > 0 and ws.id or ws.name end
-local function center_x(w) return (w.at and w.at.x or 0) + (w.size and w.size.x or 0) / 2 end
-local function at_workspace_edge(active_win, wins, direction)
-    local acx = center_x(active_win)
-    for _, w in ipairs(wins) do
-        if w.address ~= active_win.address and ((direction == "r" and center_x(w) > acx) or (direction == "l" and center_x(w) < acx)) then
-            return false
-        end
-    end
-    return true
-end
-local function get_tiled_layout(ws) return ws.tiled_layout or ws.tiledLayout end
-local function focus_within_workspace(layout, direction)
-    local msg = (LAYOUT_FOCUS_MESSAGE[layout] or {})[direction]
-    if msg then hl.dispatch(hl.dsp.layout(msg)) else hl.dispatch(hl.dsp.focus({ direction = direction })) end
-end
-local function jump_to_workspace(current_id, direction)
-    local target = find_next_occupied(get_occupied_workspaces(), current_id, direction)
-    if target then hl.dispatch(hl.dsp.focus({ workspace = target.id })); return end
-    hl.dispatch(hl.dsp.focus({ workspace = direction == "r" and "+1" or "-1" }))
-end
-local function smart_nav(direction)
-    local active_win = hl.get_active_window()
-    local current_ws = (active_win and active_win.workspace) or hl.get_active_workspace()
-    if not current_ws then return end
-    local wins = hl.get_workspace_windows(workspace_selector(current_ws)) or {}
-    local edge = (not active_win) or at_workspace_edge(active_win, wins, direction)
-    if not edge then focus_within_workspace(get_tiled_layout(current_ws), direction); return end
-    if (current_ws.id or 0) < 0 then return end
-    jump_to_workspace(current_ws.id, direction)
-end
-hl.bind(S("H"), function() smart_nav("l") end, { description = "Smart focus/workspace navigation left (no wrap)" })
-hl.bind(S("L"), function() smart_nav("r") end, { description = "Smart focus/workspace navigation right (no wrap)" })
+hl.bind(S("H"), focus.smart_left, { description = "Smart focus/workspace navigation left (no wrap)" })
+hl.bind(S("L"), focus.smart_right, { description = "Smart focus/workspace navigation right (no wrap)" })
