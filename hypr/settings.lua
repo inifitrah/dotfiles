@@ -1,3 +1,26 @@
+-------------------------------
+---- ENVIRONMENT VARIABLES ----
+-------------------------------
+-- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
+hl.env("XCURSOR_SIZE", "24")
+hl.env("XCURSOR_THEME", "Afterglow-cursors")
+hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("HYPRCURSOR_THEME", "Afterglow-cursors")
+
+------------------
+---- MONITORS ----
+------------------
+-- See https://wiki.hypr.land/Configuring/Basics/Monitors/
+hl.monitor({
+  output = "eDP-1",
+  mode = "1920x1200@60",
+  position = "0x0",
+  scale = 1,
+})
+
+-------------------------------
+-------- CORE SETTINGS --------
+-------------------------------
 hl.config({
     general = {
         gaps_in  = 5,

@@ -1,6 +1,4 @@
-require("monitors")
 require("autostart")
-require("env")
 require("permissions")
 require("settings")
 require("animations")
