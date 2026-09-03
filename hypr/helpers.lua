@@ -6,7 +6,7 @@ M.NOCTALIA_IPC = "noctalia msg "
 M.DEFAULT_BORDER_SIZE = hl.get_config("general.border_size")
 
 function M.Noctalia(cmd) return hl.dsp.exec_cmd(M.NOCTALIA_IPC .. cmd) end
-function M.S(key) return M.MOD .. " + " .. key end
+function M.SUP(key) return M.MOD .. " + " .. key end
 
 -- Per-layout binds: same key, different action depending on active layout
 function M.layout_bind(bind_table)
