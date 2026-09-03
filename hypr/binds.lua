@@ -201,7 +201,6 @@ hl.bind("Escape", function()
     local special_wp = hl.get_active_special_workspace()
     if special_wp then
         local name = special_wp.name:gsub("^special:", "")
-        print("[Lua] closing special workspace: " .. name)
         hl.dispatch(hl.dsp.workspace.toggle_special(name))
     else
        return { ok = false }
@@ -433,43 +432,13 @@ hl.bind(mainMod .. "+ SHIFT + Q", function()
     hl.dispatch(hl.dsp.window.tag({ tag = "sensitive", window = hl.get_active_window() }))
 end)
 
--- ============================================================
--- Smart Focus & Non-Wrapping Workspace Navigation
--- Hyprland Lua v0.56.0+
---
--- Mod + H  -> focus left  (window, then previous occupied workspace)
--- Mod + L  -> focus right (window, then next occupied workspace)
--- No wrap-around at the first/last occupied workspace.
---
--- Design: geometry (window x positions) is used ONLY to answer "am I
--- already at the edge of this workspace in this direction?" — a coarse
--- yes/no that stays correct even with window groups or a fullscreen
--- window elsewhere (hidden group tabs share their visible sibling's
--- position, so they don't skew the min/max; a fullscreen window's own
--- position is self-consistent within one snapshot).
---
--- The actual "who exactly is my neighbor" decision is NOT made by us —
--- it's delegated to the layout itself (hl.dsp.layout(message) for layouts
--- we know a message for, hl.dsp.focus({direction=...}) as the default),
--- since the layout has real knowledge of groups/fullscreen/tabs that we
--- can't reliably reconstruct from position data alone.
--- ============================================================
-
--- Per-layout "move focus within the workspace" messages. Add more layouts
--- here as needed; anything not listed falls back to native
--- hl.dsp.focus({direction=...}).
+-- Smart Focus: Mod+H/L — focus left/right within workspace, or jump to next occupied workspace (no wrap)
+-- At edge, delegate to layout message if available, else hl.dsp.focus; special workspaces stay put.
 local LAYOUT_FOCUS_MESSAGE = {
   scrolling = { l = "focus left", r = "focus right" },
 }
 
-local function log(fmt, ...)
-  print("[smart_nav] " .. string.format(fmt, ...))
-end
-
--- Returns all *normal* workspaces (id > 0, i.e. excludes special/scratchpad
--- workspaces which have negative ids) that currently contain at least one
--- window, sorted ascending by id.
-local function get_occupied_workspaces()
+local function get_occupied_workspaces() -- normal workspaces (id>0) with windows, sorted
   local occ = {}
   for _, ws in ipairs(hl.get_workspaces()) do
     if ws.id > 0 and ws.windows and ws.windows > 0 then
@@ -480,7 +449,6 @@ local function get_occupied_workspaces()
   return occ
 end
 
--- Finds the nearest occupied workspace beyond `current_id` in `direction`.
 local function find_next_occupied(occupied, current_id, direction)
   if direction == "r" then
     for _, ws in ipairs(occupied) do
@@ -494,32 +462,20 @@ local function find_next_occupied(occupied, current_id, direction)
   return nil
 end
 
--- Returns the correct selector to use with hl.get_workspace_windows /
--- hl.dsp.focus({workspace=...}) for a given workspace object. Normal
--- workspaces use their numeric id, but special workspaces have negative
--- ids which aren't valid numeric selectors (Hyprland only accepts 1..2^31-1
--- as a numeric id) — for those we must use their name instead (e.g.
--- "special:magic").
-local function workspace_selector(ws)
+local function workspace_selector(ws) -- id>0 ? id : name (special needs name)
   if ws.id and ws.id > 0 then
     return ws.id
   end
   return ws.name
 end
 
--- Returns a window's horizontal center. That's the only geometry we still
--- need (see file header) — no more full rect/overlap scoring.
 local function center_x(w)
   local x = (w.at and w.at.x) or 0
   local width = (w.size and w.size.x) or 0
   return x + width / 2
 end
 
--- Coarse edge check: is `active_win` already at the extreme edge (no other
--- window's center lies further in `direction`) among ALL windows in this
--- workspace? Deliberately does NOT try to pick a specific neighbor or
--- filter by group/visible state — see the file header for why.
-local function at_workspace_edge(active_win, wins, direction)
+local function at_workspace_edge(active_win, wins, direction) -- true if at extreme edge
   local acx = center_x(active_win)
   for _, w in ipairs(wins) do
     if w.address ~= active_win.address then
@@ -532,91 +488,42 @@ local function at_workspace_edge(active_win, wins, direction)
   return true
 end
 
--- Returns the workspace's current tiled layout name (e.g. "scrolling",
--- "dwindle", "master", "monocle"), or nil if unknown.
 local function get_tiled_layout(ws)
   return ws.tiled_layout or ws.tiledLayout
 end
 
--- Moves focus within the current workspace using the layout's own
--- semantics: a per-layout message when we have one (currently just
--- `scrolling`), otherwise the native direction dispatcher.
 local function focus_within_workspace(layout, direction)
   local msg = (LAYOUT_FOCUS_MESSAGE[layout] or {})[direction]
   if msg then
-    log("layout='%s' -> hl.dsp.layout('%s')", tostring(layout), msg)
     hl.dispatch(hl.dsp.layout(msg))
   else
-    log("layout='%s' (no message registered) -> hl.dsp.focus(direction=%s)", tostring(layout), direction)
     hl.dispatch(hl.dsp.focus({ direction = direction }))
   end
 end
 
--- Jumps to the next/previous occupied workspace, or (if none left in that
--- direction) keeps progressing linearly via a relative +1/-1 jump.
 local function jump_to_workspace(current_id, direction)
   local target_ws = find_next_occupied(get_occupied_workspaces(), current_id, direction)
-
   if target_ws then
-    log("jumping to occupied workspace id=%s", tostring(target_ws.id))
-    -- Just switch to the workspace: Hyprland natively restores whichever
-    -- window was last focused there. We intentionally do NOT force focus
-    -- onto a specific window here — this is a workspace switch, not a
-    -- "continue the linear window sequence" jump.
     hl.dispatch(hl.dsp.focus({ workspace = target_ws.id }))
     return
   end
-
   local rel = (direction == "r") and "+1" or "-1"
-  log("no more occupied workspace, falling back to relative jump %s", rel)
   hl.dispatch(hl.dsp.focus({ workspace = rel }))
 end
 
--- direction: "l" or "r"
 local function smart_nav(direction)
   local active_win = hl.get_active_window()
-
-  -- IMPORTANT: hl.get_active_workspace() returns the monitor's underlying
-  -- *normal* workspace, NOT a special (scratchpad) workspace, even while a
-  -- special workspace is open and focused on top of it. So to correctly
-  -- detect "am I currently in a special workspace", we must look at the
-  -- focused window's own `.workspace` field instead, which does reflect
-  -- special workspaces (e.g. id -97 / name "special:magic").
   local current_ws = (active_win and active_win.workspace) or hl.get_active_workspace()
-  if not current_ws then
-    log("dir=%s no current workspace found, aborting", direction)
-    return
-  end
-
+  if not current_ws then return end
   local layout = get_tiled_layout(current_ws)
   local is_special = (current_ws.id or 0) < 0
-
-  log("dir=%s active_win=%s ws_id=%s ws_name=%s layout=%s is_special=%s",
-      direction, tostring(active_win and active_win.title), tostring(current_ws.id),
-      tostring(current_ws.name), tostring(layout), tostring(is_special))
-
   local wins = hl.get_workspace_windows(workspace_selector(current_ws)) or {}
   local edge = (not active_win) or at_workspace_edge(active_win, wins, direction)
-  log("window_count=%d at_edge=%s", #wins, tostring(edge))
-
   if not edge then
     focus_within_workspace(layout, direction)
     return
   end
-
-  if is_special then
-    -- Special workspaces (scratchpads) never escalate to jumping to
-    -- another workspace when at the edge — just stay put.
-    log("special workspace, at edge -> staying put")
-    return
-  end
-
-  -- At the edge of a normal workspace (or no window focused at all).
-  -- Do NOT call the native focus(direction)/layout message here: under
-  -- layouts like `scrolling`, it will auto-create/jump into a brand new
-  -- empty workspace on its own, which breaks our own boundary logic.
-  -- Instead, jump straight to the next/previous *occupied* normal
-  -- workspace ourselves.
+  if is_special then return end
   jump_to_workspace(current_ws.id, direction)
 end
 
