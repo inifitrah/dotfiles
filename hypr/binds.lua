@@ -1,6 +1,4 @@
 local scratchpads = require("scratchpads")
-local modes       = require("modes")
-local workspaces  = require("workspaces")
 
 local DEFAULT_BORDER_SIZE = hl.get_config("general.border_size")
 
@@ -316,10 +314,83 @@ hl.bind(mainMod .. " + SHIFT + L", layout_bind({
     dwindle   = hl.dsp.layout("togglesplit"), -- Dwindle: toggle window split
 }))
 
--- Game mode toggle
-hl.bind("F1", modes.toggle_game_mode)
--- Cycle layout: scrolling → dwindle → monocle
-hl.bind(mainMod .. " + N", workspaces.cycle_layout)
+-- Game mode toggle (inline dari modes.lua)
+local function toggle_game_mode()
+    local game_mode = (hl.get_config("decoration.shadow.enabled") == false)
+
+    if game_mode then
+        hl.exec_cmd("hyprctl reload")
+        hl.exec_cmd(ipc .. [[notification-show '{
+            "app_name":"👀 Noctalia",
+            "summary":"FOCUS MODE DISABLED",
+            "body":"Desktop effects restored",
+            "urgency":"normal",
+            "timeout_ms":1000,
+            "icon":"monitor"
+        }']])
+        return
+    end
+
+    hl.config({
+        general = {
+            gaps_in = 0, gaps_out = 0, -- Disable gaps
+        },
+        -- Disable blur, shadow and window rounding
+        decoration = {
+            shadow = { enabled = false },
+            blur = { enabled = false },
+            rounding = 0,
+            dim_inactive = false
+        }
+    })
+    hl.window_rule({ name = "magnetic-open", match = { class = ".*" }, tag = "-shader_open:/home/fitrah/.config/hypr/shaders/magnetic-open.glsl" })
+    hl.window_rule({ name = "magnetic-close", match = { class = ".*" }, tag = "-shader_close:/home/fitrah/.config/hypr/shaders/magnetic-close.glsl" })
+    hl.window_rule({ name = "floating-smoke", match = { float = true }, tag = "-shader_floating:/home/fitrah/.config/hypr/shaders/floating-smoke.glsl" })
+    hl.exec_cmd(ipc .. [[notification-show '{
+        "app_name":"👀 Noctalia",
+        "summary":"FOCUS MODE ENABLED",
+        "body":"Focus profile activated\n• Blur OFF\n• Borders OFF",
+        "urgency":"critical",
+        "timeout_ms":2000,
+        "icon":"gamepad-2"
+    }']])
+end
+
+hl.bind("F1", toggle_game_mode)
+
+-- Cycle layout: scrolling -> master -> monocle
+local function cycle_layout()
+    local layouts     = { "scrolling", "master", "monocle" }
+    local workspace   = hl.get_active_workspace()
+    if hl.get_active_special_workspace() then
+        workspace = hl.get_active_special_workspace()
+    end
+
+    local next_layout = "dwindle"
+
+    if not workspace then
+        return
+    end
+
+    for i = 1, #layouts do
+        if layouts[i] == workspace.tiled_layout then
+            local next_layout_idx = (i % #layouts) + 1
+            next_layout = layouts[next_layout_idx]
+            break
+        end
+    end
+
+    if workspace.special then
+        hl.workspace_rule({ workspace = tostring(workspace.name), layout = next_layout })
+    else
+        hl.workspace_rule({ workspace = tostring(workspace.id), layout = next_layout })
+    end
+
+    hl.notification.create({ text = "Layout: " .. next_layout, timeout = 1500, icon = "info" })
+end
+
+hl.bind(mainMod .. " + N", cycle_layout)
+
 
 hl.bind(mainMod .. " + B", function()
     local bs = hl.get_config("general.border_size")
