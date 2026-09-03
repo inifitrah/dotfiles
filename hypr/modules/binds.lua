@@ -4,7 +4,7 @@ local focus      = require("modules.focus_win_or_wp")
 
 local MOD = "SUPER"
 local NOCTALIA_IPC = "noctalia msg "
-local function Noctalia(cmd) return hl.dsp.exec_cmd(NOCTALIA_IPC .. cmd) end
+local function NOC(cmd) return hl.dsp.exec_cmd(NOCTALIA_IPC .. cmd) end
 local function SUP(key) return MOD .. " + " .. key end
 
 local function layout_bind(bind_table)
@@ -38,26 +38,26 @@ hl.bind(SUP("T"), hl.dsp.exec_cmd(terminal), { description = "Open terminal" })
 ------------------
 --   NOCTALIA   --
 ------------------
-hl.bind(SUP("Space"), Noctalia("panel-toggle launcher"), { description = "Noctalia: launcher" })
-hl.bind(SUP("SHIFT + comma"), Noctalia("settings-toggle"), { description = "Noctalia: settings" })
-hl.bind(SUP("SHIFT + Escape"), Noctalia("panel-toggle session"), { description = "Noctalia: session menu" })
-hl.bind(SUP("CTRL + V"), Noctalia("panel-toggle clipboard"), { description = "Noctalia: clipboard" })
-hl.bind(SUP("o"), Noctalia("window-switcher"), { description = "Noctalia: window switcher" })
-hl.bind(SUP("CTRL + S"), Noctalia("screenshot-region"), { description = "Noctalia: screenshot region" })
-hl.bind(SUP("CTRL + SHIFT + up"), Noctalia("volume-up"), { description = "Volume up (Noctalia)" })
-hl.bind(SUP("CTRL + SHIFT + down"), Noctalia("volume-down"), { description = "Volume down (Noctalia)" })
-hl.bind(SUP("CTRL + SHIFT + right"), Noctalia("brightness-up"), { description = "Brightness up (Noctalia)" })
-hl.bind(SUP("CTRL + SHIFT + left"), Noctalia("brightness-down"), { description = "Brightness down (Noctalia)" })
+hl.bind(SUP("Space"), NOC("panel-toggle launcher"), { description = "Noctalia: launcher" })
+hl.bind(SUP("SHIFT + comma"), NOC("settings-toggle"), { description = "Noctalia: settings" })
+hl.bind(SUP("SHIFT + Escape"), NOC("panel-toggle session"), { description = "Noctalia: session menu" })
+hl.bind(SUP("CTRL + V"), NOC("panel-toggle clipboard"), { description = "Noctalia: clipboard" })
+hl.bind(SUP("o"), NOC("window-switcher"), { description = "Noctalia: window switcher" })
+hl.bind(SUP("CTRL + S"), NOC("screenshot-region"), { description = "Noctalia: screenshot region" })
+hl.bind(SUP("CTRL + SHIFT + up"), NOC("volume-up"), { description = "Volume up (Noctalia)" })
+hl.bind(SUP("CTRL + SHIFT + down"), NOC("volume-down"), { description = "Volume down (Noctalia)" })
+hl.bind(SUP("CTRL + SHIFT + right"), NOC("brightness-up"), { description = "Brightness up (Noctalia)" })
+hl.bind(SUP("CTRL + SHIFT + left"), NOC("brightness-down"), { description = "Brightness down (Noctalia)" })
 hl.bind(SUP("CTRL + B"), toggles.toggle_bar, { description = "Toggle bar auto-hide + reserve + dock" })
 
 ------------------
 -- MEDIA / HW   --
 ------------------
-hl.bind("XF86AudioRaiseVolume", Noctalia("volume-up"), { locked = true, repeating = true, description = "Volume up" })
-hl.bind("XF86AudioLowerVolume", Noctalia("volume-down"), { locked = true, repeating = true, description = "Volume down" })
-hl.bind("XF86AudioMute", Noctalia("volume-mute"), { locked = true, repeating = true, description = "Volume mute toggle" })
-hl.bind("XF86MonBrightnessUp", Noctalia("brightness-up"), { locked = true, repeating = true, description = "Brightness up" })
-hl.bind("XF86MonBrightnessDown", Noctalia("brightness-down"), { locked = true, repeating = true, description = "Brightness down" })
+hl.bind("XF86AudioRaiseVolume", NOC("volume-up"), { locked = true, repeating = true, description = "Volume up" })
+hl.bind("XF86AudioLowerVolume", NOC("volume-down"), { locked = true, repeating = true, description = "Volume down" })
+hl.bind("XF86AudioMute", NOC("volume-mute"), { locked = true, repeating = true, description = "Volume mute toggle" })
+hl.bind("XF86MonBrightnessUp", NOC("brightness-up"), { locked = true, repeating = true, description = "Brightness up" })
+hl.bind("XF86MonBrightnessDown", NOC("brightness-down"), { locked = true, repeating = true, description = "Brightness down" })
 hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true, repeating = true, description = "Mic mute toggle" })
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true, description = "Media: next track" })
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true, description = "Media: play/pause" })

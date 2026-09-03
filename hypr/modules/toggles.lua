@@ -1,7 +1,7 @@
 -- toggles.lua — bar / gaps / dim / border / zoom / game_mode / cycle_layout
 local NOCTALIA_IPC = "noctalia msg "
 local DEFAULT_BORDER_SIZE = hl.get_config("general.border_size")
-local function Noctalia(cmd) return hl.dsp.exec_cmd(NOCTALIA_IPC .. cmd) end
+local function NOC(cmd) return hl.dsp.exec_cmd(NOCTALIA_IPC .. cmd) end
 
 local M = {}
 
@@ -24,10 +24,10 @@ function M.toggle_bar()
     end
     local nxt, cmd = cur == "1" and "0" or "1", cur == "1" and "off" or "on"
     local wf = io.open(path, "w"); if wf then wf:write(nxt .. "\n"); wf:close() end
-    hl.dispatch(Noctalia("bar-auto-hide-set " .. cmd))
-    hl.dispatch(Noctalia("bar-reserve-toggle"))
-    hl.dispatch(Noctalia("dock-toggle"))
-    hl.dispatch(Noctalia(cmd == "on" and "bar-layer-set overlay" or "bar-layer-set top"))
+    hl.dispatch(NOC("bar-auto-hide-set " .. cmd))
+    hl.dispatch(NOC("bar-reserve-toggle"))
+    hl.dispatch(NOC("dock-toggle"))
+    hl.dispatch(NOC(cmd == "on" and "bar-layer-set overlay" or "bar-layer-set top"))
 end
 
 function M.toggle_gaps()
