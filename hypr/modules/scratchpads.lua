@@ -108,7 +108,7 @@ function M.show_or_hide_app(dsp, match)
     end
 end
 
-function M.minimize_app()
+function M.toggle_focused_app()
     local current_ws = hl.get_active_special_workspace() or hl.get_active_workspace()
     if not current_ws or not current_ws.name then return end
     local minimized_ws = hl.get_workspace(SPECIAL_WORKSPACE.minimized)

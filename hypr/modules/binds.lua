@@ -75,7 +75,7 @@ hl.bind(SUP("return"), function()
         float = true, size = { 1200, 900 },
     }), { title = "term" })
 end, { description = "Scratchpad: term (fastfetch)" })
-hl.bind(SUP("X"), function() scratchpads.minimize_app() end, { description = "Minimize / hide scratchpad" })
+hl.bind(SUP("X"), function() scratchpads.toggle_focused_app() end, { description = "Minimize / hide scratchpad" })
 
 ------------------
 --   TOGGLES    --
